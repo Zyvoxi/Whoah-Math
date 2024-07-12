@@ -38,7 +38,7 @@ void clearScreen() {
 #elif defined(__linux__) || defined(__APPLE__)
     system("clear");
 #else
-    std::cout << "N\u00E3o \u00E9 poss\u00EDvel limpar o console nesta plataforma.\n";
+    std::cout << "Não é possível limpar o console nesta plataforma.\n";
     return;
 #endif
 }
@@ -67,11 +67,12 @@ char getch() {
         perror("tcsetattr ~ICANON");
     return buf;
 }
+
 #endif
 
 void leave() {
     std::cout << "\nPressione qualquer tecla para sair.";
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN23) || defined(_WIN64)
     _getch();
 #else
     getch();
@@ -95,7 +96,7 @@ void funcrx() {
         if (isNumber(la)) {
             break;
         } else {
-            std::cout << "Por Favor, digite um n\u00FAmero v\u00E1lido: ";
+            std::cout << "Por Favor, digite um número válido: ";
         }
     }
     int a = std::stoi(la);
@@ -107,7 +108,7 @@ void funcrx() {
         if (isNumber(lb)) {
             break;
         } else {
-            std::cout << "Por Favor, digite um n\u00FAmero v\u00E1lido: ";
+            std::cout << "Por Favor, digite um número válido: ";
         }
     }
     int b = std::stoi(lb);
@@ -152,7 +153,7 @@ void funcrx2() {
         if (isNumber(la)) {
             break;
         } else {
-            std::cout << "Por Favor, digite um n\u00FAmero v\u00E1lido: ";
+            std::cout << "Por Favor, digite um número válido: ";
         }
     }
     int a = std::stoi(la);
@@ -164,7 +165,7 @@ void funcrx2() {
         if (isNumber(lb)) {
             break;
         } else {
-            std::cout << "Por Favor, digite um n\u00FAmero v\u00E1lido: ";
+            std::cout << "Por Favor, digite um número válido: ";
         }
     }
     int b = std::stoi(lb);
@@ -176,7 +177,7 @@ void funcrx2() {
         if (isNumber(lc)) {
             break;
         } else {
-            std::cout << "Por Favor, digite um n\u00FAmero v\u00E1lido: ";
+            std::cout << "Por Favor, digite um número válido: ";
         }
     }
     int c = std::stoi(lc);
@@ -190,22 +191,22 @@ void funcrx2() {
 #endif
     clearScreen();
 
-    std::cout << "\u0394 = b² - 4ac" <<
-    std::endl << "\u0394 = " << b << "² - 4*" << a << "*" << c <<
-    std::endl << "\u0394 = " << delta << std::endl;
+    std::cout << "Δ = b² - 4ac" <<
+    std::endl << "Δ - " << b << "²" << " - 4*" << a << "*" << c <<
+    std::endl << "Δ = " << delta << std::endl;
 
     if (delta < 0) {
-        std::cout << "Delta \u00E9 negativo, ent\u00E3o as ra\u00EDzes n\u00E3o fazem parte dos n\u00FAmeros reais, portanto n\u00E3o iremos encontrar elas.";
+        std::cout << "Delta é negativo, então as raízes não fazem parte dos números reais, portanto não iremos encontrar elas.";
     } else {
-        std::cout << std::setw(10) << "\n     -b  \u00B1  \u221A\u0394 " <<
+        std::cout << std::setw(10) << "\n     -b  ±  √Δ " <<
         std::endl << std::setw(10) << "X = -----------" <<
         std::endl << std::setw(10) << "         2a    \n" << std::endl;
 
-        std::cout << std::setw(10) << "\n     " << (b >= 0 ? "-" : " ") << std::abs(b) << "  \u00B1  \u221A" << delta << " " <<
+        std::cout << std::setw(10) << "\n     " << (b >= 0 ? "-" : " ") << std::abs(b) << "  ±  √" << delta << " " <<
         std::endl << std::setw(10) << "X = -----------" << (delta >= 10 ? "---" : "") <<
         std::endl << std::setw(10) << "         2*" << a << "    \n" << std::endl;
 
-        std::cout << std::setw(10) << "\n     " << (b >= 0 ? "-" : " ") << std::abs(b) << "  \u00B1  ";
+        std::cout << std::setw(10) << "\n     " << (b >= 0 ? "-" : " ") << std::abs(b) << "  ±  ";
         if (delta == std::floor(delta)) {
             std::cout << static_cast<int>(sqrt(delta)) <<
             std::endl << std::setw(10) << "X = -----------" << (delta >= 10 ? "---" : "") <<
@@ -216,8 +217,8 @@ void funcrx2() {
             std::endl << std::setw(10) << "         " << 2*a << "    \n" << std::endl;
         }
 
-        std::cout << "X\u00B9 = " << x1 <<
-        std::endl << "x\u00B2 = " << x2 << std::endl;
+        std::cout << "X¹ = " << x1 <<
+        std::endl << "x² = " << x2 << std::endl;
     }
     leave();
 }
@@ -227,13 +228,13 @@ void funcrx2() {
 void handleOptionsChoice() {
     std::string opt;
 
-    std::cout << "Escolha uma op\u00E7\u00E3o: ";
+    std::cout << "Escolha uma opção: ";
     while (true) {
         std::getline(std::cin, opt);
         if (isNumber(opt)) {
             break;
         } else {
-            std::cout << "Op\u00E7\u00E3o n\u00E3o suportada";
+            std::cout << "Opção não suportada";
         }
     }
 
@@ -243,7 +244,7 @@ void handleOptionsChoice() {
 
     switch(opti) {
         case 0:
-            std::cout << "Voc\u00EA escolheu sair" << std::endl;
+            std::cout << "Você escolheu sair" << std::endl;
             leave();
             break;
         case 1:
@@ -261,16 +262,16 @@ void handleOptionsChoice() {
             funcrx2();
             break;
         default:
-            std::cout << "Op\u00E7\u00E3o n\u00E3o suportada";
+            std::cout << "Opção não suportada";
             handleOptionsChoice();
             break;
     }
 }
 
 void options() {
-    std::cout << "Escolha uma das op\u00E7\u00F5es para realizar o c\u00E1lculo de suas ra\u00EDzes!\n" <<
-    std::endl << "1 - Calcular o valor de X em uma fun\u00E7\u00E3o de 1º grau" <<
-    std::endl << "2 - Calcular o valor de X em uma fun\u00E7\u00E3o de 2º grau" <<
+    std::cout << "Escolha uma das opções para realizar o cálculo de suas raízes!\n" << 
+    std::endl << "1 - Calcular o valor de X em uma função de 1º grau" <<
+    std::endl << "2 - Calcular o valor de X em uma função de 2º grau" <<
     std::endl;
 
     handleOptionsChoice();
