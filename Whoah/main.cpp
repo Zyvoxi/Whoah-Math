@@ -147,6 +147,8 @@ void funcrx2() {
 
     double delta = calcDelta(a, b, c);
 
+    calcrx2(a, b, delta, x1, x2);
+
 #ifdef DEBUG
     std::cout << "\n";
 #endif
@@ -162,11 +164,11 @@ void funcrx2() {
         std::cout << std::setw(10) << "\n     -b  ±  √Δ " <<
         std::endl << std::setw(10) << "X = -----------" <<
         std::endl << std::setw(10) << "         2a    \n" << std::endl;
-        
-        std::cout << std::setw(10) << "\n     " << (b >= 0 ? "-" : " ") << (b >= 0 ? b : b/-1) << "  ±  √" << delta << " " <<
+
+        std::cout << std::setw(10) << "\n     " << (b >= 0 ? "-" : " ") << std::abs(b) << "  ±  √" << delta << " " <<
         std::endl << std::setw(10) << "X = -----------" << (delta >= 10 ? "---" : "") <<
         std::endl << std::setw(10) << "         2*" << a << "    \n" << std::endl;
-        
+
         std::cout << std::setw(10) << "\n     " << (b >= 0 ? "-" : " ") << std::abs(b) << "  ±  ";
         if (delta == std::floor(delta)) {
             std::cout << static_cast<int>(sqrt(delta)) <<
@@ -177,8 +179,6 @@ void funcrx2() {
             std::endl << std::setw(10) << "X = -----------" << (delta >= 10 ? "---" : "") <<
             std::endl << std::setw(10) << "         " << 2*a << "    \n" << std::endl;
         }
-
-        calcrx2(a, b, delta, x1, x2);
 
         std::cout << "X¹ = " << x1 <<
         std::endl << "x² = " << x2 << std::endl;
