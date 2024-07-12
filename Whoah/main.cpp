@@ -67,12 +67,14 @@ char getch() {
         perror("tcsetattr ~ICANON");
     return buf;
 }
-
 #endif
 
 void leave() {
     std::cout << "\nPressione qualquer tecla para sair.";
 #if defined(_WIN23) || defined(_WIN64)
+#ifdef DEBUG
+    std::cout << "Windows.";
+#endif
     _getch();
 #else
     getch();
@@ -269,7 +271,11 @@ void handleOptionsChoice() {
 }
 
 void options() {
-    std::cout << "Escolha uma das opções para realizar o cálculo de suas raízes!\n" << 
+#ifdef DEBUG
+    std::cout << "!-Versão de DEBUG-!\n" << std::endl;
+#endif
+
+    std::cout << "Escolha uma das opções para realizar o cálculo de suas raízes!\n" <<
     std::endl << "1 - Calcular o valor de X em uma função de 1º grau" <<
     std::endl << "2 - Calcular o valor de X em uma função de 2º grau" <<
     std::endl;
@@ -281,9 +287,7 @@ void options() {
 
 int main() {
     setlocale(LC_ALL, "pt_BR.UTF-8");
-#ifdef DEBUG
-    std::cout << "\n";
-#endif
+
     clearScreen();
     options();
 
