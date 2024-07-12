@@ -29,4 +29,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: macOS-artifacts
-        path: build/Release/artifacts.zip
+        path: build/Build/Products/Release/artifacts.zip
