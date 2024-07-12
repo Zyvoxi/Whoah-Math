@@ -46,12 +46,12 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake .. -G "Ninja" || exit 1  # Usando Ninja como gerador
+        cmake .. -G "Ninja" || exit 1
 
     - name: Build with CMake
       run: |
         cd build
-        cmake --build . --config Release || exit 1  # Certifique-se de estar no diretório correto
+        cmake --build . --config Release || exit 1
 
     - name: List Build Directory
       run: |
@@ -60,9 +60,9 @@ jobs:
 
     - name: Archive Main.exe
       run: |
-        cd build/Release  # Verifique se esse caminho é correto
-        Compress-Archive -Path Main.exe -DestinationPath Main.zip  # Usa Compress-Archive para apenas Main.exe
-        Move-Item Main.zip $env:GITHUB_WORKSPACE  # Move o arquivo ZIP para o diretório de trabalho
+        cd build/
+        Compress-Archive -Path Main.exe -DestinationPath Main.zip
+        Move-Item Main.zip $env:GITHUB_WORKSPACE
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
