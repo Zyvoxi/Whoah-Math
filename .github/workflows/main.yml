@@ -1,83 +1,32 @@
-name: Build and Release
+name: Build macOS Project
 
 on:
-  push:  # Aciona o workflow em qualquer push
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-latest, windows-latest]
+    runs-on: macos-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
-      - name: Set up C++ compiler (Windows)
-        if: matrix.os == 'windows-latest'
-        uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: x64
+    - name: Set up Xcode
+      run: sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
 
-      - name: Set up C++ compiler (macOS)
-        if: matrix.os == 'macos-latest'
-        run: sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+    - name: Build with Xcode
+      run: |
+        xcodebuild -scheme Whoah -configuration Release -derivedDataPath build -disableAutomaticPackageResolution | xcbeautify
 
-      - name: Build project (Windows)
-        if: matrix.os == 'windows-latest'
-        run: |
-          mkdir build
-          cd build
-          cmake ..
-          cmake --build . --config Release
+    - name: Archive Artifacts
+      run: |
+        cd build/Release
+        zip -r artifacts.zip *  # Cria um arquivo ZIP com os artefatos de build
 
-      - name: Build project (macOS)
-        if: matrix.os == 'macos-latest'
-        run: |
-          mkdir build
-          cd build
-          cmake ..
-          cmake --build . --config Release
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ matrix.os }}-build
-          path: build/
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ matrix.os }}-build
-
-      - name: Get the most recent tag
-        id: get_tag
-        run: |
-          tag=$(git describe --tags `git rev-list --tags --max-count=1`)
-          echo "::set-output name=tag::$tag"
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.get_tag.outputs.tag }}
-          release_name: Release ${{ steps.get_tag.outputs.tag }}
-          draft: false
-          prerelease: false
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/
-          asset_name: ${{ matrix.os }}-build.zip
-          asset_content_type: application/zip
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: macOS-artifacts
+        path: build/Release/artifacts.zip
