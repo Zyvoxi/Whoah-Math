@@ -1,4 +1,4 @@
-name: Build macOS Project
+name: Build macOS and Windows Project
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-macos:
     runs-on: macos-latest
 
     steps:
@@ -23,13 +23,14 @@ jobs:
     - name: Archive Artifacts
       run: |
         cd build/Build/Products/Release
-        zip -r artifacts.zip *  # Cria um arquivo ZIP com os artefatos de build
+        zip -r artifacts.zip *
+        mv artifacts.zip $GITHUB_WORKSPACE/
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: macOS-artifacts
-        path: build/Build/Products/Release/artifacts.zip
+        path: artifacts.zip
 
   build-windows:
     runs-on: windows-latest
@@ -41,7 +42,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake .. -G "Visual Studio 16 2019" -A x64  # Ajuste o gerador e arquitetura conforme necessário
+        cmake .. -G "Ninja"  # Usando Ninja como gerador
 
     - name: Build with CMake
       run: |
@@ -50,7 +51,8 @@ jobs:
     - name: Archive Artifacts
       run: |
         cd Release
-        zip -r artifacts.zip *  # Cria um arquivo ZIP com os artefatos de build
+        zip -r artifacts.zip *
+        mv artifacts.zip $GITHUB_WORKSPACE/
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
