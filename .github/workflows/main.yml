@@ -1,4 +1,4 @@
-name: CMake on multiple platforms
+name: Build macOS Project
 
 on:
   push:
@@ -8,102 +8,25 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        build_type: [Release]
-        c_compiler: [gcc, clang, cl]
-        include:
-          - os: windows-latest
-            c_compiler: cl
-            cpp_compiler: cl
-          - os: ubuntu-latest
-            c_compiler: gcc
-            cpp_compiler: g++
-          - os: ubuntu-latest
-            c_compiler: clang
-            cpp_compiler: clang++
-          - os: macos-latest
-            c_compiler: clang
-            cpp_compiler: clang++
-        exclude:
-          - os: windows-latest
-            c_compiler: gcc
-          - os: windows-latest
-            c_compiler: clang
-          - os: ubuntu-latest
-            c_compiler: cl
+    runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set reusable strings
-      id: strings
-      shell: bash
+    - name: Set up Xcode
+      run: sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+
+    - name: Build with Xcode
       run: |
-        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-
-    - name: Configure CMake
-      run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -S ${{ github.workspace }}
-
-    - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
-
-    - name: Test
-      working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      run: ctest --build-config ${{ matrix.build_type }}
+        set -o pipefail && xcodebuild -scheme Whoah -configuration Release -derivedDataPath build -disableAutomaticPackageResolution CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcbeautify
 
     - name: Archive Artifacts
       run: |
-        cd ${{ steps.strings.outputs.build-output-dir }}
+        cd build/Release
         zip -r artifacts.zip *  # Cria um arquivo ZIP com os artefatos de build
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: ${{ matrix.os }}-artifacts
-        path: ${{ steps.strings.outputs.build-output-dir }}/artifacts.zip
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ matrix.os }}-artifacts
-
-      - name: Get the most recent tag
-        id: get_tag
-        run: |
-          tag=$(git describe --tags `git rev-list --tags --max-count=1`)
-          echo "::set-output name=tag::$tag"
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.get_tag.outputs.tag }}
-          release_name: Release ${{ steps.get_tag.outputs.tag }}
-          draft: false
-          prerelease: false
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: artifacts.zip  # Caminho para o arquivo ZIP de artefatos
-          asset_name: ${{ matrix.os }}-artifacts.zip
-          asset_content_type: application/zip
+        name: macOS-artifacts
+        path: build/Release/artifacts.zip
