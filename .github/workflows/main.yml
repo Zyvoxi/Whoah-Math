@@ -46,15 +46,16 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake .. -G "Ninja"  # Usando Ninja como gerador
+        cmake .. -G "Ninja" || exit 1  # Usando Ninja como gerador
 
     - name: Build with CMake
       run: |
-        cmake --build . --config Release
+        cd build
+        cmake --build . --config Release || exit 1  # Certifique-se de estar no diretório correto
 
     - name: Archive Artifacts
       run: |
-        cd Release
+        cd build/Release
         zip -r artifacts.zip *
         mv artifacts.zip $GITHUB_WORKSPACE/
 
