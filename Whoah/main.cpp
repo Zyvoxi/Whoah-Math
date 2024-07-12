@@ -33,7 +33,7 @@ bool isNumber(const std::string& str) {
 }
 
 void clearScreen() {
-#ifdef _WIN32
+#if defined(_WIN32) || defined(_WIN64)
     system("cls");
 #elif defined(__linux__) || defined(__APPLE__)
     system("clear");
@@ -287,6 +287,10 @@ void options() {
 
 int main() {
     setlocale(LC_ALL, "pt_BR.UTF-8");
+
+#if defined(_WIN32) || defined(_WIN64)
+    system("chcp 65001");
+#endif
 
     clearScreen();
     options();
