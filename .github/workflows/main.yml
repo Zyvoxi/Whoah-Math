@@ -52,15 +52,20 @@ jobs:
       run: |
         cd build
         cmake --build . --config Release || exit 1  # Certifique-se de estar no diretório correto
-        
-    - name: Archive Artifacts
+
+    - name: List Build Directory
       run: |
-        cd build/  # Verifique se esse caminho é correto
-        zip -r artifacts.zip *
-        mv artifacts.zip $GITHUB_WORKSPACE/
+        cd build
+        dir  # Liste os diretórios e arquivos gerados
+
+    - name: Archive Main.exe
+      run: |
+        cd build/Release  # Verifique se esse caminho é correto
+        Compress-Archive -Path Main.exe -DestinationPath Main.zip  # Usa Compress-Archive para apenas Main.exe
+        Move-Item Main.zip $env:GITHUB_WORKSPACE  # Move o arquivo ZIP para o diretório de trabalho
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: windows-artifacts
-        path: artifacts.zip
+        path: Main.zip
