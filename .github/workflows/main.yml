@@ -60,8 +60,8 @@ jobs:
 
     - name: Archive Artifacts
       run: |
-        cd build/Release  # Verifique se esse caminho é correto
-        zip -r artifacts.zip *
+        cd build/  # Verifique se esse caminho é correto
+        zip -r artifacts.zip Main.exe
         mv artifacts.zip $GITHUB_WORKSPACE/
 
     - name: Upload Artifacts
