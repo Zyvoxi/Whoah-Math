@@ -32,7 +32,7 @@ jobs:
         name: macOS-artifacts
         path: artifacts.zip
 
-  build-macos-debug:
+  build-macos-debug-not-working:
     runs-on: macos-latest
 
     steps:
@@ -102,13 +102,13 @@ jobs:
 
     - name: Set up CMake
       run: |
-        mkdir build
-        cd build
+        mkdir debug
+        cd debug
         cmake .. -G "Ninja" || exit 1
 
     - name: Build with CMake
       run: |
-        cd build
+        cd debug
         cmake --build . --config Debug || exit 1
 
     - name: Archive Main.exe
