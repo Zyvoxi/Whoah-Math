@@ -38,11 +38,15 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Install Ninja
+      run: |
+        choco install ninja
+
     - name: Set up CMake
       run: |
         mkdir build
         cd build
-        cmake .. -G "Visual Studio 16 2019" -A x64  # Usando Visual Studio 2019 como gerador
+        cmake .. -G "Ninja"  # Usando Ninja como gerador
 
     - name: Build with CMake
       run: |
