@@ -53,9 +53,14 @@ jobs:
         cd build
         cmake --build . --config Release || exit 1  # Certifique-se de estar no diretório correto
 
+    - name: List Build Directory
+      run: |
+        cd build
+        dir  # Liste os diretórios e arquivos gerados
+
     - name: Archive Artifacts
       run: |
-        cd build/Release
+        cd build/Release  # Verifique se esse caminho é correto
         zip -r artifacts.zip *
         mv artifacts.zip $GITHUB_WORKSPACE/
 
