@@ -8,7 +8,6 @@
 // MARK: Includes
 
 #include <iostream>
-#include <locale>
 #include <string>
 #include <cctype>
 #include <iomanip>
@@ -280,7 +279,7 @@ void options() {
 // MARK: Main
 
 int main() {
-    std::setlocale(LC_ALL, "pt_BR.UTF-8");
+    setlocale(LC_ALL, "pt_BR.UTF-8");
 #ifdef DEBUG
     std::cout << "\n";
 #endif
