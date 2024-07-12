@@ -48,7 +48,7 @@ jobs:
     - name: Archive Artifacts
       run: |
         cd build/Build/Products/Debug
-        zip -r artifacts.zip *
+        zip -r artifacts-Debug.zip *
         mv artifacts.zip $GITHUB_WORKSPACE/
 
     - name: Upload Artifacts
@@ -77,11 +77,6 @@ jobs:
       run: |
         cd build
         cmake --build . --config Release || exit 1
-
-    - name: List Build Directory
-      run: |
-        cd build
-        dir  # Liste os diretórios e arquivos gerados
 
     - name: Archive Main.exe
       run: |
@@ -116,15 +111,10 @@ jobs:
         cd build
         cmake --build . --config Debug || exit 1
 
-    - name: List Build Directory
-      run: |
-        cd build
-        dir  # Liste os diretórios e arquivos gerados
-
     - name: Archive Main.exe
       run: |
         cd build/
-        Compress-Archive -Path Main.exe -DestinationPath Main.zip
+        Compress-Archive -Path Main.exe -DestinationPath Main-Debug.zip
         Move-Item Main.zip $env:GITHUB_WORKSPACE
 
     - name: Upload Artifacts
