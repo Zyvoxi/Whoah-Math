@@ -26,7 +26,7 @@ jobs:
         zip -r artifacts.zip *  # Cria um arquivo ZIP com os artefatos de build
 
     - name: Upload Artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: macOS-artifacts
         path: build/Build/Products/Release/artifacts.zip
