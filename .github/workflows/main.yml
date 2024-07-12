@@ -30,3 +30,30 @@ jobs:
       with:
         name: macOS-artifacts
         path: build/Build/Products/Release/artifacts.zip
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up CMake
+      run: |
+        mkdir build
+        cd build
+        cmake .. -G "Visual Studio 16 2019" -A x64  # Ajuste o gerador e arquitetura conforme necessário
+
+    - name: Build with CMake
+      run: |
+        cmake --build . --config Release
+
+    - name: Archive Artifacts
+      run: |
+        cd Release
+        zip -r artifacts.zip *  # Cria um arquivo ZIP com os artefatos de build
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-artifacts
+        path: artifacts.zip
