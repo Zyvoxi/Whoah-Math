@@ -43,6 +43,42 @@ void clearScreen() {
 #endif
 }
 
+#if defined(_WIN32) || defined(_WIN64)
+#include <conio.h>
+#else
+#include <unistd.h>
+#include <termios.h>
+char getch() {
+    char buf = 0;
+    struct termios old = {0};
+    if (tcgetattr(0, &old) < 0)
+        perror("tcsetattr()");
+    old.c_lflag &= ~ICANON;
+    old.c_lflag &= ~ECHO;
+    old.c_cc[VMIN] = 1;
+    old.c_cc[VTIME] = 0;
+    if (tcsetattr(0, TCSANOW, &old) < 0)
+        perror("tcsetattr ICANON");
+    if (read(0, &buf, 1) < 0)
+        perror("read()");
+    old.c_lflag |= ICANON;
+    old.c_lflag |= ECHO;
+    if (tcsetattr(0, TCSADRAIN, &old) < 0)
+        perror("tcsetattr ~ICANON");
+    return buf;
+}
+#endif
+
+void leave() {
+    std::cout << "\nPressione qualquer tecla para sair.";
+#if defined(_WIN23) || defined(_WIN64)
+    _getch();
+#else
+    getch();
+#endif
+    exit(0);
+}
+
 // MARK: Math Functions - Raiz de X - 1º
 
 float calcrx(int a, int b) {
@@ -92,7 +128,7 @@ void funcrx() {
     } else {
         std::cout << std::fixed << std::setprecision(5) << "x = " << res << std::endl;
     }
-    std::cout << std::endl;
+    leave();
 }
 
 // MARK: Math Functions - Raiz de X - 2º
@@ -183,19 +219,33 @@ void funcrx2() {
         std::cout << "X¹ = " << x1 <<
         std::endl << "x² = " << x2 << std::endl;
     }
-    std::cout << std::endl;
+    leave();
 }
 
 // MARK: Options
 
 void handleOptionsChoice() {
-    int opt;
+    std::string opt;
 
-    std::cout << "\nEscolha uma opção: ";
-    std::cin >> opt;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cout << "Escolha uma opção: ";
+    while (true) {
+        std::getline(std::cin, opt);
+        if (isNumber(opt)) {
+            break;
+        } else {
+            std::cout << "Opção não suportada";
+        }
+    }
 
-    switch (opt) {
+    int opti = std::stoi(opt);
+
+    clearScreen();
+
+    switch(opti) {
+        case 0:
+            std::cout << "Você escolheu sair" << std::endl;
+            leave();
+            break;
         case 1:
 #ifdef DEBUG
             std::cout << "\n";
@@ -211,19 +261,16 @@ void handleOptionsChoice() {
             funcrx2();
             break;
         default:
-            std::cout << "Por Favor, Escolha uma opção válida.";
+            std::cout << "Opção não suportada";
             handleOptionsChoice();
             break;
     }
 }
 
-std::string nome;
-
 void options() {
-    std::cout << "Olá, " << nome << "!" <<
-    std::endl << "Opções:" <<
-    std::endl << "1) Calcular o valor de X em uma função de 1º grau" <<
-    std::endl << "2) Calcular o valor de X em uma função de 2º grau" <<
+    std::cout << "Escolha uma das opções para realizar o cálculo de suas raízes!\n" << 
+    std::endl << "1 - Calcular o valor de X em uma função de 1º grau" <<
+    std::endl << "2 - Calcular o valor de X em uma função de 2º grau" <<
     std::endl;
 
     handleOptionsChoice();
@@ -232,9 +279,6 @@ void options() {
 // MARK: Main
 
 int main() {
-    std::cout << "Digite seu nome: ";
-    std::getline(std::cin, nome);
-
 #ifdef DEBUG
     std::cout << "\n";
 #endif
