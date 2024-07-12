@@ -32,6 +32,31 @@ jobs:
         name: macOS-artifacts
         path: artifacts.zip
 
+  build-macos-debug:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Xcode
+      run: sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+
+    - name: Build with Xcode
+      run: |
+        xcodebuild -scheme Whoah -configuration Debug -derivedDataPath build -disableAutomaticPackageResolution | xcbeautify
+
+    - name: Archive Artifacts
+      run: |
+        cd build/Build/Products/Debug
+        zip -r artifacts.zip *
+        mv artifacts.zip $GITHUB_WORKSPACE/
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: macOS-artifacts-debug
+        path: artifacts-Debug.zip
+
   build-windows:
     runs-on: windows-latest
 
@@ -69,3 +94,41 @@ jobs:
       with:
         name: windows-artifacts
         path: Main.zip
+
+  build-windows-debug:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Ninja
+      run: |
+        choco install ninja
+
+    - name: Set up CMake
+      run: |
+        mkdir build
+        cd build
+        cmake .. -G "Ninja" || exit 1
+
+    - name: Build with CMake
+      run: |
+        cd build
+        cmake --build . --config Debug || exit 1
+
+    - name: List Build Directory
+      run: |
+        cd build
+        dir  # Liste os diretórios e arquivos gerados
+
+    - name: Archive Main.exe
+      run: |
+        cd build/
+        Compress-Archive -Path Main.exe -DestinationPath Main.zip
+        Move-Item Main.zip $env:GITHUB_WORKSPACE
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-artifacts-debug
+        path: Main-Debug.zip
