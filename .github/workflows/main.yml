@@ -22,7 +22,7 @@ jobs:
 
     - name: Archive Artifacts
       run: |
-        cd build/Release
+        cd build/Build/Products/Release
         zip -r artifacts.zip *  # Cria um arquivo ZIP com os artefatos de build
 
     - name: Upload Artifacts
