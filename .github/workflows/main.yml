@@ -42,7 +42,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake .. -G "Ninja"  # Usando Ninja como gerador
+        cmake .. -G "Visual Studio 16 2019" -A x64  # Usando Visual Studio 2019 como gerador
 
     - name: Build with CMake
       run: |
