@@ -1,50 +1,76 @@
-name: Build and Release
+name: CMake on multiple platforms
 
 on:
-  push:  # Aciona o workflow em qualquer push
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+
     strategy:
+      fail-fast: false
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        build_type: [Release]
+        c_compiler: [gcc, clang, cl]
+        include:
+          - os: windows-latest
+            c_compiler: cl
+            cpp_compiler: cl
+          - os: ubuntu-latest
+            c_compiler: gcc
+            cpp_compiler: g++
+          - os: ubuntu-latest
+            c_compiler: clang
+            cpp_compiler: clang++
+          - os: macos-latest
+            c_compiler: clang
+            cpp_compiler: clang++
+        exclude:
+          - os: windows-latest
+            c_compiler: gcc
+          - os: windows-latest
+            c_compiler: clang
+          - os: ubuntu-latest
+            c_compiler: cl
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3  # Atualizado para a versão 3
+    - uses: actions/checkout@v4
 
-      - name: Set up C++ compiler (Windows)
-        if: matrix.os == 'windows-latest'
-        uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: x64
+    - name: Set reusable strings
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-      - name: Set up C++ compiler (macOS)
-        if: matrix.os == 'macos-latest'
-        run: sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+    - name: Configure CMake
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -S ${{ github.workspace }}
 
-      - name: Build project (Windows)
-        if: matrix.os == 'windows-latest'
-        run: |
-          mkdir -p build
-          cd build
-          cmake ../  # Ajuste aqui se o CMakeLists.txt estiver em outro diretório
-          cmake --build . --config Release
+    - name: Build
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-      - name: Build project (macOS)
-        if: matrix.os == 'macos-latest'
-        run: |
-          mkdir -p build
-          cd build
-          cmake ../  # Ajuste aqui se o CMakeLists.txt estiver em outro diretório
-          cmake --build . --config Release
+    - name: Test
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      run: ctest --build-config ${{ matrix.build_type }}
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ matrix.os }}-build
-          path: build/
+    - name: Archive Artifacts
+      run: |
+        cd ${{ steps.strings.outputs.build-output-dir }}
+        zip -r artifacts.zip *  # Cria um arquivo ZIP com os artefatos de build
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.os }}-artifacts
+        path: ${{ steps.strings.outputs.build-output-dir }}/artifacts.zip
 
   release:
     needs: build
@@ -53,7 +79,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: ${{ matrix.os }}-build
+          name: ${{ matrix.os }}-artifacts
 
       - name: Get the most recent tag
         id: get_tag
@@ -78,6 +104,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/
-          asset_name: ${{ matrix.os }}-build.zip
+          asset_path: artifacts.zip  # Caminho para o arquivo ZIP de artefatos
+          asset_name: ${{ matrix.os }}-artifacts.zip
           asset_content_type: application/zip
