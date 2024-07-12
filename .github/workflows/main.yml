@@ -27,17 +27,17 @@ jobs:
       - name: Build project (Windows)
         if: matrix.os == 'windows-latest'
         run: |
-          mkdir build
+          mkdir -p build
           cd build
-          cmake ..
+          cmake ../  # Ajuste aqui se o CMakeLists.txt estiver em outro diretório
           cmake --build . --config Release
 
       - name: Build project (macOS)
         if: matrix.os == 'macos-latest'
         run: |
-          mkdir build
+          mkdir -p build
           cd build
-          cmake ..
+          cmake ../  # Ajuste aqui se o CMakeLists.txt estiver em outro diretório
           cmake --build . --config Release
 
       - name: Upload artifact
