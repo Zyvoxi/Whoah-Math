@@ -72,9 +72,6 @@ char getch() {
 void leave() {
     std::cout << "\nPressione qualquer tecla para sair.";
 #if defined(_WIN23) || defined(_WIN64)
-#ifdef DEBUG
-    std::cout << "Windows.";
-#endif
     _getch();
 #else
     getch();
