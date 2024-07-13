@@ -42,16 +42,20 @@ jobs:
       run: |
         choco install ninja
 
+    - name: Install CMake
+      run: |
+        choco install cmake
+
     - name: Configure with CMake
       run: |
         mkdir build
         cd build
-        cmake .. --preset release || exit 1
+        cmake .. --preset release
 
     - name: Build with CMake
       run: |
         cd build
-        cmake --build . --config Release || exit 1
+        cmake --build . --config Release
 
     - name: Archive Main.exe
       run: |
