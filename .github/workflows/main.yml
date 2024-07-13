@@ -64,5 +64,3 @@ jobs:
       with:
         name: windows-artifacts
         path: Main.zip
-        name: windows-artifacts-debug
-        path: Main-Debug.zip
