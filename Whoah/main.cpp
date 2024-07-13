@@ -207,11 +207,21 @@ void funcrx2() {
         if (delta == std::floor(delta)) {
             std::cout << static_cast<int>(delta) <<
             std::endl << std::setw(10) << "X = -----------" << (delta >= 10 ? "---" : "") <<
-            std::endl << std::setw(10) << "         2*" << a << "    \n" << std::endl;
+            std::endl << std::setw(10) << "         2*";
+            if (a == std::floor(a)) {
+                std::cout << static_cast<int>(a) << "    \n" << std::endl;
+            } else {
+                std::cout << std::fixed << std::setprecision(3) << a << "    \n" << std::endl;
+            }
         } else {
             std::cout << std::fixed << std::setprecision(3) << delta <<
             std::endl << std::setw(10) << "X = -----------" << (delta >= 10 ? "---" : "") <<
-            std::endl << std::setw(10) << "         2*" << a << "    \n" << std::endl;
+            std::endl << std::setw(10) << "         2*";
+            if (a == std::floor(a)) {
+                std::cout << static_cast<int>(a) << "    \n" << std::endl;
+            } else {
+                std::cout << std::fixed << std::setprecision(3) << a << "    \n" << std::endl;
+            }
         }
 
         std::cout << std::setw(10) << "\n     " << (b >= 0 ? "-" : " ") << std::abs(b) << "  ±  ";
@@ -222,14 +232,14 @@ void funcrx2() {
             if (2*a == std::floor(2*a)) {
                 std::cout << static_cast<int>(2*a) << "    \n" << std::endl;
             } else {
-                std::cout << 2*a << "    \n" << std::endl;
+                std::cout << std::fixed << std::setprecision(3) << 2*a << "    \n" << std::endl;
             }
         } else {
             std::cout << std::fixed << std::setprecision(3) << sqrt(delta) <<
             std::endl << std::setw(10) << "X = -----------" << (delta >= 10 ? "---" : "") <<
             std::endl << std::setw(10) << "         ";
             if (2*a == std::floor(2*a)) {
-                std::cout << std::fixed << std::setprecision(0) << 2*a << "    \n" << std::endl;
+                std::cout << static_cast<int>(2*a) << "    \n" << std::endl;
             } else {
                 std::cout << std::fixed << std::setprecision(3) << 2*a << "    \n" << std::endl;
             }
