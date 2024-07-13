@@ -11,6 +11,7 @@
 #include <string>
 #include <cctype>
 #include <iomanip>
+#include <sstream>
 #include <cmath>
 
 // MARK: Utility Functions
@@ -19,13 +20,19 @@ bool isNumber(const std::string& str) {
     if (str.empty()) return false;
 
     size_t start = 0;
+    bool decimalPointFound = false;
     if (str[0] == '-') {
         if (str.length() == 1) return false;
         start = 1;
     }
 
     for (size_t i = start; i < str.length(); ++i) {
-        if (!std::isdigit(str[i])) {
+        if (str[i] == '.') {
+            if (decimalPointFound) {
+                return false;
+            }
+            decimalPointFound = true;
+        } else if (!std::isdigit(str[i])) {
             return false;
         }
     }
@@ -88,29 +95,28 @@ float calcrx(int a, int b) {
 void funcrx() {
     std::cout << "Descobrindo o valor de X\n" << std::endl;
 
-    std::string la;
+    double a, b;
     std::cout << "Digite o valor de `a`: ";
     while (true) {
+        std::string la;
         std::getline(std::cin, la);
         if (isNumber(la)) {
+            std::istringstream(la) >> a;
             break;
-        } else {
-            std::cout << "Por Favor, digite um número válido: ";
         }
+        std::cout << "Por Favor, digite um número válido: ";
     }
-    int a = std::stoi(la);
 
-    std::string lb;
     std::cout << "Digite o valor de `b`: ";
     while (true) {
+        std::string lb;
         std::getline(std::cin, lb);
         if (isNumber(lb)) {
+            std::istringstream(lb) >> b;
             break;
-        } else {
-            std::cout << "Por Favor, digite um número válido: ";
         }
+        std::cout << "Por Favor, digite um número válido: ";
     }
-    int b = std::stoi(lb);
 
     float res = calcrx(a, b);
 
@@ -133,61 +139,57 @@ void funcrx() {
 
 // MARK: Math Functions - Raiz de X - 2º
 
-double calcDelta(double a, double b, double c) {
-    return (pow(b, 2)) - (4 * a * c);
+void calcDelta(double a, double b, double c, double& delta) {
+    delta = (pow(b, 2)) - (4 * a * c);
 }
 
-void calcrx2(int a, int b, int delta, float& x1, float& x2) {
-    x1 = (-b + sqrt(delta)) / (2.0 * a);
-    x2 = (-b - sqrt(delta)) / (2.0 * a);
+void calcrx2(double a, double b, double delta, double& x1, double& x2) {
+    if (delta >= 0) {
+        x1 = (-b + sqrt(delta)) / (2.0 * a);
+        x2 = (-b - sqrt(delta)) / (2.0 * a);
+    }
 }
 
 void funcrx2() {
-    float x1, x2;
+    double x1, x2, delta;
 
-    std::string la;
+    double a, b, c;
     std::cout << "Digite o valor de `a`: ";
     while (true) {
+        std::string la;
         std::getline(std::cin, la);
         if (isNumber(la)) {
+            std::istringstream(la) >> a;
             break;
-        } else {
-            std::cout << "Por Favor, digite um número válido: ";
         }
+        std::cout << "Por Favor, digite um número válido: ";
     }
-    int a = std::stoi(la);
 
-    std::string lb;
     std::cout << "Digite o valor de `b`: ";
     while (true) {
+        std::string lb;
         std::getline(std::cin, lb);
         if (isNumber(lb)) {
+            std::istringstream(lb) >> b;
             break;
-        } else {
-            std::cout << "Por Favor, digite um número válido: ";
         }
+        std::cout << "Por Favor, digite um número válido: ";
     }
-    int b = std::stoi(lb);
 
-    std::string lc;
     std::cout << "Digite o valor de `c`: ";
     while (true) {
+        std::string lc;
         std::getline(std::cin, lc);
         if (isNumber(lc)) {
+            std::istringstream(lc) >> c;
             break;
-        } else {
-            std::cout << "Por Favor, digite um número válido: ";
         }
+        std::cout << "Por Favor, digite um número válido: ";
     }
-    int c = std::stoi(lc);
 
-    double delta = calcDelta(a, b, c);
-
+    calcDelta(a, b, c, delta);
     calcrx2(a, b, delta, x1, x2);
 
-#ifdef DEBUG
-    std::cout << "\n";
-#endif
     clearScreen();
 
     std::cout << "Δ = b² - 4ac" <<
@@ -201,20 +203,38 @@ void funcrx2() {
         std::endl << std::setw(10) << "X = -----------" <<
         std::endl << std::setw(10) << "         2a    \n" << std::endl;
 
-        std::cout << std::setw(10) << "\n     " << (b >= 0 ? "-" : " ") << std::abs(b) << "  ±  √" << delta << " " <<
-        std::endl << std::setw(10) << "X = -----------" << (delta >= 10 ? "---" : "") <<
-        std::endl << std::setw(10) << "         2*" << a << "    \n" << std::endl;
+        std::cout << std::setw(10) << "\n     " << (b >= 0 ? "-" : " ") << std::abs(b) << "  ±  √";
+        if (delta == std::floor(delta)) {
+            std::cout << static_cast<int>(delta) <<
+            std::endl << std::setw(10) << "X = -----------" << (delta >= 10 ? "---" : "") <<
+            std::endl << std::setw(10) << "         2*" << a << "    \n" << std::endl;
+        } else {
+            std::cout << std::fixed << std::setprecision(3) << delta <<
+            std::endl << std::setw(10) << "X = -----------" << (delta >= 10 ? "---" : "") <<
+            std::endl << std::setw(10) << "         2*" << a << "    \n" << std::endl;
+        }
 
         std::cout << std::setw(10) << "\n     " << (b >= 0 ? "-" : " ") << std::abs(b) << "  ±  ";
-        if (delta == std::floor(delta)) {
+        if (sqrt(delta) == std::floor(sqrt(delta))) {
             std::cout << static_cast<int>(sqrt(delta)) <<
             std::endl << std::setw(10) << "X = -----------" << (delta >= 10 ? "---" : "") <<
-            std::endl << std::setw(10) << "         " << 2*a << "    \n" << std::endl;
+            std::endl << std::setw(10) << "         ";
+            if (2*a == std::floor(2*a)) {
+                std::cout << static_cast<int>(2*a) << "    \n" << std::endl;
+            } else {
+                std::cout << 2*a << "    \n" << std::endl;
+            }
         } else {
             std::cout << std::fixed << std::setprecision(3) << sqrt(delta) <<
             std::endl << std::setw(10) << "X = -----------" << (delta >= 10 ? "---" : "") <<
-            std::endl << std::setw(10) << "         " << 2*a << "    \n" << std::endl;
+            std::endl << std::setw(10) << "         ";
+            if (2*a == std::floor(2*a)) {
+                std::cout << std::fixed << std::setprecision(0) << 2*a << "    \n" << std::endl;
+            } else {
+                std::cout << std::fixed << std::setprecision(3) << 2*a << "    \n" << std::endl;
+            }
         }
+
 
         std::cout << "X¹ = " << x1 <<
         std::endl << "x² = " << x2 << std::endl;
