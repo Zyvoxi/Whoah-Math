@@ -8,5 +8,6 @@
 #ifndef main_h
 #define main_h
 
+void options();
 
 #endif /* main_h */

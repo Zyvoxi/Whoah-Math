@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		134970832C406BE800D2CA14 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 134970822C406BE800D2CA14 /* main.cpp */; };
+		13E26EB52C44DB0D00D1664A /* math_functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E26EB42C44DB0D00D1664A /* math_functions.cpp */; };
+		13E26EB72C44DB8900D1664A /* utility_functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E26EB62C44DB8900D1664A /* utility_functions.cpp */; };
+		13E26EB82C44DD4200D1664A /* math_functions.h in Sources */ = {isa = PBXBuildFile; fileRef = 13E26EB22C44DA0300D1664A /* math_functions.h */; };
+		13E26EB92C44DD4200D1664A /* utility_functions.h in Sources */ = {isa = PBXBuildFile; fileRef = 13E26EB32C44DA6100D1664A /* utility_functions.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +29,11 @@
 /* Begin PBXFileReference section */
 		1349707F2C406BE800D2CA14 /* Whoah-Debug */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Whoah-Debug"; sourceTree = BUILT_PRODUCTS_DIR; };
 		134970822C406BE800D2CA14 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		13E26EB22C44DA0300D1664A /* math_functions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = math_functions.h; sourceTree = "<group>"; };
+		13E26EB32C44DA6100D1664A /* utility_functions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utility_functions.h; sourceTree = "<group>"; };
+		13E26EB42C44DB0D00D1664A /* math_functions.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = math_functions.cpp; sourceTree = "<group>"; };
+		13E26EB62C44DB8900D1664A /* utility_functions.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = utility_functions.cpp; sourceTree = "<group>"; };
+		13E26EBB2C44DF3A00D1664A /* main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +67,11 @@
 			isa = PBXGroup;
 			children = (
 				134970822C406BE800D2CA14 /* main.cpp */,
+				13E26EB42C44DB0D00D1664A /* math_functions.cpp */,
+				13E26EB62C44DB8900D1664A /* utility_functions.cpp */,
+				13E26EBB2C44DF3A00D1664A /* main.h */,
+				13E26EB22C44DA0300D1664A /* math_functions.h */,
+				13E26EB32C44DA6100D1664A /* utility_functions.h */,
 			);
 			path = Whoah;
 			sourceTree = "<group>";
@@ -119,7 +133,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13E26EB82C44DD4200D1664A /* math_functions.h in Sources */,
+				13E26EB92C44DD4200D1664A /* utility_functions.h in Sources */,
+				13E26EB72C44DB8900D1664A /* utility_functions.cpp in Sources */,
 				134970832C406BE800D2CA14 /* main.cpp in Sources */,
+				13E26EB52C44DB0D00D1664A /* math_functions.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,6 +262,7 @@
 		134970872C406BE800D2CA14 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Distribution";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
@@ -258,14 +277,15 @@
 		134970882C406BE800D2CA14 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_IDENTITY = "Apple Distribution";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = com.Zyvoxi.Whoah;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME)-Math";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
