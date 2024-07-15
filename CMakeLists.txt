@@ -12,3 +12,4 @@ add_executable(Whoah-Math
 
 # Inclua os diretórios de cabeçalho
 include_directories(Whoah/Headers)
+target_link_libraries(Whoah-Math gcc stdc++)
