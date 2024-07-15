@@ -71,10 +71,31 @@ std::string formatWithThousandsSeparator(double num);
 std::string formatNumber(double num);
 
 /**
+ * @brief Formata um número em subscrito.
+ *
+ * Esta função converte um número em uma string onde cada dígito é representado por seu correspondente em subscrito.
+ * Por exemplo, o número 123.45 será convertido para "₁₂₃,₄₅".
+ *
+ * @param num O número a ser formatado.
+ * @return std::string O número formatado em subscritos.
+ */
+std::string formatNumToSubs(double num);
+
+/**
+ * @brief Formata um número em superescrito.
+ *
+ * Esta função converte um número em uma string onde cada dígito é representado por seu correspondente em superescrito.
+ * Por exemplo, o número 123.45 será convertido para "¹²³,⁴⁵".
+ *
+ * @param num O número a ser formatado.
+ * @return std::string O número formatado em superescritos.
+ */
+std::string formatNumToSub(double num);
+/**
  * @brief Trata erros e exibe mensagens detalhadas.
  *
  * @param error Mensagem de erro.
  */
 void handleError(const std::string& error);
 
-#endif // utility_functions_h
+#endif // UTILITY_FUNCTIONS_H

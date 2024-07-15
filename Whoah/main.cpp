@@ -18,6 +18,9 @@ void handleOptionsChoice();
 
 // MARK: Opções
 void options() {
+#if DEBUG
+    cout << "!-Versão de DEBUG-!\n" << endl;
+#endif
     cout << "Escolha uma das opções para realizar o cálculo de suas raízes!\n"
          << endl << "1 - Calcular o valor de X em uma função de 1º grau"
          << endl << "2 - Calcular o valor de X em uma função de 2º grau"
@@ -48,6 +51,12 @@ void handleOptionsChoice() {
     }
 
     switch(opt) {
+#if DEBUG
+        case 3141:
+            clearScreen();
+            runMathTests();
+            break;
+#endif
         case 0:
             cout << "\nVocê escolheu sair\n" << endl;
             exit(0);
@@ -91,6 +100,7 @@ void handleOptionsChoice() {
     }
 }
 
+// MARK: Main
 int main() {
     setlocale(LC_ALL, "pt_BR.UTF-8");
 
@@ -103,4 +113,3 @@ int main() {
 
     return 0;
 }
-

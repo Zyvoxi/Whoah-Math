@@ -147,8 +147,47 @@ string formatNumber(double num) {
     return ss.str();
 }
 
+string formatNumToSubs(double num) {
+    string subs = "";
+    string subsMap[] = {"₀", "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉"};
+
+    ostringstream oss;
+    oss << num;  // Usa o ostringstream para conversão
+    string numStr = oss.str();
+
+    for (char c : numStr) {
+        if (c == '.') {
+            subs += ",";  // Substitui o ponto decimal por vírgula
+        } else {
+            int d = c - '0';
+            subs += subsMap[d];
+        }
+    }
+
+    return subs;
+}
+
+string formatNumToSub(double num) {
+    string sub = "";
+    string subMap[] = {"⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"};
+
+    ostringstream oss;
+    oss << num;  // Usa o ostringstream para conversão
+    string numStr = oss.str();
+
+    for (char c : numStr) {
+        if (c == '.') {
+            sub += ",";  // Substitui o ponto decimal por vírgula
+        } else {
+            int d = c - '0';
+            sub += subMap[d];
+        }
+    }
+
+    return sub;
+}
+
 // MARK: Error
 void handleError(const string& error) {
     cout << "Erro: " << error << endl;
-    cout << "Sugestão: Verifique se os valores inseridos estão corretos e tente novamente." << endl;
 }
