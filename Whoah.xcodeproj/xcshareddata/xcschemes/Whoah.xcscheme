@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1349707E2C406BE800D2CA14"
-               BuildableName = "Whoah"
+               BuildableName = "Whoah-Math"
                BlueprintName = "Whoah"
                ReferencedContainer = "container:Whoah.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1349707E2C406BE800D2CA14"
-            BuildableName = "Whoah"
+            BuildableName = "Whoah-Math"
             BlueprintName = "Whoah"
             ReferencedContainer = "container:Whoah.xcodeproj">
          </BuildableReference>
@@ -63,7 +63,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1349707E2C406BE800D2CA14"
-            BuildableName = "Whoah"
+            BuildableName = "Whoah-Math"
             BlueprintName = "Whoah"
             ReferencedContainer = "container:Whoah.xcodeproj">
          </BuildableReference>
