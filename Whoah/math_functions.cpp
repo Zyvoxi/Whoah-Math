@@ -11,9 +11,9 @@
 #include <sstream>
 #include <iomanip>
 #include <cmath>
+    using namespace std;
 
-using namespace std;
-
+// MARK: Raiz de X - 1º
 double calcRX(double a, double b) {
     return -b / a;
 }
@@ -34,12 +34,13 @@ void funcRX() {
     while (true) {
         try {
             a = getValidatedInput("Digite o valor de `a`: ");
-            if (a == 0) throw invalid_argument("Erro: `a` não pode ser 0.");
+            if (a == 0) throw invalid_argument("`a` não pode ser 0.");
             break;
         } catch (const invalid_argument& e) {
-            cout << e.what() << endl;
+            handleError(e.what());
         }
     }
+
     double b = getValidatedInput("Digite o valor de `b`: ");
     double x = calcRX(a, b);
 
@@ -49,6 +50,7 @@ void funcRX() {
     returnOptions();
 }
 
+// MARK: Raiz de X - 2º
 double calcDelta(double a, double b, double c) {
     return (pow(b, 2)) - (4 * a * c);
 }
@@ -68,11 +70,11 @@ void printDelta(double a, double b, double c, double delta) {
 }
 
 void printFormulaRX2(double b, double delta, double a) {
-    cout << setw(10) << "\n     -b  ±  ²√Δ "
+    cout << setw(10) << "\n     -b  ±  √Δ "
          << endl << setw(10) << "X = ------------"
          << endl << setw(10) << "         2a    \n" << endl;
 
-    cout << setw(10) << "\n     " << (b >= 0 ? "-" : " ") << formatNumber(fabs(b)) << "  ±  ²√" << formatNumber(delta)
+    cout << setw(10) << "\n     " << (b >= 0 ? "-" : " ") << formatNumber(fabs(b)) << "  ±  √" << formatNumber(delta)
          << endl << setw(10) << "X = ------------" << (delta >= 100 ? "-----" : "--")
          << endl << setw(10) << "         2 * " << formatNumber(a) << "    \n" << endl;
 
@@ -83,17 +85,18 @@ void printFormulaRX2(double b, double delta, double a) {
 
 void funcRX2() {
     cout << "Descobrindo o valor de X em uma função de 2º grau.\n" << endl;
-    
+
     double a;
     while (true) {
         try {
             a = getValidatedInput("Digite o valor de `a`: ");
-            if (a == 0) throw invalid_argument("Erro: `a` não pode ser 0.");
+            if (a == 0) throw invalid_argument("`a` não pode ser 0.");
             break;
         } catch (const invalid_argument& e) {
-            cout << e.what() << endl;
+            handleError(e.what());
         }
     }
+
     double b = getValidatedInput("Digite o valor de `b`: ");
     double c = getValidatedInput("Digite o valor de `c`: ");
 
@@ -105,7 +108,7 @@ void funcRX2() {
     printDelta(a, b, c, delta);
 
     if (delta < 0) {
-        cout << "\nDelta é negativo, então as raízes não fazem parte dos números reais, portanto não iremos encontrar elas.\n";
+        cout << "\nDelta é negativo, então as raízes não fazem parte dos números reais, portanto não iremos encontrá-las.\n";
     } else {
         printFormulaRX2(b, delta, a);
         cout << "X¹ = " << formatNumber(x1)
@@ -114,8 +117,9 @@ void funcRX2() {
     returnOptions();
 }
 
+// MARK: Fatorial
 unsigned long long factorial(int n) {
-    if (n < 0) throw invalid_argument("Erro: Fatorial de número negativo não é definido.");
+    if (n < 0) throw invalid_argument("Fatorial de número negativo não é definido.");
     unsigned long long result = 1;
     for (int i = 1; i <= n; ++i) {
         result *= i;
@@ -130,10 +134,10 @@ void funcFatorial() {
     while (true) {
         try {
             n = getValidatedInput("Digite um número inteiro não-negativo: ");
-            if (n != floor(n) || n < 0) throw invalid_argument("Erro: Por favor digite um número inteiro não-negativo.");
+            if (n != floor(n) || n < 0) throw invalid_argument("Por favor digite um número inteiro não-negativo.");
             break;
         } catch (const invalid_argument& e) {
-            cout << e.what() << endl;
+            handleError(e.what());
         }
     }
 
@@ -141,12 +145,13 @@ void funcFatorial() {
         unsigned long long result = factorial(static_cast<int>(n));
         cout << "O fatorial de " << formatNumber(n) << " é " << formatNumber(result) << endl;
     } catch (const invalid_argument& e) {
-        cout << e.what() << endl;
+        handleError(e.what());
     }
 
     returnOptions();
 }
 
+// MARK: Potencia
 double power(double base, int exponent) {
     return pow(base, exponent);
 }
@@ -163,8 +168,9 @@ void funcPotencia() {
     returnOptions();
 }
 
+// MARK: Logaritmo
 double logarithm(double value, double base) {
-    if (value <= 0 || base <= 0 || base == 1) throw invalid_argument("Erro: O valor e a base devem ser positivos e a base deve ser diferente de 1.");
+    if (value <= 0 || base <= 0 || base == 1) throw invalid_argument("O valor e a base devem ser positivos e a base deve ser diferente de 1.");
     return log(value) / log(base);
 }
 
@@ -176,10 +182,10 @@ void funcLogaritmo() {
         try {
             value = getValidatedInput("Digite o valor: ");
             base = getValidatedInput("Digite a base: ");
-            if (value <= 0 || base <= 0 || base == 1) throw invalid_argument("Erro: O valor e a base devem ser positivos e a base deve ser diferente de 1.");
+            if (value <= 0 || base <= 0 || base == 1) throw invalid_argument("O valor e a base devem ser positivos e a base deve ser diferente de 1.");
             break;
         } catch (const invalid_argument& e) {
-            cout << e.what() << endl;
+            handleError(e.what());
         }
     }
 
@@ -187,14 +193,15 @@ void funcLogaritmo() {
         double result = logarithm(value, base);
         cout << "\nO logaritmo de " << formatNumber(value) << " na base " << formatNumber(base) << " é " << formatNumber(result) << endl;
     } catch (const invalid_argument& e) {
-        cout << e.what() << endl;
+        handleError(e.what());
     }
 
     returnOptions();
 }
 
+// MARK: Média
 double average(const vector<double>& numbers) {
-    if (numbers.empty()) throw invalid_argument("Erro: A lista de números não pode estar vazia.");
+    if (numbers.empty()) throw invalid_argument("A lista de números não pode estar vazia.");
     double sum = 0;
     for (double number : numbers) {
         sum += number;
@@ -231,15 +238,16 @@ void funcMedia() {
             double result = average(numbers);
             cout << "A média é " << formatNumber(result) << endl;
         } else {
-            throw invalid_argument("Erro: Nenhum número válido foi fornecido.");
+            throw invalid_argument("Nenhum número válido foi fornecido.");
         }
     } catch (const invalid_argument& e) {
-        cout << e.what() << endl;
+        handleError(e.what());
     }
 
     returnOptions();
 }
 
+// MARK: Módulo
 double mCalc(double num) {
     return fabs(num);
 }
@@ -254,8 +262,9 @@ void funcModulo() {
     returnOptions();
 }
 
+// MARK: Raiz N-ésima
 double calcRaizN(double n, double i) {
-    if (i == 0) throw invalid_argument("Erro: O índice da raiz não pode ser zero.");
+    if (i == 0) throw invalid_argument("O índice da raiz não pode ser zero.");
     return pow(n, 1.0 / i);
 }
 
@@ -267,10 +276,10 @@ void funcRaizN() {
     while (true) {
         try {
             i = getValidatedInput("Digite o índice da Raiz: ");
-            if (i == 0) throw invalid_argument("Erro: O índice da raiz não pode ser zero.");
+            if (i == 0) throw invalid_argument("O índice da raiz não pode ser zero.");
             break;
         } catch (const invalid_argument& e) {
-            cout << e.what() << endl;
+            handleError(e.what());
         }
     }
 
@@ -278,7 +287,7 @@ void funcRaizN() {
         double result = calcRaizN(n, i);
         cout << "A raiz " << formatNumber(i) << " de " << formatNumber(n) << " é " << formatNumber(result) << endl;
     } catch (const invalid_argument& e) {
-        cout << e.what() << endl;
+        handleError(e.what());
     }
 
     returnOptions();

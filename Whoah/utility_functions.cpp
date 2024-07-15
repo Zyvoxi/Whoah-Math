@@ -13,9 +13,9 @@
 #include <cmath>
 #include <algorithm>
 #include <regex>
+    using namespace std;
 
-using namespace std;
-
+// MARK: Validador dos Inputs
 bool isBrazilianNumber(const string& str) {
     regex pattern(R"(^-?(\d{1,3}(\.\d{3})*|\d+)(,\d{1,3})?$)");
     return regex_match(str, pattern);
@@ -73,6 +73,7 @@ double getValidatedInput(const string& prompt) {
     return value;
 }
 
+// MARK: Limpador
 void clearScreen() {
 #if DEBUG
     cout << "\n\n";
@@ -87,6 +88,7 @@ void clearScreen() {
 #endif
 }
 
+// MARK: Retornador das Opções
 void returnOptions() {
     cout << "\nPressione Enter para Voltar ao Menu." << endl;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -94,6 +96,7 @@ void returnOptions() {
     options();
 }
 
+// MARK: Formatador de Números
 class CustomNumPunct : public numpunct<char> {
 protected:
     virtual char do_thousands_sep() const override {
@@ -144,6 +147,7 @@ string formatNumber(double num) {
     return ss.str();
 }
 
+// MARK: Error
 void handleError(const string& error) {
     cout << "Erro: " << error << endl;
     cout << "Sugestão: Verifique se os valores inseridos estão corretos e tente novamente." << endl;
