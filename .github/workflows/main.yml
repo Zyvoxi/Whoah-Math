@@ -1,4 +1,4 @@
-name: Build macOS and Windows Project
+name: Build Whoah-Math for macOS and Windows
 
 on:
   push:
@@ -13,9 +13,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Xcode
-      run: sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
-
     - name: Build with Xcode
       run: |
         xcodebuild -scheme Whoah -configuration Release -derivedDataPath build -disableAutomaticPackageResolution | xcbeautify
@@ -23,14 +20,14 @@ jobs:
     - name: Archive Artifacts
       run: |
         cd build/Build/Products/Release
-        zip -r artifacts.zip *
-        mv artifacts.zip $GITHUB_WORKSPACE/
+        zip -r Whoah-Math.zip . -i Whoah.app
+        mv Whoah-Math.zip $GITHUB_WORKSPACE/
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: macOS-artifacts
-        path: artifacts.zip
+        path: Whoah-Math.zip
 
   build-windows:
     runs-on: windows-latest
@@ -57,14 +54,15 @@ jobs:
         cd build
         cmake --build . --config Release
 
-    - name: Archive Main.exe
+    - name: Archive Artifacts
       run: |
         cd build/
-        Compress-Archive -Path Main.exe -DestinationPath Main.zip
-        Move-Item Main.zip $env:GITHUB_WORKSPACE
+        Rename-Item Main.exe Whoah-Math.exe
+        Compress-Archive -Path Whoah-Math.exe -DestinationPath Whoah-Math.zip
+        Move-Item Whoah-Math.zip $env:GITHUB_WORKSPACE
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: windows-artifacts
-        path: Main.zip
+        path: Whoah-Math.zip
