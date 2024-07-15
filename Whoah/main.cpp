@@ -5,19 +5,18 @@
 //  Created by IV. on 11/07/24.
 //
 
-// MARK: Includes
 #include <iostream>
 #include <limits>
 #include <string>
 #include "math_functions.h"
 #include "utility_functions.h"
-
-using namespace std;
+    using namespace std;
 
 // MARK: Forward Declarations
 void options();
 void handleOptionsChoice();
 
+// MARK: Opções
 void options() {
     cout << "Escolha uma das opções para realizar o cálculo de suas raízes!\n"
          << endl << "1 - Calcular o valor de X em uma função de 1º grau"

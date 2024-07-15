@@ -10,4 +10,4 @@
 
 void options();
 
-#endif /* main_h */
+#endif // main_h
