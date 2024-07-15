@@ -35,10 +35,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install Ninja
-      run: |
-        choco install ninja
-
     - name: Install CMake
       run: |
         choco install cmake
@@ -57,7 +53,6 @@ jobs:
     - name: Archive Artifacts
       run: |
         cd build/
-        Rename-Item Main.exe Whoah-Math.exe
         Compress-Archive -Path Whoah-Math.exe -DestinationPath Whoah-Math.zip
         Move-Item Whoah-Math.zip $env:GITHUB_WORKSPACE
 
