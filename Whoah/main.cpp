@@ -316,7 +316,6 @@ void funcLogaritmo() {
 }
 
 // MARK: Math Functions - Média
-#if DEBUG
 double average(const vector<double>& numbers) {
     double sum = 0;
     for (double number : numbers) {
@@ -327,28 +326,37 @@ double average(const vector<double>& numbers) {
 
 void funcMedia() {
     cout << "Calculando a média de uma lista de números.\n" << endl;
-
     cout << "Digite os números separados por espaço (pressione Enter para finalizar): ";
     string input;
     getline(cin, input);
     istringstream stream(input);
 
     vector<double> numbers;
-    double number;
-    while (stream >> number) {
-        numbers.push_back(number);
+    string token;
+    while (stream >> token) {
+        if (isBrazilianNumber(token)) {
+            string c = convertBrazilianToAmerican(token);
+            double n;
+            if (isNumber(c)) {
+                istringstream(c) >> n;
+                numbers.push_back(n);
+            } else {
+                cout << "Número inválido ignorado: " << token << endl;
+            }
+        } else {
+            cout << "Número inválido ignorado: " << token << endl;
+        }
     }
 
     if (!numbers.empty()) {
         double result = average(numbers);
         cout << "A média é " << formatNumber(result) << endl;
     } else {
-        cout << "Erro: Nenhum número foi fornecido.\n";
+        cout << "Erro: Nenhum número válido foi fornecido.\n";
     }
 
     returnOptions();
 }
-#endif
 
 // MARK: Options
 void handleOptionsChoice() {
@@ -391,12 +399,10 @@ void handleOptionsChoice() {
             clearScreen();
             funcLogaritmo();
             break;
-#if DEBUG
         case 6:
             clearScreen();
             funcMedia();
             break;
-#endif
         default:
             cout << "Opção inválida.\n";
             handleOptionsChoice();
@@ -415,9 +421,7 @@ void options() {
          << endl << "3 - Calcular o fatorial de um número"
          << endl << "4 - Calcular a potência de um número"
          << endl << "5 - Calcular o logaritmo de um número"
-#if DEBUG
          << endl << "6 - Calcular a média de uma lista de números"
-#endif
          << endl << "\n0 - Sair" << endl;
 
     handleOptionsChoice();
