@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.10)
 project(Whoah-Math)
 
 # Adicione o executável
-add_executable(Whoah
+add_executable(Whoah-Math
     Whoah/main.cpp
     Whoah/utility_functions.cpp
     Whoah/math_functions.cpp
