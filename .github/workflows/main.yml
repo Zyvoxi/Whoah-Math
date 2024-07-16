@@ -41,7 +41,7 @@ jobs:
 
     - name: Add MinGW64 to PATH
       run: |
-        echo "::add-path::C:/mingw64/bin"
+        echo "C:/mingw64/bin" >> $env:GITHUB_PATH
 
     - name: Install Ninja
       run: |
