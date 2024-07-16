@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-    Build Whoah Math - macOS:
+  build-macos:
     runs-on: macos-latest
 
     steps:
@@ -29,7 +29,7 @@ jobs:
         name: Whoah Math - macOS
         path: Whoah-Math.zip
 
-  Build Whoah Math - Windows:
+  build-windows:
     runs-on: windows-latest
 
     steps:
@@ -54,11 +54,23 @@ jobs:
         cd build
         cmake --build . --config Release
 
+    - name: Copy DLLs
+      run: |
+        $dlls = @(
+            "libstdc++-6.dll",
+            "libgcc_s_seh-1.dll"
+        )
+        foreach ($dll in $dlls) {
+            $src = "C:/tools/msys64/mingw64/bin/$dll"
+            $dst = "build/Release/$dll"
+            Copy-Item $src -Destination $dst
+        }
+
     - name: Archive Artifacts
       run: |
-        cd build/
-        $zipPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "Whoah-Math.zip"
-        Compress-Archive -Path . -DestinationPath $zipPath
+        cd build/Release
+        Compress-Archive -Path . -DestinationPath Whoah-Math.zip
+        Move-Item Whoah-Math.zip $env:GITHUB_WORKSPACE
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
