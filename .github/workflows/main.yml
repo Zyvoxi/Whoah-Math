@@ -35,57 +35,19 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install MinGW64
-      run: |
-        choco install mingw
-
-    - name: Add MinGW64 to PATH
-      run: |
-        echo "C:/mingw64/bin" >> $env:GITHUB_PATH
-
     - name: Install Ninja
-      run: |
-        choco install ninja
+      run: choco install ninja
 
     - name: Install CMake
-      run: |
-        choco install cmake
+      run: choco install cmake
 
     - name: Configure with CMake
       run: |
         mkdir build
         cd build
-        cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release ..
+        cmake .. -DCMAKE_CXX_FLAGS_RELEASE="-static-libgcc -static-libstdc++" --preset release
 
     - name: Build with CMake
       run: |
         cd build
-        cmake --build . --config Release
-
-    - name: Create Release Directory
-      run: |
-        mkdir -Force build/Release
-
-    - name: Copy DLLs
-      run: |
-        $dlls = @(
-            "libstdc++-6.dll",
-            "libgcc_s_seh-1.dll"
-        )
-        foreach ($dll in $dlls) {
-            $src = "C:/mingw64/bin/$dll"
-            $dst = "build/Release/$dll"
-            Copy-Item $src -Destination $dst -Force
-        }
-
-    - name: Archive Artifacts
-      run: |
-        cd build/Release
-        Compress-Archive -Path . -DestinationPath Whoah-Math.zip
-        Move-Item Whoah-Math.zip $env:GITHUB_WORKSPACE
-
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: Whoah Math - Windows
-        path: Whoah-Math.zip
+        cmake --build . --config Relea
