@@ -23,11 +23,6 @@ set(BUILD_SHARED_LIBS OFF) # Desabilita bibliotecas compartilhadas
 add_definitions(-DUNICODE -D_UNICODE)
 add_compile_options("/utf-8")
 
-# Define a codificação de saída do console para UTF-8
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E env "chcp 65001"
-)
-
 # Configurações de depuração
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_definitions(-DDEBUG)
