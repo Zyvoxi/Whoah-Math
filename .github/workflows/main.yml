@@ -101,18 +101,36 @@ jobs:
         echo "Listing contents of ${{ steps.strings.outputs.build-output-dir }}"
         ls -R ${{ steps.strings.outputs.build-output-dir }}
 
+    - name: Validate Executable Existence
+      run: |
+        if [ "${{ matrix.os }}" = "windows-latest" ]; then
+          if (Test-Path "${{ steps.strings.outputs.build-output-dir }}\Release\Whoah-Math.exe") { Write-Host "Executable exists." } else { throw "Executable not found." }
+        elif [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
+          test -f "${{ steps.strings.outputs.build-output-dir }}/Whoah-Math"
+        fi
+
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.strings.outputs.artifact-name }}
         path: ${{ steps.strings.outputs.executable-path }}
 
-    - name: Clean up old caches
+    - name: Clean up old caches (Bash)
+      if: runner.os != 'Windows'
       run: |
         gh api -X GET repos/${{ github.repository }}/actions/caches \
           -F per_page=100 \
           -F direction=asc \
           | jq '.actions_caches | map(select(.created_at < (now - 30*86400))) | .[].id' \
           | xargs -n1 -I % gh api -X DELETE repos/${{ github.repository }}/actions/caches/%
+
+    - name: Clean up old caches (PowerShell)
+      if: runner.os == 'Windows'
+      run: |
+        $caches = gh api -X GET repos/${{ github.repository }}/actions/caches
+        $cacheIds = $caches | ConvertFrom-Json | ForEach-Object { $_.actions_caches | Where-Object { $_.created_at -lt ((Get-Date).AddDays(-30)) } | Select-Object -ExpandProperty id }
+        foreach ($id in $cacheIds) {
+          gh api -X DELETE repos/${{ github.repository }}/actions/caches/$id
+        }
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
