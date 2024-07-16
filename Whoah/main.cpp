@@ -8,6 +8,7 @@
 #include <iostream>
 #include <limits>
 #include <string>
+#include <locale>
 #include "math_functions.h"
 #include "utility_functions.h"
     using namespace std;
