@@ -54,7 +54,7 @@ jobs:
 
     - name: Archive Artifacts
       run: |
-        cd build/Release
+        cd build/
         $zipPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "Whoah-Math.zip"
         Compress-Archive -Path . -DestinationPath $zipPath
 
