@@ -26,7 +26,7 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: macOS-artifacts
+        name: Whoah Math - macOS
         path: Whoah-Math.zip
 
   build-windows:
@@ -47,21 +47,21 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake .. --preset release
+        cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release ..
 
     - name: Build with CMake
       run: |
         cd build
-        cmake --build . --config Release
+        cmake --build .
 
     - name: Archive Artifacts
       run: |
-        cd build/
-        Compress-Archive -Path Whoah-Math.exe -DestinationPath Whoah-Math.zip
+        cd build
+        Compress-Archive -Path *.exe -DestinationPath Whoah-Math.zip
         Move-Item Whoah-Math.zip $env:GITHUB_WORKSPACE
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: windows-artifacts
+        name: Whoah Math - Windows
         path: Whoah-Math.zip
