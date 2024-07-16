@@ -20,7 +20,7 @@ jobs:
     - name: Archive Artifacts
       run: |
         cd build/Build/Products/Release
-        zip -r Whoah-Math.zip *
+        zip -r Whoah-Math.zip Whoah-Math
         mv Whoah-Math.zip $GITHUB_WORKSPACE/
 
     - name: Upload Artifacts
