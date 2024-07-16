@@ -13,6 +13,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Cache derived data
+      uses: actions/cache@v3
+      with:
+        path: build
+        key: macos-xcode-${{ runner.os }}-${{ hashFiles('**/Podfile.lock') }}
+
     - name: Build with Xcode
       run: |
         xcodebuild -scheme Whoah -configuration Release -derivedDataPath build -disableAutomaticPackageResolution | xcbeautify
@@ -54,6 +60,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Cache CMake build directory
+      uses: actions/cache@v3
+      with:
+        path: build
+        key: cmake-${{ runner.os }}-${{ hashFiles('CMakeLists.txt') }}
+        restore-keys: |
+          cmake-${{ runner.os }}-
+
     - name: Set reusable strings
       id: strings
       shell: bash
@@ -65,7 +79,6 @@ jobs:
         elif [ ${{ matrix.os }} = "ubuntu-latest" ]; then
           echo "artifact-name=Whoah-Math - Ubuntu" >> "$GITHUB_OUTPUT"
           echo "executable-path=${{ steps.strings.outputs.build-output-dir }}/Whoah-Math" >> "$GITHUB_OUTPUT"
-        fi
 
     - name: Configure CMake
       run: >
@@ -82,8 +95,23 @@ jobs:
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: ctest --build-config ${{ matrix.build_type }}
 
+    - name: Debug - List directory contents
+      run: |
+        echo "Listing contents of ${{ steps.strings.outputs.build-output-dir }}"
+        ls -R ${{ steps.strings.outputs.build-output-dir }}
+
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.strings.outputs.artifact-name }}
         path: ${{ steps.strings.outputs.executable-path }}
+
+    - name: Clean up old caches
+      run: |
+        gh api -X GET repos/${{ github.repository }}/actions/caches \
+          -F per_page=100 \
+          -F direction=asc \
+          | jq '.actions_caches | map(select(.created_at < (now - 30*86400))) | .[].id' \
+          | xargs -n1 -I % gh api -X DELETE repos/${{ github.repository }}/actions/caches/%
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
