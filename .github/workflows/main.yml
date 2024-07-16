@@ -50,4 +50,16 @@ jobs:
     - name: Build with CMake
       run: |
         cd build
-        cmake --build . --config Relea
+        cmake --build . --config Release
+
+    - name: Archive Artifacts
+      run: |
+        cd build/Release
+        $zipPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "Whoah-Math.zip"
+        Compress-Archive -Path . -DestinationPath $zipPath
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Whoah Math - Windows
+        path: Whoah-Math.zip
