@@ -35,6 +35,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Install MinGW64
+      run: |
+        choco install mingw
+
+    - name: Add MinGW64 to PATH
+      run: |
+        echo "::add-path::C:/mingw64/bin"
+
     - name: Install Ninja
       run: |
         choco install ninja
@@ -47,7 +55,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake .. --preset release
+        cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release ..
 
     - name: Build with CMake
       run: |
@@ -61,7 +69,7 @@ jobs:
             "libgcc_s_seh-1.dll"
         )
         foreach ($dll in $dlls) {
-            $src = "C:/tools/msys64/mingw64/bin/$dll"
+            $src = "C:/mingw64/bin/$dll"
             $dst = "build/Release/$dll"
             Copy-Item $src -Destination $dst
         }
