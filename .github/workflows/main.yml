@@ -62,6 +62,10 @@ jobs:
         cd build
         cmake --build . --config Release
 
+    - name: Create Release Directory
+      run: |
+        mkdir -Force build/Release
+
     - name: Copy DLLs
       run: |
         $dlls = @(
@@ -71,7 +75,7 @@ jobs:
         foreach ($dll in $dlls) {
             $src = "C:/mingw64/bin/$dll"
             $dst = "build/Release/$dll"
-            Copy-Item $src -Destination $dst
+            Copy-Item $src -Destination $dst -Force
         }
 
     - name: Archive Artifacts
