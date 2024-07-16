@@ -15,7 +15,8 @@ file(GLOB SOURCES "Whoah/*.cpp")
 
 # Cria o executável a partir dos arquivos fonte
 add_executable(${PROJECT_NAME} ${SOURCES})
-
+# CMakeLists.txt
+set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 # Adiciona opções para compilação estática
 set(CMAKE_FIND_LIBRARY_SUFFIXES .lib .a ${CMAKE_FIND_LIBRARY_SUFFIXES})
 set(BUILD_SHARED_LIBS OFF) # Desabilita bibliotecas compartilhadas
