@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-macos:
+    Build Whoah Math - macOS:
     runs-on: macos-latest
 
     steps:
@@ -29,7 +29,7 @@ jobs:
         name: Whoah Math - macOS
         path: Whoah-Math.zip
 
-  build-windows:
+  Build Whoah Math - Windows:
     runs-on: windows-latest
 
     steps:
@@ -47,18 +47,18 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release ..
+        cmake .. --preset release
 
     - name: Build with CMake
       run: |
         cd build
-        cmake --build .
+        cmake --build . --config Release
 
     - name: Archive Artifacts
       run: |
-        cd build
-        Compress-Archive -Path *.exe -DestinationPath Whoah-Math.zip
-        Move-Item Whoah-Math.zip $env:GITHUB_WORKSPACE
+        cd build/
+        $zipPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "Whoah-Math.zip"
+        Compress-Archive -Path . -DestinationPath $zipPath
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
