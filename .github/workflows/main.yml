@@ -14,7 +14,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Cache derived data
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: build
         key: macos-xcode-${{ runner.os }}-${{ hashFiles('**/Podfile.lock') }}
@@ -61,7 +61,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Cache CMake build directory
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: build
         key: cmake-${{ runner.os }}-${{ hashFiles('CMakeLists.txt') }}
@@ -75,10 +75,10 @@ jobs:
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
         if [ "${{ matrix.os }}" = "windows-latest" ]; then
           echo "artifact-name=Whoah-Math - Windows" >> "$GITHUB_OUTPUT"
-          echo "executable-path=${{ steps.strings.outputs.build-output-dir }}\\build\\Release\\Whoah-Math.exe" >> "$GITHUB_OUTPUT"
+          echo "executable-path=${{ github.workspace }}\\build\\Release\\Whoah-Math.exe" >> "$GITHUB_OUTPUT"
         elif [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
           echo "artifact-name=Whoah-Math - Ubuntu" >> "$GITHUB_OUTPUT"
-          echo "executable-path=${{ steps.strings.outputs.build-output-dir }}/build/Whoah-Math" >> "$GITHUB_OUTPUT"
+          echo "executable-path=${{ github.workspace }}/build/Whoah-Math" >> "$GITHUB_OUTPUT"
         fi
 
     - name: Configure CMake
