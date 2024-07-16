@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-    Build Whoah Math - macOS:
+  build-macos:
     runs-on: macos-latest
 
     steps:
@@ -29,25 +29,23 @@ jobs:
         name: Whoah Math - macOS
         path: Whoah-Math.zip
 
-  Build Whoah Math - Windows:
+  build-windows:
     runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v4
 
     - name: Install Ninja
-      run: |
-        choco install ninja
+      run: choco install ninja
 
     - name: Install CMake
-      run: |
-        choco install cmake
+      run: choco install cmake
 
     - name: Configure with CMake
       run: |
         mkdir build
         cd build
-        cmake .. --preset release
+        cmake .. -DCMAKE_CXX_FLAGS_RELEASE="-static-libgcc -static-libstdc++" --preset release
 
     - name: Build with CMake
       run: |
