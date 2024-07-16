@@ -50,28 +50,50 @@ jobs:
         choco install ninja
         choco install cmake
 
-    - name: Configure CMake
+    - name: Configure CMake on Windows
+      if: matrix.os == 'windows-latest'
+      run: |
+        mkdir build
+        cd build
+        cmake -G "Ninja" -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ..
+
+    - name: Configure CMake on Ubuntu
+      if: matrix.os == 'ubuntu-latest'
       run: |
         cmake -B ${{ steps.strings.outputs.build-output-dir }} \
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-        -S ${{ github.workspace }}
+              -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
+              -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
+              -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+              -S ${{ github.workspace }}
 
-    - name: Build
+    - name: Build on Windows
+      if: matrix.os == 'windows-latest'
+      run: |
+        cmake --build build --config ${{ matrix.build_type }}
+
+    - name: Build on Ubuntu
+      if: matrix.os == 'ubuntu-latest'
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
     - name: Copy DLLs on Windows
       if: matrix.os == 'windows-latest'
       run: |
-        mkdir -p ${{ steps.strings.outputs.build-output-dir }}/Release
-        cp C:/mingw64/bin/libstdc++-6.dll ${{ steps.strings.outputs.build-output-dir }}/Release/
-        cp C:/mingw64/bin/libgcc_s_seh-1.dll ${{ steps.strings.outputs.build-output-dir }}/Release/
+        mkdir -p build/Release
+        cp C:/mingw64/bin/libstdc++-6.dll build/Release/
+        cp C:/mingw64/bin/libgcc_s_seh-1.dll build/Release/
 
-    - name: Archive Artifacts
+    - name: Archive Artifacts on Windows
+      if: matrix.os == 'windows-latest'
       run: |
-        cd ${{ steps.strings.outputs.build-output-dir }}/Release
+        cd build/Release
         Compress-Archive -Path . -DestinationPath Whoah-Math.zip
+        mv Whoah-Math.zip $GITHUB_WORKSPACE/
+
+    - name: Archive Artifacts on Ubuntu
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        cd ${{ steps.strings.outputs.build-output-dir }}
+        zip -r Whoah-Math.zip *
         mv Whoah-Math.zip $GITHUB_WORKSPACE/
 
     - name: Upload Artifacts
@@ -80,6 +102,12 @@ jobs:
         name: Whoah Math - ${{ matrix.os }}
         path: $GITHUB_WORKSPACE/Whoah-Math.zip
 
-    - name: Test
+    - name: Test on Windows
+      if: matrix.os == 'windows-latest'
+      working-directory: build
+      run: ctest --build-config ${{ matrix.build_type }}
+
+    - name: Test on Ubuntu
+      if: matrix.os == 'ubuntu-latest'
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: ctest --build-config ${{ matrix.build_type }}
