@@ -61,8 +61,10 @@ jobs:
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
         if [ ${{ matrix.os }} = "windows-latest" ]; then
           echo "artifact-name=Whoah-Math - Windows" >> "$GITHUB_OUTPUT"
+          echo "executable-path=${{ steps.strings.outputs.build-output-dir }}\\${{ matrix.c_compiler }}\\Release\\${{ github.event.repository.name }}.exe" >> "$GITHUB_OUTPUT"
         elif [ ${{ matrix.os }} = "ubuntu-latest" ]; then
           echo "artifact-name=Whoah-Math - Ubuntu" >> "$GITHUB_OUTPUT"
+          echo "executable-path=${{ steps.strings.outputs.build-output-dir }}/${{ github.event.repository.name }}" >> "$GITHUB_OUTPUT"
         fi
 
     - name: Configure CMake
@@ -84,4 +86,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.strings.outputs.artifact-name }}
-        path: ${{ steps.strings.outputs.build-output-dir }}
+        path: ${{ steps.strings.outputs.executable-path }}
