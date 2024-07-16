@@ -29,37 +29,62 @@ jobs:
         name: Whoah Math - macOS
         path: Whoah-Math.zip
 
-  build-windows:
-    runs-on: windows-latest
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        build_type: [Release]
+        c_compiler: [gcc, clang, cl]
+        include:
+          - os: windows-latest
+            c_compiler: cl
+            cpp_compiler: cl
+          - os: ubuntu-latest
+            c_compiler: gcc
+            cpp_compiler: g++
+          - os: ubuntu-latest
+            c_compiler: clang
+            cpp_compiler: clang++
+        exclude:
+          - os: windows-latest
+            c_compiler: gcc
+          - os: windows-latest
+            c_compiler: clang
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install Ninja
-      run: choco install ninja
-
-    - name: Install CMake
-      run: choco install cmake
-
-    - name: Configure with CMake
+    - name: Set reusable strings
+      id: strings
+      shell: bash
       run: |
-        mkdir build
-        cd build
-        cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release ..
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+        if [ ${{ matrix.os }} = "windows-latest" ]; then
+          echo "artifact-name=Whoah-Math - Windows" >> "$GITHUB_OUTPUT"
+        elif [ ${{ matrix.os }} = "ubuntu-latest" ]; then
+          echo "artifact-name=Whoah-Math - Ubuntu" >> "$GITHUB_OUTPUT"
+        fi
 
-    - name: Build with CMake
-      run: |
-        cd build
-        cmake --build . --config Release
+    - name: Configure CMake
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -S ${{ github.workspace }}
 
-    - name: Archive Artifacts
-      run: |
-        cd build/
-        Compress-Archive -Path . -DestinationPath Whoah-Math.zip
-        Move-Item Whoah-Math.zip $env:GITHUB_WORKSPACE
+    - name: Build
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-    - name: Upload Artifacts
+    - name: Test
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      run: ctest --build-config ${{ matrix.build_type }}
+
+    - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: Whoah Math - Windows
-        path: Whoah-Math.zip
+        name: ${{ steps.strings.outputs.artifact-name }}
+        path: ${{ steps.strings.outputs.build-output-dir }}
