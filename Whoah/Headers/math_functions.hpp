@@ -8,9 +8,6 @@
 #ifndef math_functions_hpp
 #define math_functions_hpp
 
-#include <vector>
-#include <stdexcept>
-
 /**
  * @brief Função principal para encontrar o valor de X em uma equação de primeiro grau.
  */
