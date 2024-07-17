@@ -7,11 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		13253F712C4771DF004E16C9 /* math_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13253F702C4771DF004E16C9 /* math_utils.cpp */; };
 		134970832C406BE800D2CA14 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 134970822C406BE800D2CA14 /* main.cpp */; };
 		13E26EB52C44DB0D00D1664A /* math_functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E26EB42C44DB0D00D1664A /* math_functions.cpp */; };
 		13E26EB72C44DB8900D1664A /* utility_functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E26EB62C44DB8900D1664A /* utility_functions.cpp */; };
-		13E26EC12C44EFB600D1664A /* utility_functions.h in Sources */ = {isa = PBXBuildFile; fileRef = 13E26EC02C44EFB600D1664A /* utility_functions.h */; };
-		13E26EC22C44EFB600D1664A /* math_functions.h in Sources */ = {isa = PBXBuildFile; fileRef = 13E26EBF2C44EFB600D1664A /* math_functions.h */; };
+		13E26EC12C44EFB600D1664A /* utility_functions.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E26EC02C44EFB600D1664A /* utility_functions.hpp */; };
+		13E26EC22C44EFB600D1664A /* math_functions.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E26EBF2C44EFB600D1664A /* math_functions.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,13 +28,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		13253F6F2C4771DF004E16C9 /* math_utils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = math_utils.hpp; sourceTree = "<group>"; };
+		13253F702C4771DF004E16C9 /* math_utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = math_utils.cpp; sourceTree = "<group>"; };
 		1349707F2C406BE800D2CA14 /* Whoah-Debug */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Whoah-Debug"; sourceTree = BUILT_PRODUCTS_DIR; };
 		134970822C406BE800D2CA14 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		13E26EB42C44DB0D00D1664A /* math_functions.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = math_functions.cpp; sourceTree = "<group>"; };
 		13E26EB62C44DB8900D1664A /* utility_functions.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = utility_functions.cpp; sourceTree = "<group>"; };
-		13E26EBE2C44EFB600D1664A /* main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
-		13E26EBF2C44EFB600D1664A /* math_functions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = math_functions.h; sourceTree = "<group>"; };
-		13E26EC02C44EFB600D1664A /* utility_functions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utility_functions.h; sourceTree = "<group>"; };
+		13E26EBE2C44EFB600D1664A /* main.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main.hpp; sourceTree = "<group>"; };
+		13E26EBF2C44EFB600D1664A /* math_functions.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = math_functions.hpp; sourceTree = "<group>"; };
+		13E26EC02C44EFB600D1664A /* utility_functions.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = utility_functions.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +73,7 @@
 				134970822C406BE800D2CA14 /* main.cpp */,
 				13E26EB62C44DB8900D1664A /* utility_functions.cpp */,
 				13E26EB42C44DB0D00D1664A /* math_functions.cpp */,
+				13253F702C4771DF004E16C9 /* math_utils.cpp */,
 			);
 			path = Whoah;
 			sourceTree = "<group>";
@@ -77,9 +81,10 @@
 		13E26EC32C44EFCB00D1664A /* Headers */ = {
 			isa = PBXGroup;
 			children = (
-				13E26EBE2C44EFB600D1664A /* main.h */,
-				13E26EBF2C44EFB600D1664A /* math_functions.h */,
-				13E26EC02C44EFB600D1664A /* utility_functions.h */,
+				13E26EBE2C44EFB600D1664A /* main.hpp */,
+				13E26EBF2C44EFB600D1664A /* math_functions.hpp */,
+				13253F6F2C4771DF004E16C9 /* math_utils.hpp */,
+				13E26EC02C44EFB600D1664A /* utility_functions.hpp */,
 			);
 			path = Headers;
 			sourceTree = "<group>";
@@ -142,10 +147,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				13E26EB72C44DB8900D1664A /* utility_functions.cpp in Sources */,
-				13E26EC12C44EFB600D1664A /* utility_functions.h in Sources */,
-				13E26EC22C44EFB600D1664A /* math_functions.h in Sources */,
+				13E26EC12C44EFB600D1664A /* utility_functions.hpp in Sources */,
+				13E26EC22C44EFB600D1664A /* math_functions.hpp in Sources */,
 				134970832C406BE800D2CA14 /* main.cpp in Sources */,
 				13E26EB52C44DB0D00D1664A /* math_functions.cpp in Sources */,
+				13253F712C4771DF004E16C9 /* math_utils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,7 +283,7 @@
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = com.Zyvoxi.Whoah;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "com.Zyvoxi.Whoah-Math";
 				PRODUCT_NAME = "$(TARGET_NAME)-Debug";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
@@ -294,7 +300,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = com.Zyvoxi.Whoah;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "com.Zyvoxi.Whoah-Math";
 				PRODUCT_NAME = "$(TARGET_NAME)-Math";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};

@@ -5,8 +5,8 @@
 //  Created by IV. on 15/07/24.
 //
 
-#include "utility_functions.h"
-#include "main.h"
+#include "utility_functions.hpp"
+#include "main.hpp"
 #include <iostream>
 #include <sstream>
 #include <iomanip>

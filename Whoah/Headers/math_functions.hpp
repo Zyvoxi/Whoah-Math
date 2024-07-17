@@ -1,12 +1,12 @@
 //
-//  math_functions.h
+//  math_functions.hpp
 //  Whoah
 //
 //  Created by IV. on 15/07/24.
 //
 
-#ifndef MATH_FUNCTIONS_H
-#define MATH_FUNCTIONS_H
+#ifndef math_functions_hpp
+#define math_functions_hpp
 
 #include <vector>
 #include <stdexcept>
@@ -87,7 +87,7 @@ void funcRX2();
  * @return unsigned long long Fatorial de n.
  * @throw std::invalid_argument Se n for negativo.
  */
-unsigned long long factorial(int n);
+unsigned long long calcFatorial(int n);
 
 /**
  * @brief Imprime a fórmula e o cálculo do fatorial de um número.
@@ -213,4 +213,4 @@ void funcRaizN();
  */
 void runMathTests();
 
-#endif // MATH_FUNCTIONS_H
+#endif /* math_functions_hpp */

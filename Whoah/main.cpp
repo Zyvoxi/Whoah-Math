@@ -9,8 +9,8 @@
 #include <limits>
 #include <string>
 #include <locale>
-#include "math_functions.h"
-#include "utility_functions.h"
+#include "math_functions.hpp"
+#include "utility_functions.hpp"
     using namespace std;
 
 // MARK: Forward Declarations
@@ -101,7 +101,6 @@ void handleOptionsChoice() {
     }
 }
 
-// MARK: Main
 int main() {
     setlocale(LC_ALL, "pt_BR.UTF-8");
 

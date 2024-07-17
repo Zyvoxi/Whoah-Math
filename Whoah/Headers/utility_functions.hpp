@@ -1,12 +1,12 @@
 //
-//  utility_functions.h
+//  utility_functions.hpp
 //  Whoah
 //
 //  Created by IV. on 15/07/24.
 //
 
-#ifndef utility_functions_h
-#define utility_functions_h
+#ifndef utility_functions_hpp
+#define utility_functions_hpp
 
 #include <string>
 
@@ -91,6 +91,7 @@ std::string formatNumToSubs(double num);
  * @return std::string O número formatado em superescritos.
  */
 std::string formatNumToSub(double num);
+
 /**
  * @brief Trata erros e exibe mensagens detalhadas.
  *
@@ -98,4 +99,4 @@ std::string formatNumToSub(double num);
  */
 void handleError(const std::string& error);
 
-#endif // UTILITY_FUNCTIONS_H
+#endif /* utility_functions_hpp */

@@ -1,12 +1,12 @@
 //
-//  main.h
+//  main.hpp
 //  Whoah
 //
 //  Created by IV. on 15/07/24.
 //
 
-#ifndef main_h
-#define main_h
+#ifndef main_hpp
+#define main_hpp
 
 /**
  * @brief Exibe as opções de cálculo disponíveis e solicita a escolha do usuário.
@@ -16,4 +16,4 @@
  */
 void options();
 
-#endif // main_h
+#endif /* main_hpp */
