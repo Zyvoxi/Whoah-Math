@@ -71,13 +71,40 @@ void printDelta(double a, double b, double c, double delta);
 void printFormulaRX2(double b, double delta, double a);
 
 /**
+ * @brief Calcula o fatorial de um número.
+ *
+ * @param n Número inteiro não-negativo.
+ * @return unsigned long long Fatorial de n.
+ * @throw std::invalid_argument Se n for negativo.
+ * @throw std::overflow_error Se n for maior que 65.
+ */
+unsigned long long calcFatorial(int n);
+
+/**
+ * @brief Imprime a fórmula e o cálculo do fatorial de um número.
+ *
+ * @param n Número cujo fatorial será calculado.
+ * @param result Resultado do fatorial.
+ */
+void printFormulaFatorial(int n, unsigned long long result);
+
+/**
  * @brief Calcula a potência de um número.
  *
  * @param base Base da potência.
- * @param exp Expoente.
+ * @param exponent Expoente.
  * @return double Resultado da potência.
  */
-double power(double base, int exp);
+double power(double base, double exponent);
+
+/**
+ * @brief Imprime a fórmula e o cálculo da potência de um número.
+ *
+ * @param base Base da potência.
+ * @param exponent Expoente.
+ * @param result Resultado da potência.
+ */
+void printFormulaPotencia(double base, double exponent, double result);
 
 /**
  * @brief Calcula o logaritmo de um número em uma base especificada.
@@ -90,13 +117,30 @@ double power(double base, int exp);
 double calcLog(double value, double base);
 
 /**
+ * @brief Imprime a fórmula e o cálculo do logaritmo de um número.
+ *
+ * @param value Valor cujo logaritmo será calculado.
+ * @param base Base do logaritmo.
+ * @param result Resultado do logaritmo.
+ */
+void printFormulaLogaritmo(double value, double base, double result);
+
+/**
  * @brief Calcula a média de uma lista de números.
  *
- * @param nums Vetor de números.
+ * @param numbers Vetor de números.
  * @return double Média dos números.
  * @throw std::invalid_argument Se o vetor estiver vazio.
  */
-double average(const std::vector<double>& nums);
+double average(const std::vector<double>& numbers);
+
+/**
+ * @brief Imprime a fórmula e o cálculo da média de uma lista de números.
+ *
+ * @param numbers Vetor de números.
+ * @param result Resultado da média.
+ */
+void printFormulaMedia(const std::vector<double>& numbers, double result);
 
 /**
  * @brief Calcula o módulo de um número.
@@ -109,11 +153,20 @@ double mCalc(double num);
 /**
  * @brief Calcula a raiz n-ésima de um número.
  *
- * @param num Base da raiz.
- * @param n Índice da raiz.
- * @return double Raiz n-ésima de num.
- * @throw std::invalid_argument Se n for zero.
+ * @param base Base da raiz.
+ * @param index Índice da raiz.
+ * @return double Raiz n-ésima de base.
+ * @throw std::invalid_argument Se o índice for zero.
  */
-double calcRaizN(double num, int n);
+double calcRaizN(double base, double index);
+
+/**
+ * @brief Imprime a fórmula e o cálculo da raiz N-ésima de um número.
+ *
+ * @param base Base da raiz.
+ * @param index Índice da raiz.
+ * @param result Resultado da raiz N-ésima.
+ */
+void printFormulaRaizN(double base, double index, double result);
 
 #endif /* math_utils_hpp */

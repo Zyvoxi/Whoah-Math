@@ -50,13 +50,17 @@ void printDelta(double a, double b, double c, double delta) {
 }
 
 void printFormulaRX2(double b, double delta, double a) {
-    cout << setw(10) << "\\n     -b  ±  √Δ "
+    cout << setw(10) << "\n     -b  ±  √Δ "
          << endl << setw(10) << "X = ------------"
-         << endl << setw(10) << "         2a    \\n" << endl;
+         << endl << setw(10) << "         2a    \n" << endl;
 
-    cout << setw(10) << "\\n     " << (b >= 0 ? "-" : " ") << formatNumber(fabs(b)) << "  ±  √" << formatNumber(delta)
-         << endl << setw(10) << "     ------------"
-         << endl << setw(10) << "         2 * " << formatNumber(a) << "\\n" << endl;
+    cout << setw(10) << "\n     " << (b >= 0 ? "-" : " ") << formatNumber(fabs(b)) << "  ±  √" << formatNumber(delta)
+         << endl << setw(10) << "X = ------------" << (delta >= 100 ? "-----" : "--")
+         << endl << setw(10) << "         2 * " << formatNumber(a) << "    \n" << endl;
+
+    cout << setw(10) << "\n     " << (b >= 0 ? "-" : " ") << formatNumber(fabs(b)) << "  ±  " << formatNumber(sqrt(delta))
+         << endl << setw(10) << "X = ------------" << (delta >= 100 ? "-----" : "--")
+         << endl << setw(10) << "         " << formatNumber(2 * a) << "    \n" << endl;
 }
 
 // MARK: Utilitarios - Fatorial
@@ -81,41 +85,80 @@ void printFormulaFatorial(int n, unsigned long long result) {
     cout << " = " << formatNumber(result) << endl;
 }
 
-// MARK: Utilitarios - Exponenciação
-double power(double base, int exp) {
-    if (exp == 0) return 1;
-    if (base == 0) return 0;
-    double result = 1;
-    for (int i = 0; i < abs(exp); ++i) {
-        result *= base;
+// MARK: Utilitarios - Potencia
+double power(double base, double exponent) {
+    return pow(base, exponent);
+}
+
+void printFormulaPotencia(double base, double exponent, double result) {
+    cout << formatNumber(base) << formatNumToSub(exponent) << " = ";
+    
+    if (exponent == 0) {
+        cout << "1 (Qualquer número elevado a 0 é 1)" << endl;
+    } else if (exponent == 1) {
+        cout << formatNumber(base) << " (Qualquer número elevado a 1 é o próprio número)" << endl;
+    } else if (exponent == floor(exponent)) {
+        cout << formatNumber(base);
+        for (int i = 1; i < static_cast<int>(exponent); ++i) {
+            cout << " * " << formatNumber(base);
+        }
+        cout << " = " << formatNumber(result) << endl;
+    } else {
+        cout << formatNumber(result) << endl;
     }
-    if (exp < 0) return 1 / result;
-    return result;
 }
 
 // MARK: Utilitarios - Logaritmo
 double calcLog(double value, double base) {
-    if (value <= 0 || base <= 0 || base == 1) throw invalid_argument("Valor e base devem ser maiores que zero e base não pode ser 1.");
+    if (value <= 0 || base <= 0 || base == 1) throw invalid_argument("O valor e a base devem ser positivos e a base deve ser diferente de 1.");
     return log(value) / log(base);
 }
 
+void printFormulaLogaritmo(double value, double base, double result) {
+    cout << "log" << formatNumToSubs(base) << "(" << formatNumber(value) << ") = " << formatNumber(result)
+         << endl << "Usando a mudança de base: log_b(x) = log(x) / log(b)"
+         << endl << "log" << formatNumToSubs(base) << "(" << formatNumber(value) << ") = log(" << formatNumber(value) << ") / log(" << formatNumber(base) << ")"
+         << endl << "log" << formatNumToSubs(base) << "(" << formatNumber(value) << ") = " << formatNumber(log(value)) << " / " << formatNumber(log(base)) << " = " << formatNumber(result) << endl;
+}
+
 // MARK: Utilitarios - Média
-double average(const vector<double>& nums) {
-    if (nums.empty()) throw invalid_argument("O vetor não pode estar vazio.");
+double average(const vector<double>& numbers) {
+    if (numbers.empty()) throw invalid_argument("A lista de números não pode estar vazia.");
     double sum = 0;
-    for (double num : nums) {
-        sum += num;
+    for (double number : numbers) {
+        sum += number;
     }
-    return sum / nums.size();
+    return sum / numbers.size();
+}
+
+void printFormulaMedia(const std::vector<double>& numbers, double result) {
+    cout << "Média = (";
+    for (size_t i = 0; i < numbers.size(); ++i) {
+        cout << formatNumber(numbers[i]);
+        if (i < numbers.size() - 1) {
+            cout << " + ";
+        }
+    }
+    cout << ") / " << formatNumber(numbers.size()) << endl;
+
+    double sum = 0;
+    for (size_t i = 0; i < numbers.size(); ++i) {
+        sum += numbers[i];
+    }
+    cout << "Média = " << formatNumber(sum) << " / " << formatNumber(numbers.size()) << " = " << formatNumber(result) << endl;
 }
 
 // MARK: Utilitarios - Módulo
 double mCalc(double num) {
-    return abs(num);
+    return fabs(num);
 }
 
-// MARK: Utilitarios - Raiz Enésima
-double calcRaizN(double num, int n) {
-    if (n <= 0) throw invalid_argument("O índice deve ser maior que zero.");
-    return pow(num, 1.0 / n);
+// MARK: Utilitarios - Raiz N-ésima
+double calcRaizN(double base, double index) {
+    if (index == 0) throw invalid_argument("O índice da raiz não pode ser zero.");
+    return pow(base, 1.0 / index);
+}
+
+void printFormulaRaizN(double base, double index, double result) {
+    cout << formatNumToSub(index) << "√" << formatNumber(base) << " = " << formatNumber(result) << endl;
 }
