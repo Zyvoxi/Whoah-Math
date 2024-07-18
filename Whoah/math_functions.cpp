@@ -11,7 +11,6 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
-#include <cassert>
 #include <cmath>
     using namespace std;
 
@@ -226,118 +225,84 @@ void funcRaizN() {
     returnOptions();
 }
 
-// MARK: Testes Mátematicos
-void runMathTests() {
-    cout << "Executando testes unitários...\n";
+// MARK: Derivada
+void funcDerivada() {
+    cout << "Insira os coeficientes do polinômio separados por espaços (do maior grau para o menor grau): ";
 
-    // Testes para calcRX
-    assert(calcRX(2, -4) == 2);
-    assert(calcRX(1, -1) == 1);
-    assert(calcRX(10, 0) == 0);  // Caso normal
-    assert(calcRX(-5, 10) == 2);  // Coeficiente 'a' negativo
-    // Casos de borda para calcRX
+    string input;
+    getline(cin, input);
+    istringstream stream(input);
+
+    vector<double> numbers;
+    string token;
+    while (stream >> token) {
+        if (isBrazilianNumber(token)) {
+            string c = convertBrazilianToAmerican(token);
+            double n;
+            if (isNumber(c)) {
+                istringstream(c) >> n;
+                numbers.push_back(n);
+            } else {
+                handleError("Número inválido ignorado: " + token);
+            }
+        } else {
+            handleError("Número inválido ignorado: " + token);
+        }
+    }
+
     try {
-        calcRX(0, 1);
-        assert(false); // Deve lançar exceção
+        if (!numbers.empty()) {
+            vector<double> result = calcDerivada(numbers);
+            clearScreen();
+            printFormulaDerivada(numbers, result);
+        } else {
+            throw invalid_argument("Nenhum número válido foi fornecido.");
+        }
     } catch (const invalid_argument& e) {
-        assert(true); // Exceção esperada
+        handleError(e.what());
     }
 
-    // Testes para calcDelta
-    assert(calcDelta(1, -3, 2) == 1);
-    assert(calcDelta(1, 2, 1) == 0);
-    assert(calcDelta(1, 0, -4) == 16);
-    // Casos de borda para calcDelta
-    assert(calcDelta(1, 0, 0) == 0);
+    returnOptions();
+}
 
-    // Testes para calcRX2
-    double x1, x2;
-    calcRX2(1, -3, 1, x1, x2);
-    assert(x1 == 2 && x2 == 1);
-    calcRX2(10, 20, 1600, x1, x2);
-    assert(x1 == 1 && x2 == -3);
+// MARK: Integral Definida
+void funcIntegralDefinida() {
+    cout << "Insira os coeficientes do polinômio separados por espaços (do maior grau para o menor grau): ";
 
-    // Testes para factorial
-    assert(calcFatorial(0) == 1);
-    assert(calcFatorial(5) == 120);
-    // Casos de borda para factorial
+    string input;
+    getline(cin, input);
+    istringstream stream(input);
+
+    vector<double> numbers;
+    string token;
+    while (stream >> token) {
+        if (isBrazilianNumber(token)) {
+            string c = convertBrazilianToAmerican(token);
+            double n;
+            if (isNumber(c)) {
+                istringstream(c) >> n;
+                numbers.push_back(n);
+            } else {
+                handleError("Número inválido ignorado: " + token);
+            }
+        } else {
+            handleError("Número inválido ignorado: " + token);
+        }
+    }
+
     try {
-        calcFatorial(-1);
-        assert(false); // Deve lançar exceção
-    } catch (const invalid_argument&) {
-        assert(true); // Exceção esperada
+        if (!numbers.empty()) {
+            double a = getValidatedInput("Insira o limite inferior de integração: ");
+            double b = getValidatedInput("Insira o limite superior de integração: ");
+            double resultado = calcIntegralDefinida(numbers, a, b);
+            clearScreen();
+            printFormulaIntegralDefinida(numbers, a, b, resultado);
+        } else {
+            throw invalid_argument("Nenhum número válido foi fornecido.");
+        }
+    } catch (const invalid_argument& e) {
+        handleError(e.what());
     }
-    try {
-        calcFatorial(66);
-        assert(false); // Deve lançar exceção
-    } catch (const overflow_error&) {
-        assert(true); // Exceção esperada
-    }
-
-    // Testes para power
-    assert(power(2, 3) == 8);
-    assert(power(5, 0) == 1);
-    // Casos de borda para power
-    assert(power(0, 0) == 1); // Definido como 1 por convenção
-    assert(power(0, 5) == 0);
-    assert(power(-2, 2) == 4);
-    assert(power(-2, 3) == -8);
-
-    // Testes para calcLog
-    assert(calcLog(8, 2) == 3);
-    assert(calcLog(1, 10) == 0);
-    // Casos de borda para calcLog
-    try {
-        calcLog(-1, 10);
-        assert(false); // Deve lançar exceção
-    } catch (const invalid_argument&) {
-        assert(true); // Exceção esperada
-    }
-    try {
-        calcLog(10, -1);
-        assert(false); // Deve lançar exceção
-    } catch (const invalid_argument&) {
-        assert(true); // Exceção esperada
-    }
-    try {
-        calcLog(10, 1);
-        assert(false); // Deve lançar exceção
-    } catch (const invalid_argument&) {
-        assert(true); // Exceção esperada
-    }
-
-    // Testes para average
-    vector<double> nums1 = {1, 2, 3, 4, 5};
-    assert(average(nums1) == 3);
-    vector<double> nums2 = {10, 20, 30};
-    assert(average(nums2) == 20);
-    // Casos de borda para average
-    try {
-        vector<double> empty;
-        average(empty);
-        assert(false); // Deve lançar exceção
-    } catch (const invalid_argument&) {
-        assert(true); // Exceção esperada
-    }
-
-    // Testes para mCalc
-    assert(mCalc(-5) == 5);
-    assert(mCalc(5) == 5);
-    // Casos de borda para mCalc
-    assert(mCalc(0) == 0);
-
-    // Testes para calcRaizN
-    assert(calcRaizN(27, 3) == 3);
-    assert(calcRaizN(16, 4) == 2);
-    // Casos de borda para calcRaizN
-    try {
-        calcRaizN(27, 0);
-        assert(false); // Deve lançar exceção
-    } catch (const invalid_argument&) {
-        assert(true); // Exceção esperada
-    }
-
-    cout << "Todos os testes foram executados com sucesso!\n";
 
     returnOptions();
 }

@@ -10,14 +10,15 @@
 #include <string>
 #include <locale>
 #include "math_functions.hpp"
+#include "math_tests.hpp"
 #include "utility_functions.hpp"
     using namespace std;
 
-// MARK: Forward Declarations
+// MARK: Declarações antecipadas
 void options();
 void handleOptionsChoice();
 
-// MARK: Opções
+// MARK: Função das opções
 void options() {
 #if DEBUG
     cout << "!-Versão de DEBUG-!\n" << endl;
@@ -31,6 +32,8 @@ void options() {
          << endl << "6 - Calcular a média de uma lista de números"
          << endl << "7 - Calcular o módulo de um número"
          << endl << "8 - Calcular a Raiz N-ésima de um número"
+         << endl << "9 - Calcular a derivada de um polinômio"
+         << endl << "10 - Calcular a integral definida de um polinômio"
          << endl << "\n0 - Sair" << endl;
 
     handleOptionsChoice();
@@ -93,6 +96,14 @@ void handleOptionsChoice() {
         case 8:
             clearScreen();
             funcRaizN();
+            break;
+        case 9:
+            clearScreen();
+            funcDerivada();
+            break;
+        case 10:
+            clearScreen();
+            funcIntegralDefinida();
             break;
         default:
             cout << "Opção inválida.\n";

@@ -49,8 +49,13 @@ void funcModulo();
 void funcRaizN();
 
 /**
- * @brief Executa os testes unitários para as funções matemáticas.
+ * @brief Função principal para calcular a derivada de um polinômio.
  */
-void runMathTests();
+void funcDerivada();
+
+/**
+ * @brief Função principal para calcular a integral definida de um polinômio.
+ */
+void funcIntegralDefinida();
 
 #endif /* math_functions_hpp */

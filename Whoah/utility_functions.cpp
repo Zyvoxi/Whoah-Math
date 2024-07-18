@@ -147,7 +147,7 @@ string formatNumber(double num) {
     return ss.str();
 }
 
-string formatNumToSubs(double num) {
+string formatNumToSub(double num) {
     string subs = "";
     string subsMap[] = {"₀", "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉"};
 
@@ -167,7 +167,7 @@ string formatNumToSubs(double num) {
     return subs;
 }
 
-string formatNumToSub(double num) {
+string formatNumToSup(double num) {
     string sub = "";
     string subMap[] = {"⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"};
 

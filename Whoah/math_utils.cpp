@@ -12,6 +12,7 @@
 #include <iomanip>
 #include <cmath>
 #include <stdexcept>
+#include <cassert>
 #include <vector>
     using namespace std;
 
@@ -91,7 +92,7 @@ double power(double base, double exponent) {
 }
 
 void printFormulaPotencia(double base, double exponent, double result) {
-    cout << formatNumber(base) << formatNumToSub(exponent) << " = ";
+    cout << formatNumber(base) << formatNumToSup(exponent) << " = ";
     
     if (exponent == 0) {
         cout << "1 (Qualquer número elevado a 0 é 1)" << endl;
@@ -115,10 +116,10 @@ double calcLog(double value, double base) {
 }
 
 void printFormulaLogaritmo(double value, double base, double result) {
-    cout << "log" << formatNumToSubs(base) << "(" << formatNumber(value) << ") = " << formatNumber(result)
+    cout << "log" << formatNumToSub(base) << "(" << formatNumber(value) << ") = " << formatNumber(result)
          << endl << "Usando a mudança de base: log_b(x) = log(x) / log(b)"
-         << endl << "log" << formatNumToSubs(base) << "(" << formatNumber(value) << ") = log(" << formatNumber(value) << ") / log(" << formatNumber(base) << ")"
-         << endl << "log" << formatNumToSubs(base) << "(" << formatNumber(value) << ") = " << formatNumber(log(value)) << " / " << formatNumber(log(base)) << " = " << formatNumber(result) << endl;
+         << endl << "log" << formatNumToSub(base) << "(" << formatNumber(value) << ") = log(" << formatNumber(value) << ") / log(" << formatNumber(base) << ")"
+         << endl << "log" << formatNumToSub(base) << "(" << formatNumber(value) << ") = " << formatNumber(log(value)) << " / " << formatNumber(log(base)) << " = " << formatNumber(result) << endl;
 }
 
 // MARK: Utilitarios - Média
@@ -131,7 +132,7 @@ double average(const vector<double>& numbers) {
     return sum / numbers.size();
 }
 
-void printFormulaMedia(const std::vector<double>& numbers, double result) {
+void printFormulaMedia(const vector<double>& numbers, double result) {
     cout << "Média = (";
     for (size_t i = 0; i < numbers.size(); ++i) {
         cout << formatNumber(numbers[i]);
@@ -160,5 +161,70 @@ double calcRaizN(double base, double index) {
 }
 
 void printFormulaRaizN(double base, double index, double result) {
-    cout << formatNumToSub(index) << "√" << formatNumber(base) << " = " << formatNumber(result) << endl;
+    cout << formatNumToSup(index) << "√" << formatNumber(base) << " = " << formatNumber(result) << endl;
+}
+
+// MARK: Utilitarios - Derivada
+vector<double> calcDerivada(const vector<double>& coeficientes) {
+    vector<double> derivada;
+    unsigned long grau = coeficientes.size() - 1;
+    for (int i = 0; i < grau; ++i) {
+        derivada.push_back(coeficientes[i] * (grau - i));
+    }
+    return derivada;
+}
+
+void printFormulaDerivada(const vector<double>& coeficientes, const vector<double>& derivada) {
+    cout << "Polinômio: ";
+    for (size_t i = 0; i < coeficientes.size(); ++i) {
+        cout << formatNumber(coeficientes[i]) << "x" << formatNumToSup((coeficientes.size() - 1 - i));
+        if (i < coeficientes.size() - 1) {
+            cout << " + ";
+        }
+    }
+    cout << endl;
+
+    cout << "Derivada: ";
+    for (size_t i = 0; i < derivada.size(); ++i) {
+        cout << formatNumber(derivada[i]) << "x" << formatNumToSup((derivada.size() - 1 - i));
+        if (i < derivada.size() - 1) {
+            cout << " + ";
+        }
+    }
+    cout << endl;
+}
+
+double calcIntegralDefinida(const std::vector<double>& coeficientes, double a, double b) {
+    if (a > b) {
+        throw std::invalid_argument("O limite inferior não pode ser maior que o limite superior.");
+    }
+    double integralA = 0;
+    double integralB = 0;
+    unsigned long grau = coeficientes.size() - 1;
+    for (size_t i = 0; i < coeficientes.size(); ++i) {
+        integralA += coeficientes[i] * pow(a, grau - i + 1) / (grau - i + 1);
+        integralB += coeficientes[i] * pow(b, grau - i + 1) / (grau - i + 1);
+    }
+
+    return integralB - integralA;
+}
+
+void printFormulaIntegralDefinida(const vector<double>& coeficientes, double a, double b, double resultado) {
+    cout << "Polinômio: ";
+    for (size_t i = 0; i < coeficientes.size(); ++i) {
+        cout << formatNumber(coeficientes[i]) << "x" << formatNumToSup((coeficientes.size() - 1 - i));
+        if (i < coeficientes.size() - 1) {
+            cout << " + ";
+        }
+    }
+    cout << endl;
+
+    cout << "Integral definida de " << formatNumber(a) << " a " << formatNumber(b) << ": ";
+    for (size_t i = 0; i < coeficientes.size(); ++i) {
+        cout << "(" << formatNumber(coeficientes[i]) << "x" << formatNumToSup((coeficientes.size() - 1 - i) + 1) << "/" << formatNumber((coeficientes.size() - 1 - i) + 1) << ")";
+        if (i < coeficientes.size() - 1) {
+            cout << " + ";
+        }
+    }
+    cout << " de " << formatNumber(a) << " a " << formatNumber(b) << " = " << formatNumber(resultado) << endl;
 }

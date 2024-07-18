@@ -169,4 +169,45 @@ double calcRaizN(double base, double index);
  */
 void printFormulaRaizN(double base, double index, double result);
 
+/**
+ * @brief Calcula a derivada de uma função polinomial.
+ *
+ * @param coeficientes Vetor de coeficientes do polinômio.
+ * @return std::vector<double> Vetor de coeficientes da derivada.
+ */
+std::vector<double> calcDerivada(const std::vector<double>& coeficientes);
+
+/**
+ * @brief Imprime a fórmula e o cálculo da derivada de uma função polinomial.
+ *
+ * @param coeficientes Vetor de coeficientes do polinômio.
+ * @param derivada Vetor de coeficientes da derivada.
+ */
+void printFormulaDerivada(const std::vector<double>& coeficientes, const std::vector<double>& derivada);
+
+/**
+ * @brief Calcula a integral definida de uma função polinomial.
+ *
+ * @param coeficientes Vetor de coeficientes do polinômio.
+ * @param a Limite inferior de integração.
+ * @param b Limite superior de integração.
+ * @return double Valor da integral definida.
+ */
+double calcIntegralDefinida(const std::vector<double>& coeficientes, double a, double b);
+
+/**
+ * @brief Imprime a fórmula e o cálculo da integral definida de uma função polinomial.
+ *
+ * @param coeficientes Vetor de coeficientes do polinômio.
+ * @param a Limite inferior de integração.
+ * @param b Limite superior de integração.
+ * @param resultado Valor da integral definida.
+ */
+void printFormulaIntegralDefinida(const std::vector<double>& coeficientes, double a, double b, double resultado);
+
+/**
+ * @brief Executa os testes unitários para as funções matemáticas.
+ */
+void runMathTests();
+
 #endif /* math_utils_hpp */

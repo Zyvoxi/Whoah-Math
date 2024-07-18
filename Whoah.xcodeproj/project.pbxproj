@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		13253F712C4771DF004E16C9 /* math_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13253F702C4771DF004E16C9 /* math_utils.cpp */; };
 		134970832C406BE800D2CA14 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 134970822C406BE800D2CA14 /* main.cpp */; };
+		13CDF9B12C49A36E00FF5311 /* math_tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13CDF9B02C49A36E00FF5311 /* math_tests.cpp */; };
 		13E26EB52C44DB0D00D1664A /* math_functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E26EB42C44DB0D00D1664A /* math_functions.cpp */; };
 		13E26EB72C44DB8900D1664A /* utility_functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E26EB62C44DB8900D1664A /* utility_functions.cpp */; };
 		13E26EC12C44EFB600D1664A /* utility_functions.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E26EC02C44EFB600D1664A /* utility_functions.hpp */; };
@@ -32,6 +33,8 @@
 		13253F702C4771DF004E16C9 /* math_utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = math_utils.cpp; sourceTree = "<group>"; };
 		1349707F2C406BE800D2CA14 /* Whoah-Debug */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Whoah-Debug"; sourceTree = BUILT_PRODUCTS_DIR; };
 		134970822C406BE800D2CA14 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		13CDF9AF2C49A36E00FF5311 /* math_tests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = math_tests.hpp; sourceTree = "<group>"; };
+		13CDF9B02C49A36E00FF5311 /* math_tests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = math_tests.cpp; sourceTree = "<group>"; };
 		13E26EB42C44DB0D00D1664A /* math_functions.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = math_functions.cpp; sourceTree = "<group>"; };
 		13E26EB62C44DB8900D1664A /* utility_functions.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = utility_functions.cpp; sourceTree = "<group>"; };
 		13E26EBE2C44EFB600D1664A /* main.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main.hpp; sourceTree = "<group>"; };
@@ -74,6 +77,7 @@
 				13E26EB62C44DB8900D1664A /* utility_functions.cpp */,
 				13E26EB42C44DB0D00D1664A /* math_functions.cpp */,
 				13253F702C4771DF004E16C9 /* math_utils.cpp */,
+				13CDF9B02C49A36E00FF5311 /* math_tests.cpp */,
 			);
 			path = Whoah;
 			sourceTree = "<group>";
@@ -84,6 +88,7 @@
 				13E26EBE2C44EFB600D1664A /* main.hpp */,
 				13E26EBF2C44EFB600D1664A /* math_functions.hpp */,
 				13253F6F2C4771DF004E16C9 /* math_utils.hpp */,
+				13CDF9AF2C49A36E00FF5311 /* math_tests.hpp */,
 				13E26EC02C44EFB600D1664A /* utility_functions.hpp */,
 			);
 			path = Headers;
@@ -146,6 +151,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13CDF9B12C49A36E00FF5311 /* math_tests.cpp in Sources */,
 				13E26EB72C44DB8900D1664A /* utility_functions.cpp in Sources */,
 				13E26EC12C44EFB600D1664A /* utility_functions.hpp in Sources */,
 				13E26EC22C44EFB600D1664A /* math_functions.hpp in Sources */,

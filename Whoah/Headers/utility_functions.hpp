@@ -79,7 +79,7 @@ std::string formatNumber(double num);
  * @param num O número a ser formatado.
  * @return std::string O número formatado em subscritos.
  */
-std::string formatNumToSubs(double num);
+std::string formatNumToSub(double num);
 
 /**
  * @brief Formata um número em superescrito.
@@ -90,7 +90,7 @@ std::string formatNumToSubs(double num);
  * @param num O número a ser formatado.
  * @return std::string O número formatado em superescritos.
  */
-std::string formatNumToSub(double num);
+std::string formatNumToSup(double num);
 
 /**
  * @brief Trata erros e exibe mensagens detalhadas.
