@@ -108,4 +108,4 @@ Sinta-se à vontade para contribuir com o projeto! Você pode abrir issues, envi
 
 ## Licença
 
-Este projeto está licenciado sob a [MIT License](LICENSE).
+Este projeto está licenciado sob a [GNU General Public License (GPL) versão 3](LICENSE).
