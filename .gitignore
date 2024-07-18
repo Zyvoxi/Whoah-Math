@@ -1,0 +1,72 @@
+## macOS
+.DS_Store
+._*
+
+## User settings
+xcuserdata/
+*.xcscheme
+
+## Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+.build/
+
+# Temp files
+Artifacts/
+
+# C++ specific
+*.o
+*.obj
+*.gch
+*.pch
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+*.class
+*.idb
+*.pdb
+*.ilk
+*.lib
+*.exp
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+Makefile
+
+# Visual Studio
+.vscode/
+*.code-workspace
+.vs/
+*.vcxproj*
+*.vcxproj.*
+*.sln*
+ipch/
+*.pdb
+*.obj
+*.log
+*.tlog
+*.lastbuildstate
+*.idb
+*.ilk
+*.dir
+Debug/
+Release/
+*.sdf
+*.opensdf
+*.suo
+*.user
+*.userosscache
+*.userprefs
+*.aps
+*.pch
+*.vspscc
+*.vssscc
+msbuild.log
+msbuild.err
+msbuild.wrn

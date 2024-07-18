@@ -194,9 +194,9 @@ void printFormulaDerivada(const vector<double>& coeficientes, const vector<doubl
     cout << endl;
 }
 
-double calcIntegralDefinida(const std::vector<double>& coeficientes, double a, double b) {
+double calcIntegralDefinida(const vector<double>& coeficientes, double a, double b) {
     if (a > b) {
-        throw std::invalid_argument("O limite inferior não pode ser maior que o limite superior.");
+        throw invalid_argument("O limite inferior não pode ser maior que o limite superior.");
     }
     double integralA = 0;
     double integralB = 0;

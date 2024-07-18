@@ -162,21 +162,21 @@ void runCalcDerivadaTests(int& failureCount) {
 }
 
 void runCalcIntegralDefinidaTests(int& failureCount) {
-    std::vector<double> coef = {3, 2, 1}; // 3x^2 + 2x + 1
+    vector<double> coef = {3, 2, 1}; // 3x^2 + 2x + 1
     double integral = calcIntegralDefinida(coef, 0, 1); // Integral de 0 a 1
-    checkTest(std::abs(integral - 3) < 0.0001, "calcIntegralDefinida({3, 2, 1}, 0, 1) deve ser aproximadamente 3", failureCount);
+    checkTest(abs(integral - 3) < 0.0001, "calcIntegralDefinida({3, 2, 1}, 0, 1) deve ser aproximadamente 3", failureCount);
 
     coef = {1, 0, -1}; // x^2 - 1
     integral = calcIntegralDefinida(coef, -1, 1); // Integral de -1 a 1
-    checkTest(std::abs(integral - (-1.3333)) < 0.0001, "calcIntegralDefinida({1, 0, -1}, -1, 1) deve ser aproximadamente -1.3333", failureCount);
+    checkTest(abs(integral - (-1.3333)) < 0.0001, "calcIntegralDefinida({1, 0, -1}, -1, 1) deve ser aproximadamente -1.3333", failureCount);
 
     coef = {2, -1}; // 2x - 1
     integral = calcIntegralDefinida(coef, 0, 2); // Integral de 0 a 2
-    checkTest(std::abs(integral - 2) < 0.0001, "calcIntegralDefinida({2, -1}, 0, 2) deve ser aproximadamente 2", failureCount);
+    checkTest(abs(integral - 2) < 0.0001, "calcIntegralDefinida({2, -1}, 0, 2) deve ser aproximadamente 2", failureCount);
 
     coef = {5}; // 5
     integral = calcIntegralDefinida(coef, 1, 3); // Integral de 1 a 3
-    checkTest(std::abs(integral - 10) < 0.0001, "calcIntegralDefinida({5}, 1, 3) deve ser aproximadamente 10", failureCount);
+    checkTest(abs(integral - 10) < 0.0001, "calcIntegralDefinida({5}, 1, 3) deve ser aproximadamente 10", failureCount);
 }
 
 void runMathTests() {

@@ -74,10 +74,10 @@
 			children = (
 				13E26EC32C44EFCB00D1664A /* Headers */,
 				134970822C406BE800D2CA14 /* main.cpp */,
-				13E26EB62C44DB8900D1664A /* utility_functions.cpp */,
 				13E26EB42C44DB0D00D1664A /* math_functions.cpp */,
 				13253F702C4771DF004E16C9 /* math_utils.cpp */,
 				13CDF9B02C49A36E00FF5311 /* math_tests.cpp */,
+				13E26EB62C44DB8900D1664A /* utility_functions.cpp */,
 			);
 			path = Whoah;
 			sourceTree = "<group>";
