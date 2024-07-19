@@ -147,6 +147,35 @@ string formatNumber(double num) {
     return ss.str();
 }
 
+string formatLargerNumber(const mpz_t num) {
+    // Converte o número grande para string
+    char *numStr = mpz_get_str(nullptr, 10, num);
+    string result(numStr);
+    free(numStr); // Libera a memória alocada pela mpz_get_str
+    
+    // Remove espaços e outros caracteres indesejados
+    result.erase(0, result.find_first_not_of(' '));
+    result.erase(result.find_last_not_of(' ') + 1);
+    
+    // Adiciona separadores de milhares
+    string formattedNum;
+    unsigned long long length = result.length();
+    int start = length % 3;
+    
+    // Adiciona a primeira parte, se existir
+    if (start > 0) {
+        formattedNum.append(result.substr(0, start));
+    }
+    
+    // Adiciona os grupos de três dígitos separados por pontos
+    for (int i = start; i < length; i += 3) {
+        if (i > 0) formattedNum.append(".");
+        formattedNum.append(result.substr(i, 3));
+    }
+    
+    return formattedNum;
+}
+
 string formatNumToSub(double num) {
     string subs = "";
     string subsMap[] = {"₀", "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉"};

@@ -8,6 +8,7 @@
 #ifndef utility_functions_hpp
 #define utility_functions_hpp
 
+#include <gmp.h>
 #include <string>
 
 /**
@@ -69,6 +70,14 @@ std::string formatWithThousandsSeparator(double num);
  * @return std::string Número formatado.
  */
 std::string formatNumber(double num);
+
+/**
+ * @brief Formata um número de acordo com o formato brasileiro.
+ *
+ * @param num Número a ser formatado.
+ * @return std::string Número formatado.
+ */
+std::string formatLargerNumber(const mpz_t num);
 
 /**
  * @brief Formata um número em subscrito.

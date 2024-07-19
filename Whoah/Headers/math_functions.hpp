@@ -58,4 +58,9 @@ void funcDerivada();
  */
 void funcIntegralDefinida();
 
+/**
+ * @brief Função principal para encontrar o valor máximo e mínimo de uma lista de números.
+ */
+void funcMaxMin();
+
 #endif /* math_functions_hpp */

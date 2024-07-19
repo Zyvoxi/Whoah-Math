@@ -34,6 +34,7 @@ void options() {
          << endl << "8 - Calcular a Raiz N-ésima de um número"
          << endl << "9 - Calcular a derivada de um polinômio"
          << endl << "10 - Calcular a integral definida de um polinômio"
+         << endl << "11 - Encontrar o valor máximo e mínimo de uma lista de números"
          << endl << "\n0 - Sair" << endl;
 
     handleOptionsChoice();
@@ -104,6 +105,10 @@ void handleOptionsChoice() {
         case 10:
             clearScreen();
             funcIntegralDefinida();
+            break;
+        case 11:
+            clearScreen();
+            funcMaxMin();
             break;
         default:
             cout << "Opção inválida.\n";

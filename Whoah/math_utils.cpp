@@ -11,8 +11,8 @@
 #include <sstream>
 #include <iomanip>
 #include <cmath>
+#include <gmp.h>
 #include <stdexcept>
-#include <cassert>
 #include <vector>
     using namespace std;
 
@@ -65,25 +65,25 @@ void printFormulaRX2(double b, double delta, double a) {
 }
 
 // MARK: Utilitarios - Fatorial
-unsigned long long calcFatorial(int n) {
-    if (n < 0) throw invalid_argument("Fatorial de número negativo não é definido.");
-    if (n > 65) throw overflow_error("Valor muito grande para calcular o fatorial sem estouro.");
-    unsigned long long result = 1;
-    for (int i = 1; i <= n; ++i) {
-        result *= i;
+void calcFatorial(int n, mpz_t result) {
+    if (n < 0) throw std::invalid_argument("Fatorial de número negativo não é definido.");
+
+    mpz_set_ui(result, 1); // Inicializa result com 1
+
+    for (int i = 2; i <= n; ++i) {
+        mpz_mul_ui(result, result, i);
     }
-    return result;
 }
 
-void printFormulaFatorial(int n, unsigned long long result) {
-    cout << formatNumber(n) << "! = ";
+void printFormulaFatorial(int n, const mpz_t result) {
+    std::cout << n << "! = ";
     for (int i = 1; i <= n; ++i) {
-        cout << formatNumber(i);
+        std::cout << i;
         if (i < n) {
-            cout << " * ";
+            std::cout << " * ";
         }
     }
-    cout << " = " << formatNumber(result) << endl;
+    std::cout << " = " << formatLargerNumber(result) << std::endl;
 }
 
 // MARK: Utilitarios - Potencia
@@ -194,6 +194,7 @@ void printFormulaDerivada(const vector<double>& coeficientes, const vector<doubl
     cout << endl;
 }
 
+// MARK: Utilitarios - Integral Definida
 double calcIntegralDefinida(const vector<double>& coeficientes, double a, double b) {
     if (a > b) {
         throw invalid_argument("O limite inferior não pode ser maior que o limite superior.");
@@ -227,4 +228,25 @@ void printFormulaIntegralDefinida(const vector<double>& coeficientes, double a, 
         }
     }
     cout << " de " << formatNumber(a) << " a " << formatNumber(b) << " = " << formatNumber(resultado) << endl;
+}
+
+// MARK: Utilitarios - MaxMin
+std::pair<double, double> findMaxMin(const vector<double>& numbers) {
+    if (numbers.empty()) {
+        throw invalid_argument("A lista de números não pode estar vazia.");
+    }
+
+    auto result = minmax_element(numbers.begin(), numbers.end());
+    return {*(result.first), *(result.second)};
+}
+
+void printMaxMin(const vector<double>& numbers, const pair<double, double>& maxMin) {
+    cout << "Números: ";
+    for (const double& num : numbers) {
+        cout << formatNumber(num) << " ";
+    }
+    cout << endl;
+
+    cout << "Valor mínimo: " << formatNumber(maxMin.first) << endl;
+    cout << "Valor máximo: " << formatNumber(maxMin.second) << endl;
 }

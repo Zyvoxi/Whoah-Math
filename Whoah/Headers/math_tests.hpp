@@ -78,4 +78,9 @@ void runCalcDerivadaTests(int& failureCount);
  */
 void runCalcIntegralDefinidaTests(int& failureCount);
 
+/**
+ * @brief Executa testes unitários para a função findMaxMin.
+ */
+void runFindMaxMinTests(int& failureCount);
+
 #endif /* math_tests_hpp */
