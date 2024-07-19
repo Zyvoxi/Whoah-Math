@@ -13,9 +13,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: |
-        brew install gmp
+    - name: Install GMP
+      run: brew install gmp
 
     - name: Build with Xcode
       run: |
@@ -70,6 +69,10 @@ jobs:
           echo "artifact-name=Whoah Math - Ubuntu" >> "$GITHUB_OUTPUT"
           echo "executable-path=${{ github.workspace }}/build/Whoah-Math" >> "$GITHUB_OUTPUT"
         fi
+
+    - name: Install GMP on Ubuntu
+      if: matrix.os == 'ubuntu-latest'
+      run: sudo apt-get install -y libgmp-dev
 
     - name: Configure CMake
       run: >
