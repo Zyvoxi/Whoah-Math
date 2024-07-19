@@ -18,7 +18,15 @@ jobs:
 
     - name: Build with Xcode
       run: |
-        xcodebuild -scheme Whoah -configuration Release -derivedDataPath build -disableAutomaticPackageResolution | xcbeautify
+        export GMP_INCLUDE_DIR=$(brew --prefix gmp)/include
+        export GMP_LIB_DIR=$(brew --prefix gmp)/lib
+        xcodebuild -scheme Whoah -configuration Release -derivedDataPath build \
+          -disableAutomaticPackageResolution \
+          GCC_PREPROCESSOR_DEFINITIONS='$GCC_PREPROCESSOR_DEFINITIONS' \
+          HEADER_SEARCH_PATHS='$HEADER_SEARCH_PATHS $(GMP_INCLUDE_DIR)' \
+          LIBRARY_SEARCH_PATHS='$LIBRARY_SEARCH_PATHS $(GMP_LIB_DIR)' \
+          OTHER_LDFLAGS='$OTHER_LDFLAGS -lgmp' \
+        | xcbeautify
 
     - name: Archive Artifacts
       run: |
