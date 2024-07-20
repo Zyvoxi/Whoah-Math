@@ -13,8 +13,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install GMP
-      run: brew install gmp
+    - name: Reinstall GMP (Universal)
+      run: brew reinstall gmp --universal
 
     - name: Set GMP Environment Variables
       run: |
@@ -25,7 +25,7 @@ jobs:
       run: |
         export GMP_INCLUDE_DIR=$(brew --prefix gmp)/include
         export GMP_LIB_DIR=$(brew --prefix gmp)/lib
-        sudo xcodebuild -scheme Whoah -configuration Release -derivedDataPath build/x86_64 \
+        xcodebuild -scheme Whoah -configuration Release -derivedDataPath build/x86_64 \
           -destination 'platform=macOS,arch=x86_64' \
           HEADER_SEARCH_PATHS="$GMP_INCLUDE_DIR" \
           LIBRARY_SEARCH_PATHS="$GMP_LIB_DIR" \
@@ -36,7 +36,7 @@ jobs:
       run: |
         export GMP_INCLUDE_DIR=$(brew --prefix gmp)/include
         export GMP_LIB_DIR=$(brew --prefix gmp)/lib
-        sudo xcodebuild -scheme Whoah -configuration Release -derivedDataPath build/arm64 \
+        xcodebuild -scheme Whoah -configuration Release -derivedDataPath build/arm64 \
           -destination 'platform=macOS,arch=arm64' \
           HEADER_SEARCH_PATHS="$GMP_INCLUDE_DIR" \
           LIBRARY_SEARCH_PATHS="$GMP_LIB_DIR" \
