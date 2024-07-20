@@ -13,8 +13,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install GMP
-      run: brew install gmp
+    - name: Install GMP for x86_64
+      run: |
+        arch -x86_64 brew install gmp
 
     - name: Build with Xcode
       run: |
