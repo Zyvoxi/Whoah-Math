@@ -13,8 +13,18 @@ include_directories(Whoah/Headers)
 # Adiciona os arquivos fonte
 file(GLOB SOURCES "Whoah/*.cpp")
 
+# Encontra a biblioteca GMP
+find_package(GMP REQUIRED)
+
+# Adiciona os diretórios de include e linkagem de GMP
+include_directories(${GMP_INCLUDE_DIR})
+link_directories(${GMP_LIBRARY_DIR})
+
 # Cria o executável a partir dos arquivos fonte
 add_executable(${PROJECT_NAME} ${SOURCES})
+
+# Vincula a biblioteca GMP ao executável
+target_link_libraries(${PROJECT_NAME} ${GMP_LIBRARIES})
 
 # Adiciona opções para compilação estática
 if (MSVC)
