@@ -11,13 +11,20 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Check Architecture
+      run: uname -m
 
-    - name: GMP
+    - name: Install Homebrew
       run: |
-        uname -m
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        brew uninstall --ignore-dependencies gmp
+        brew update
+
+    - name: Uninstall GMP
+      run: |
+        brew uninstall --ignore-dependencies gmp || true
+
+    - name: Install GMP for x86_64
+      run: |
         arch -x86_64 brew install gmp
 
     - name: Set GMP Environment Variables
