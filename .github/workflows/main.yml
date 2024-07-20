@@ -28,41 +28,13 @@ jobs:
       run: |
         arch -x86_64 brew install gmp
 
-    - name: Set GMP Environment Variables
+    - name: Build with Xcode
       run: |
-        echo "GMP_INCLUDE_DIR=$(arch -x86_64 brew --prefix gmp)/include" >> $GITHUB_ENV
-        echo "GMP_LIB_DIR=$(arch -x86_64 brew --prefix gmp)/lib" >> $GITHUB_ENV
-
-    - name: Build for x86_64
-      run: |
-        export GMP_INCLUDE_DIR=$(arch -x86_64 brew --prefix gmp)/include
-        export GMP_LIB_DIR=$(arch -x86_64 brew --prefix gmp)/lib
-        xcodebuild -scheme Whoah -configuration Release -derivedDataPath build/x86_64 \
-          -destination 'platform=macOS,arch=x86_64' \
-          HEADER_SEARCH_PATHS="$GMP_INCLUDE_DIR" \
-          LIBRARY_SEARCH_PATHS="$GMP_LIB_DIR" \
-          OTHER_LDFLAGS="-L$GMP_LIB_DIR -lgmp" \
-        | xcbeautify
-
-    - name: Build for arm64
-      run: |
-        export GMP_INCLUDE_DIR=$(brew --prefix gmp)/include
-        export GMP_LIB_DIR=$(brew --prefix gmp)/lib
-        xcodebuild -scheme Whoah -configuration Release -derivedDataPath build/arm64 \
-          -destination 'platform=macOS,arch=arm64' \
-          HEADER_SEARCH_PATHS="$GMP_INCLUDE_DIR" \
-          LIBRARY_SEARCH_PATHS="$GMP_LIB_DIR" \
-          OTHER_LDFLAGS="-L$GMP_LIB_DIR -lgmp" \
-        | xcbeautify
-
-    - name: Create Universal Binary
-      run: |
-        mkdir -p build/Release
-        lipo -create -output build/Release/Whoah-Math build/x86_64/Build/Products/Release/Whoah-Math build/arm64/Build/Products/Release/Whoah-Math
+        xcodebuild -scheme Whoah -configuration Release -derivedDataPath build -disableAutomaticPackageResolution | xcbeautify
 
     - name: Archive Artifacts
       run: |
-        cd build/Release
+        cd build/Build/Products/Release
         zip -r Whoah-Math.zip Whoah-Math
         mv Whoah-Math.zip $GITHUB_WORKSPACE/
 
