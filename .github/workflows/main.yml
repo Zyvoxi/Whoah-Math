@@ -18,11 +18,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Xcode
-      uses: apple-actions/setup-xcode@v2
-      with:
-        xcode-version: '15.0'  # Specify the Xcode version you are using
-
     - name: Set up build environment
       run: |
         # Ensure the environment variable is set correctly
