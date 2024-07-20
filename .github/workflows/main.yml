@@ -15,13 +15,11 @@ jobs:
     
     - name: Build with Xcode
       run: |
-        export GMP_INCLUDE_DIR=$(brew --prefix gmp)/include
-        export GMP_LIB_DIR=$(brew --prefix gmp)/lib
+        export GMP_INCLUDE_DIR=/usr/local/include
+        export GMP_LIB_DIR=/usr/local/lib
         xcodebuild -scheme Whoah -configuration Release -derivedDataPath build \
           HEADER_SEARCH_PATHS='$HEADER_SEARCH_PATHS $(GMP_INCLUDE_DIR)' \
           LIBRARY_SEARCH_PATHS='$LIBRARY_SEARCH_PATHS $(GMP_LIB_DIR)' \
-          OTHER_LDFLAGS='$OTHER_LDFLAGS -lgmp' \
-          ARCHS=arm64 \
         | xcbeautify
 
     - name: Archive Artifacts
