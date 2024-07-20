@@ -16,6 +16,7 @@ jobs:
 
     - name: Install Homebrew for x86_64
       run: |
+        sudo rm -rf /opt/homebrew
         arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         arch -x86_64 brew update
 
