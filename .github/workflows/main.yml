@@ -12,19 +12,44 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    
-    - name: Build with Xcode
+
+    - name: Install GMP
+      run: brew install gmp
+
+    - name: Set GMP Environment Variables
       run: |
-        export GMP_INCLUDE_DIR=/usr/local/include
-        export GMP_LIB_DIR=/usr/local/lib
-        xcodebuild -scheme Whoah -configuration Release -derivedDataPath build \
-          HEADER_SEARCH_PATHS='$HEADER_SEARCH_PATHS $(GMP_INCLUDE_DIR)' \
-          LIBRARY_SEARCH_PATHS='$LIBRARY_SEARCH_PATHS $(GMP_LIB_DIR)' \
+        echo "GMP_INCLUDE_DIR=$(brew --prefix gmp)/include" >> $GITHUB_ENV
+        echo "GMP_LIB_DIR=$(brew --prefix gmp)/lib" >> $GITHUB_ENV
+
+    - name: Build for x86_64
+      run: |
+        export GMP_INCLUDE_DIR=$(brew --prefix gmp)/include
+        export GMP_LIB_DIR=$(brew --prefix gmp)/lib
+        sudo xcodebuild -scheme Whoah -configuration Release -derivedDataPath build/x86_64 \
+          -destination 'platform=macOS,arch=x86_64' \
+          HEADER_SEARCH_PATHS="$GMP_INCLUDE_DIR" \
+          LIBRARY_SEARCH_PATHS="$GMP_LIB_DIR" \
+          OTHER_LDFLAGS="-L$GMP_LIB_DIR -lgmp" \
         | xcbeautify
+
+    - name: Build for arm64
+      run: |
+        export GMP_INCLUDE_DIR=$(brew --prefix gmp)/include
+        export GMP_LIB_DIR=$(brew --prefix gmp)/lib
+        sudo xcodebuild -scheme Whoah -configuration Release -derivedDataPath build/arm64 \
+          -destination 'platform=macOS,arch=arm64' \
+          HEADER_SEARCH_PATHS="$GMP_INCLUDE_DIR" \
+          LIBRARY_SEARCH_PATHS="$GMP_LIB_DIR" \
+          OTHER_LDFLAGS="-L$GMP_LIB_DIR -lgmp" \
+        | xcbeautify
+
+    - name: Create Universal Binary
+      run: |
+        lipo -create -output build/Release/Whoah-Math build/x86_64/Build/Products/Release/Whoah-Math build/arm64/Build/Products/Release/Whoah-Math
 
     - name: Archive Artifacts
       run: |
-        cd build/Build/Products/Release
+        cd build/Release
         zip -r Whoah-Math.zip Whoah-Math
         mv Whoah-Math.zip $GITHUB_WORKSPACE/
 
