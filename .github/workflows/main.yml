@@ -20,9 +20,9 @@ jobs:
         arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         arch -x86_64 brew update
 
-    - name: Uninstall GMP (if exists)
+    - name: Install xcbeautify
       run: |
-        arch -x86_64 brew uninstall --ignore-dependencies gmp || true
+        arch -x86_64 /usr/local/bin/brew install xcbeautify
 
     - name: Install GMP for x86_64
       run: |
