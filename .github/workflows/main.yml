@@ -13,20 +13,19 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install GMP for x86_64
+    - name: Set GMP Environment Variables
       run: |
-        arch -x86_64 brew install gmp
+        echo "GMP_INCLUDE_DIR=$(brew --prefix gmp)/include" >> $GITHUB_ENV
+        echo "GMP_LIB_DIR=$(brew --prefix gmp)/lib" >> $GITHUB_ENV
 
     - name: Build with Xcode
       run: |
-        export GMP_INCLUDE_DIR=$(brew --prefix gmp)/include
-        export GMP_LIB_DIR=$(brew --prefix gmp)/lib
         xcodebuild -scheme Whoah -configuration Release -derivedDataPath build \
           -disableAutomaticPackageResolution \
-          GCC_PREPROCESSOR_DEFINITIONS='$GCC_PREPROCESSOR_DEFINITIONS' \
-          HEADER_SEARCH_PATHS='$HEADER_SEARCH_PATHS $(GMP_INCLUDE_DIR)' \
-          LIBRARY_SEARCH_PATHS='$LIBRARY_SEARCH_PATHS $(GMP_LIB_DIR)' \
-          OTHER_LDFLAGS='$OTHER_LDFLAGS -lgmp' \
+          ARCHS=x86_64 \
+          HEADER_SEARCH_PATHS="$GMP_INCLUDE_DIR" \
+          LIBRARY_SEARCH_PATHS="$GMP_LIB_DIR" \
+          OTHER_LDFLAGS="-lgmp" \
         | xcbeautify
 
     - name: Archive Artifacts
