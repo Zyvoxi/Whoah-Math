@@ -15,6 +15,8 @@ jobs:
 
     - name: GMP
       run: |
+        uname -m
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         brew uninstall --ignore-dependencies gmp
         arch -x86_64 brew install gmp
 
