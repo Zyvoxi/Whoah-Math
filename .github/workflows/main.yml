@@ -12,16 +12,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-
-    - name: Install GMP
-      run: brew install gmp
-
+    
     - name: Build with Xcode
       run: |
         export GMP_INCLUDE_DIR=$(brew --prefix gmp)/include
         export GMP_LIB_DIR=$(brew --prefix gmp)/lib
         xcodebuild -scheme Whoah -configuration Release -derivedDataPath build \
-          -disableAutomaticPackageResolution \
           HEADER_SEARCH_PATHS='$HEADER_SEARCH_PATHS $(GMP_INCLUDE_DIR)' \
           LIBRARY_SEARCH_PATHS='$LIBRARY_SEARCH_PATHS $(GMP_LIB_DIR)' \
           OTHER_LDFLAGS='$OTHER_LDFLAGS -lgmp' \
