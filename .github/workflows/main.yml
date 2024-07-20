@@ -30,17 +30,14 @@ jobs:
       run: |
         arch -x86_64 /usr/local/bin/brew install gmp
 
-    - name: Set GMP Environment Variables
-      run: |
-        echo "GMP_INCLUDE_DIR=/usr/local/opt/gmp/include" >> $GITHUB_ENV
-        echo "GMP_LIB_DIR=/usr/local/opt/gmp/lib" >> $GITHUB_ENV
-
     - name: Verify Project Directory
       run: ls -la $GITHUB_WORKSPACE
 
     - name: Build with Xcode
       run: |
-        arch -x86_64 xcodebuild -scheme Whoah -configuration Release -derivedDataPath build | xcbeautify
+        xcodebuild -scheme Whoah -configuration Release -derivedDataPath build \
+          ARCHS=x86_64 \
+        | xcbeautify
 
     - name: Archive Artifacts
       run: |
