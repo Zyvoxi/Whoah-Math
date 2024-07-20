@@ -45,6 +45,7 @@ jobs:
 
     - name: Create Universal Binary
       run: |
+        mkdir -p build/Release
         lipo -create -output build/Release/Whoah-Math build/x86_64/Build/Products/Release/Whoah-Math build/arm64/Build/Products/Release/Whoah-Math
 
     - name: Archive Artifacts
