@@ -23,8 +23,6 @@ jobs:
       with:
         xcode-version: '15.0'  # Specify the Xcode version you are using
 
-    - name: Install GMP
-
     - name: Set up build environment
       run: |
         # Ensure the environment variable is set correctly
