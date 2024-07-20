@@ -14,14 +14,14 @@ jobs:
     - name: Check Architecture
       run: uname -m
 
-    - name: Install Homebrew
+    - name: Install Homebrew for x86_64
       run: |
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        brew update
+        arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        arch -x86_64 brew update
 
-    - name: Uninstall GMP
+    - name: Uninstall GMP (if exists)
       run: |
-        brew uninstall --ignore-dependencies gmp || true
+        arch -x86_64 brew uninstall --ignore-dependencies gmp || true
 
     - name: Install GMP for x86_64
       run: |
@@ -29,13 +29,13 @@ jobs:
 
     - name: Set GMP Environment Variables
       run: |
-        echo "GMP_INCLUDE_DIR=$(brew --prefix gmp)/include" >> $GITHUB_ENV
-        echo "GMP_LIB_DIR=$(brew --prefix gmp)/lib" >> $GITHUB_ENV
+        echo "GMP_INCLUDE_DIR=$(arch -x86_64 brew --prefix gmp)/include" >> $GITHUB_ENV
+        echo "GMP_LIB_DIR=$(arch -x86_64 brew --prefix gmp)/lib" >> $GITHUB_ENV
 
     - name: Build for x86_64
       run: |
-        export GMP_INCLUDE_DIR=$(brew --prefix gmp)/include
-        export GMP_LIB_DIR=$(brew --prefix gmp)/lib
+        export GMP_INCLUDE_DIR=$(arch -x86_64 brew --prefix gmp)/include
+        export GMP_LIB_DIR=$(arch -x86_64 brew --prefix gmp)/lib
         xcodebuild -scheme Whoah -configuration Release -derivedDataPath build/x86_64 \
           -destination 'platform=macOS,arch=x86_64' \
           HEADER_SEARCH_PATHS="$GMP_INCLUDE_DIR" \
