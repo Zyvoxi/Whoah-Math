@@ -40,7 +40,7 @@ jobs:
 
     - name: Build with Xcode
       run: |
-        xcodebuild -scheme Whoah -configuration Release -derivedDataPath build -disableAutomaticPackageResolution | xcbeautify
+        arch -x86_64 xcodebuild -scheme Whoah -configuration Release -derivedDataPath build | xcbeautify
 
     - name: Archive Artifacts
       run: |
