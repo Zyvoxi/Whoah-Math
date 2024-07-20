@@ -11,6 +11,8 @@ jobs:
     runs-on: macos-latest
 
     steps:
+    - uses: actions/checkout@v4
+
     - name: Check Architecture
       run: uname -m
 
@@ -18,7 +20,7 @@ jobs:
       run: |
         sudo rm -rf /opt/homebrew
         arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        arch -x86_64 brew update
+        arch -x86_64 /usr/local/bin/brew update
 
     - name: Install xcbeautify
       run: |
@@ -26,7 +28,15 @@ jobs:
 
     - name: Install GMP for x86_64
       run: |
-        arch -x86_64 brew install gmp
+        arch -x86_64 /usr/local/bin/brew install gmp
+
+    - name: Set GMP Environment Variables
+      run: |
+        echo "GMP_INCLUDE_DIR=/usr/local/opt/gmp/include" >> $GITHUB_ENV
+        echo "GMP_LIB_DIR=/usr/local/opt/gmp/lib" >> $GITHUB_ENV
+
+    - name: Verify Project Directory
+      run: ls -la $GITHUB_WORKSPACE
 
     - name: Build with Xcode
       run: |
