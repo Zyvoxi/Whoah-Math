@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Adiciona os diretórios de cabeçalho
 include_directories(Whoah/Headers)
+include_directories(C:/msys64/mingw64/include)
 
 # Adiciona os arquivos fonte
 file(GLOB SOURCES "Whoah/*.cpp")
@@ -16,21 +17,18 @@ file(GLOB SOURCES "Whoah/*.cpp")
 # Define o caminho de pesquisa para pacotes e bibliotecas
 set(CMAKE_PREFIX_PATH "C:/msys64/mingw64")
 
-# Adiciona o diretório onde está o FindGMP.cmake
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules" ${CMAKE_MODULE_PATH})
-
-# Encontra a biblioteca GMP usando FindGMP.cmake
+# Encontra a biblioteca GMP
 find_package(GMP REQUIRED)
 
-
+# Inclui diretórios e bibliotecas da GMP
 include_directories(${GMP_INCLUDE_DIRS})
-link_directories(${GMP_LIBRARY_DIRS})  # Corrigido de ${GMP_LIBRARY_PATH} para ${GMP_LIBRARY_DIRS}
+link_directories(${GMP_LIBRARY_DIRS})
 
 # Cria o executável a partir dos arquivos fonte
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Vincula a biblioteca GMP ao executável
-target_link_libraries(${PROJECT_NAME} ${GMP_LIBRARIES})  # Usando ${GMP_LIBRARIES} diretamente
+target_link_libraries(${PROJECT_NAME} ${GMP_LIBRARIES})
 
 # Adiciona opções para compilação estática
 if (MSVC)
