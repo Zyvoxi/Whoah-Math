@@ -14,12 +14,7 @@ include_directories(Whoah/Headers)
 file(GLOB SOURCES "Whoah/*.cpp")
 
 # Define o caminho de pesquisa para pacotes e bibliotecas
-if (MSYS)
-  # Ajuste o caminho conforme necessário para sua instalação do MSYS2
-  set(CMAKE_PREFIX_PATH "C:/msys64/mingw64")
-else()
-  set(CMAKE_PREFIX_PATH "/usr/local")
-endif()
+set(CMAKE_PREFIX_PATH "C:/msys64/mingw64")
 
 # Adiciona o diretório onde está o FindGMP.cmake
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules" ${CMAKE_MODULE_PATH})
@@ -27,12 +22,9 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules" ${CMAKE_MODULE_PATH})
 # Encontra a biblioteca GMP usando FindGMP.cmake
 find_package(GMP REQUIRED)
 
-if (GMP_FOUND)
-  include_directories(${GMP_INCLUDE_DIRS})
-  link_directories(${GMP_LIBRARY_DIRS})  # Corrigido de ${GMP_LIBRARY_PATH} para ${GMP_LIBRARY_DIRS}
-else()
-  message(FATAL_ERROR "GMP not found.")
-endif()
+
+include_directories(${GMP_INCLUDE_DIRS})
+link_directories(${GMP_LIBRARY_DIRS})  # Corrigido de ${GMP_LIBRARY_PATH} para ${GMP_LIBRARY_DIRS}
 
 # Cria o executável a partir dos arquivos fonte
 add_executable(${PROJECT_NAME} ${SOURCES})
