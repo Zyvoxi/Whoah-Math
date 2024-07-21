@@ -15,7 +15,7 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest]
         build_type: [Release]
-        c_compiler: [cl]
+        cpp_compiler: [cl]
 
     steps:
     - uses: actions/checkout@v4
@@ -48,17 +48,16 @@ jobs:
         fi
 
     - name: Install MSYS2
-      if: runner.os == 'Windows'
+      if: runner.os == 'windows-latest'
       uses: msys2/setup-msys2@v2
       with:
         update: true
         install: mingw-w64-x86_64-toolchain
 
     - name: Install GMP on Windows
-      if: runner.os == 'Windows'
+      if: runner.os == 'windows-latest'
       run: |
         pacman -Syu --noconfirm
-        pacman -Su --noconfirm
         pacman -S --noconfirm mingw-w64-x86_64-gmp
 
     - name: Configure CMake
@@ -97,7 +96,7 @@ jobs:
         path: Whoah-Math.zip
     
     - name: Upload Artifact Windows
-      if: runner.os != 'macos-latest'
+      if: runner.os == 'windows-latest'
       uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.strings.outputs.artifact-name }}
