@@ -15,12 +15,8 @@ file(GLOB SOURCES "Whoah/*.cpp")
 
 # Encontra a biblioteca GMP
 find_package(GMP REQUIRED)
-if (NOT GMP_FOUND)
-    message(FATAL_ERROR "GMP library not found. Please install GMP.")
-endif()
-
-# Adiciona os diretórios de include e linkagem de GMP
-include_directories(${GMP_INCLUDE_DIRS})
+include_directories(${GMP_INCLUDE_DIR})
+link_directories(${GMP_LIBRARY_DIR})
 
 # Cria o executável a partir dos arquivos fonte
 add_executable(${PROJECT_NAME} ${SOURCES})
