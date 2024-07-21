@@ -14,53 +14,38 @@ include_directories(Whoah/Headers)
 file(GLOB SOURCES "Whoah/*.cpp")
 
 # Define o caminho de pesquisa para pacotes e bibliotecas
-if (WIN32)
-    set(CMAKE_PREFIX_PATH "C:/msys64/mingw64")
+if (MSYS)
+  set(CMAKE_PREFIX_PATH "C:/msys64/mingw64")
 else()
-    set(CMAKE_PREFIX_PATH "/usr/local")
+  set(CMAKE_PREFIX_PATH "/usr/local")
 endif()
 
-# Verifica se pkg-config está disponível
-find_program(PKG_CONFIG_EXECUTABLE pkg-config)
+# Adiciona o diretório onde está o FindGMP.cmake
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules" ${CMAKE_MODULE_PATH})
 
-if (PKG_CONFIG_EXECUTABLE)
-    # Define o caminho do pkg-config
-    set(PKG_CONFIG_PATH "C:/msys64/mingw64/lib/pkgconfig")
+# Encontra a biblioteca GMP usando FindGMP.cmake
+find_package(GMP REQUIRED)
 
-    # Usa pkg-config para encontrar GMP
-    execute_process(
-        COMMAND ${PKG_CONFIG_EXECUTABLE} --cflags --libs gmp
-        OUTPUT_VARIABLE GMP_FLAGS
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-
-    if (NOT GMP_FLAGS)
-        message(FATAL_ERROR "pkg-config could not find GMP")
-    endif()
-
-    string(REPLACE "-I" " -I" GMP_INCLUDE_DIR "${GMP_FLAGS}")
-    string(REPLACE "-L" " -L" GMP_LIBRARY_DIR "${GMP_FLAGS}")
-    string(REPLACE "-l" "" GMP_LIBRARIES "${GMP_FLAGS}")
-
-    include_directories(${GMP_INCLUDE_DIR})
-    link_directories(${GMP_LIBRARY_DIR})
+if (GMP_FOUND)
+  include_directories(${GMP_INCLUDE_DIRS})
+  link_directories(${GMP_LIBRARY_PATH})
 else()
-    message(FATAL_ERROR "pkg-config not found.")
+  message(FATAL_ERROR "GMP not found.")
 endif()
 
 # Cria o executável a partir dos arquivos fonte
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Vincula a biblioteca GMP ao executável
-target_link_libraries(${PROJECT_NAME} ${GMP_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${GMP_C_LIBRARIES} ${GMP_CXX_LIBRARIES})
 
 # Adiciona opções para compilação estática
 if (MSVC)
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
 endif()
 
 # Inclui o CPack para a criação de pacotes de distribuição
