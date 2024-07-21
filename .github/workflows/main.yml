@@ -37,6 +37,7 @@ jobs:
         arch -x86_64 /usr/local/bin/brew install gmp
 
     - name: Set reusable strings
+      if: runner.os == 'Windows'
       id: strings
       shell: bash
       run: |
@@ -62,7 +63,13 @@ jobs:
     - name: Configure CMake
       if: runner.os == 'Windows'
       run: |
-        cmake -B ${{ steps.strings.outputs.build-output-dir }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{ github.workspace }} -DCMAKE_PREFIX_PATH=/usr/local
+        cmake -B ${{ steps.strings.outputs.build-output-dir }} \
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+        -S ${{ github.workspace }} \
+        -DCMAKE_PREFIX_PATH=C:\\msys64\\mingw64 \
+        -DCMAKE_MODULE_PATH=C:\\msys64\\mingw64\\lib\\cmake
 
     - name: Build with Xcode
       if: runner.os == 'macOS'
