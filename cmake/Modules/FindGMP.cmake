@@ -9,10 +9,8 @@
 include(FindPackageHandleStandardArgs)
 
 # Define the default search paths
-if (MSYS OR MSYS2)
-  set(GMP_LIBRARY_PATH "C:/msys64/mingw64/lib")
-  set(GMP_INCLUDE_PATH "C:/msys64/mingw64/include")
-endif()
+set(GMP_LIBRARY_PATH "C:/msys64/mingw64/lib")
+set(GMP_INCLUDE_PATH "C:/msys64/mingw64/include")
 
 message(STATUS "Searching for GMP in:")
 message(STATUS "  Library path: ${GMP_LIBRARY_PATH}")
