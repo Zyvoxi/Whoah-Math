@@ -12,6 +12,7 @@
 #include <iomanip>
 #include <cmath>
 #include <gmp.h>
+#include <algorithm>
 #include <stdexcept>
 #include <vector>
     using namespace std;
@@ -66,7 +67,7 @@ void printFormulaRX2(double b, double delta, double a) {
 
 // MARK: Utilitarios - Fatorial
 void calcFatorial(int n, mpz_t result) {
-    if (n < 0) throw std::invalid_argument("Fatorial de número negativo não é definido.");
+    if (n < 0) throw invalid_argument("Fatorial de número negativo não é definido.");
 
     mpz_set_ui(result, 1); // Inicializa result com 1
 
@@ -76,14 +77,14 @@ void calcFatorial(int n, mpz_t result) {
 }
 
 void printFormulaFatorial(int n, const mpz_t result) {
-    std::cout << n << "! = ";
+    cout << n << "! = ";
     for (int i = 1; i <= n; ++i) {
-        std::cout << i;
+        cout << i;
         if (i < n) {
-            std::cout << " * ";
+            cout << " * ";
         }
     }
-    std::cout << " = " << formatLargerNumber(result) << std::endl;
+    cout << " = " << formatLargerNumber(result) << endl;
 }
 
 // MARK: Utilitarios - Potencia
@@ -231,7 +232,7 @@ void printFormulaIntegralDefinida(const vector<double>& coeficientes, double a, 
 }
 
 // MARK: Utilitarios - MaxMin
-std::pair<double, double> findMaxMin(const vector<double>& numbers) {
+pair<double, double> findMaxMin(const vector<double>& numbers) {
     if (numbers.empty()) {
         throw invalid_argument("A lista de números não pode estar vazia.");
     }

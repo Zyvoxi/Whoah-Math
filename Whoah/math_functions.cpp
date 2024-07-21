@@ -96,7 +96,6 @@ void funcFatorial() {
         calcFatorial(intN, result);
         clearScreen();
         printFormulaFatorial(intN, result);
-        
         mpz_clear(result);
     } catch (const invalid_argument& e) {
         handleError(e.what());
