@@ -53,19 +53,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [windows-latest]
         build_type: [Release]
-        c_compiler: [gcc, cl]
-        include:
-          - os: windows-latest
-            c_compiler: cl
-          - os: ubuntu-latest
-            c_compiler: gcc
-        exclude:
-          - os: windows-latest
-            c_compiler: gcc
-          - os: ubuntu-latest
-            c_compiler: cl
+        c_compiler: [cl]
 
     steps:
     - uses: actions/checkout@v4
@@ -78,14 +68,7 @@ jobs:
         if [ "${{ matrix.os }}" = "windows-latest" ]; then
           echo "artifact-name=Whoah Math - Windows" >> "$GITHUB_OUTPUT"
           echo "executable-path=${{ github.workspace }}\\build\\Release\\Whoah-Math.exe" >> "$GITHUB_OUTPUT"
-        elif [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
-          echo "artifact-name=Whoah Math - Ubuntu" >> "$GITHUB_OUTPUT"
-          echo "executable-path=${{ github.workspace }}/build/Whoah-Math" >> "$GITHUB_OUTPUT"
         fi
-
-    - name: Install GMP on Ubuntu
-      if: matrix.os == 'ubuntu-latest'
-      run: sudo apt-get install -y libgmp-dev g++
 
     - name: Install GMP on Windows
       if: matrix.os == 'windows-latest'
