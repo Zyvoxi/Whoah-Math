@@ -13,14 +13,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Check Architecture
-      run: uname -m
-
     - name: Install Homebrew for x86_64
       run: |
         sudo rm -rf /opt/homebrew
         arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        arch -x86_64 /usr/local/bin/brew update
 
     - name: Install xcbeautify
       run: |
@@ -60,6 +56,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         build_type: [Release]
         c_compiler: [gcc, cl]
+        cpp_compiler: [g++, cl]
         include:
           - os: windows-latest
             c_compiler: cl
@@ -93,6 +90,11 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: sudo apt-get install -y libgmp-dev
 
+    - name: Install GMP on Windows
+      if: matrix.os == 'windows-latest'
+      run: |
+        choco install gmp
+
     - name: Configure CMake
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
@@ -100,6 +102,7 @@ jobs:
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         -S ${{ github.workspace }}
+        -DCMAKE_PREFIX_PATH=/usr/local # Adiciona o caminho para encontrar a GMP no Ubuntu
 
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
