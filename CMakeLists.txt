@@ -13,10 +13,40 @@ include_directories(Whoah/Headers)
 # Adiciona os arquivos fonte
 file(GLOB SOURCES "Whoah/*.cpp")
 
-# Encontra a biblioteca GMP
-find_package(GMP REQUIRED)
-include_directories(${GMP_INCLUDE_DIR})
-link_directories(${GMP_LIBRARY_DIR})
+# Define o caminho de pesquisa para pacotes e bibliotecas
+if (WIN32)
+    set(CMAKE_PREFIX_PATH "C:/msys64/mingw64")
+else()
+    set(CMAKE_PREFIX_PATH "/usr/local")
+endif()
+
+# Verifica se pkg-config está disponível
+find_program(PKG_CONFIG_EXECUTABLE pkg-config)
+
+if (PKG_CONFIG_EXECUTABLE)
+    # Define o caminho do pkg-config
+    set(PKG_CONFIG_PATH "C:/msys64/mingw64/lib/pkgconfig")
+
+    # Usa pkg-config para encontrar GMP
+    execute_process(
+        COMMAND ${PKG_CONFIG_EXECUTABLE} --cflags --libs gmp
+        OUTPUT_VARIABLE GMP_FLAGS
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+
+    if (NOT GMP_FLAGS)
+        message(FATAL_ERROR "pkg-config could not find GMP")
+    endif()
+
+    string(REPLACE "-I" " -I" GMP_INCLUDE_DIR "${GMP_FLAGS}")
+    string(REPLACE "-L" " -L" GMP_LIBRARY_DIR "${GMP_FLAGS}")
+    string(REPLACE "-l" "" GMP_LIBRARIES "${GMP_FLAGS}")
+
+    include_directories(${GMP_INCLUDE_DIR})
+    link_directories(${GMP_LIBRARY_DIR})
+else()
+    message(FATAL_ERROR "pkg-config not found.")
+endif()
 
 # Cria o executável a partir dos arquivos fonte
 add_executable(${PROJECT_NAME} ${SOURCES})
