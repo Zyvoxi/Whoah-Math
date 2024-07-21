@@ -15,6 +15,7 @@ file(GLOB SOURCES "Whoah/*.cpp")
 
 # Define o caminho de pesquisa para pacotes e bibliotecas
 if (MSYS)
+  # Ajuste o caminho conforme necessário para sua instalação do MSYS2
   set(CMAKE_PREFIX_PATH "C:/msys64/mingw64")
 else()
   set(CMAKE_PREFIX_PATH "/usr/local")
@@ -28,7 +29,7 @@ find_package(GMP REQUIRED)
 
 if (GMP_FOUND)
   include_directories(${GMP_INCLUDE_DIRS})
-  link_directories(${GMP_LIBRARY_PATH})
+  link_directories(${GMP_LIBRARY_DIRS})  # Corrigido de ${GMP_LIBRARY_PATH} para ${GMP_LIBRARY_DIRS}
 else()
   message(FATAL_ERROR "GMP not found.")
 endif()
@@ -37,7 +38,7 @@ endif()
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Vincula a biblioteca GMP ao executável
-target_link_libraries(${PROJECT_NAME} ${GMP_C_LIBRARIES} ${GMP_CXX_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${GMP_LIBRARIES})  # Usando ${GMP_LIBRARIES} diretamente
 
 # Adiciona opções para compilação estática
 if (MSVC)
