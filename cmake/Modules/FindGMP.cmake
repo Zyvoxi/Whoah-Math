@@ -14,8 +14,9 @@ if (MSYS OR MSYS2)
   set(GMP_INCLUDE_PATH "C:/msys64/mingw64/include")
 endif()
 
-message(STATUS "GMP_LIBRARY_PATH: ${GMP_LIBRARY_PATH}")
-message(STATUS "GMP_INCLUDE_PATH: ${GMP_INCLUDE_PATH}")
+message(STATUS "Searching for GMP in:")
+message(STATUS "  Library path: ${GMP_LIBRARY_PATH}")
+message(STATUS "  Include path: ${GMP_INCLUDE_PATH}")
 
 # Try to find libraries
 find_library(GMP_C_LIBRARIES
@@ -23,6 +24,7 @@ find_library(GMP_C_LIBRARIES
   HINTS ${GMP_LIBRARY_PATH}
   DOC "GMP C libraries"
 )
+
 find_library(GMP_CXX_LIBRARIES
   NAMES gmpxx
   HINTS ${GMP_LIBRARY_PATH}
@@ -42,8 +44,7 @@ find_path(GMP_CXX_INCLUDES
   DOC "GMP C++ header"
 )
 
-# Handle QUIET and REQUIRED and check the necessary variables were set and if so
-# set ``GMP_FOUND``
+# Check if the required variables were found
 find_package_handle_standard_args(GMP
   REQUIRED_VARS GMP_C_LIBRARIES GMP_C_INCLUDES GMP_CXX_LIBRARIES GMP_CXX_INCLUDES)
 
