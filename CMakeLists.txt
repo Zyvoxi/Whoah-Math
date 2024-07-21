@@ -13,16 +13,39 @@ include_directories(Whoah/Headers)
 # Adiciona os arquivos fonte
 file(GLOB SOURCES "Whoah/*.cpp")
 
+# Define o caminho de pesquisa para pacotes e bibliotecas
+if (MSYS)
+  set(CMAKE_PREFIX_PATH "C:/msys64/mingw64")
+else()
+  set(CMAKE_PREFIX_PATH "/usr/local")
+endif()
+
+# Adiciona o diretório onde está o FindGMP.cmake
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules" ${CMAKE_MODULE_PATH})
+
+# Encontra a biblioteca GMP usando FindGMP.cmake
+find_package(GMP REQUIRED)
+
+if (GMP_FOUND)
+  include_directories(${GMP_INCLUDE_DIRS})
+  link_directories(${GMP_LIBRARY_PATH})
+else()
+  message(FATAL_ERROR "GMP not found.")
+endif()
+
 # Cria o executável a partir dos arquivos fonte
 add_executable(${PROJECT_NAME} ${SOURCES})
 
+# Vincula a biblioteca GMP ao executável
+target_link_libraries(${PROJECT_NAME} ${GMP_C_LIBRARIES} ${GMP_CXX_LIBRARIES})
+
 # Adiciona opções para compilação estática
 if (MSVC)
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
 endif()
 
 # Inclui o CPack para a criação de pacotes de distribuição
