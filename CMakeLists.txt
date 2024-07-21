@@ -18,6 +18,7 @@ file(GLOB SOURCES "Whoah/*.cpp")
 set(CMAKE_PREFIX_PATH "C:/msys64/mingw64")
 
 # Encontra a biblioteca GMP
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules" ${CMAKE_MODULE_PATH})
 find_package(GMP REQUIRED)
 
 # Inclui diretórios e bibliotecas da GMP
