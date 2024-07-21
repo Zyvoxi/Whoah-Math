@@ -1,11 +1,3 @@
-# Tries to find an install of the GNU multiple precision library
-#
-# Once done this will define
-#  GMP_FOUND - BOOL: System has the GMP library installed
-#  GMP_INCLUDE_DIRS - LIST:The GMP include directories
-#  GMP_C_LIBRARIES - LIST:The libraries needed to use GMP via its C interface
-#  GMP_CXX_LIBRARIES - LIST:The libraries needed to use GMP via its C++ interface
-
 include(FindPackageHandleStandardArgs)
 
 # Define the default search paths
@@ -47,6 +39,7 @@ find_package_handle_standard_args(GMP
   REQUIRED_VARS GMP_C_LIBRARIES GMP_C_INCLUDES GMP_CXX_LIBRARIES GMP_CXX_INCLUDES)
 
 if (GMP_FOUND)
+  message(STATUS "GMP library found.")
   set(GMP_INCLUDE_DIRS "${GMP_C_INCLUDES}" "${GMP_CXX_INCLUDES}")
   list(REMOVE_DUPLICATES GMP_INCLUDE_DIRS)
 
