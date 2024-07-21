@@ -7,60 +7,37 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-macos:
-    runs-on: macos-latest
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Install Homebrew for x86_64
-      run: |
-        sudo rm -rf /opt/homebrew
-        arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-    - name: Install xcbeautify
-      run: |
-        arch -x86_64 /usr/local/bin/brew install xcbeautify
-
-    - name: Install GMP for x86_64
-      run: |
-        arch -x86_64 /usr/local/bin/brew install gmp
-
-    - name: Verify Project Directory
-      run: ls -la $GITHUB_WORKSPACE
-
-    - name: Build with Xcode
-      run: |
-        xcodebuild -scheme Whoah -configuration Release -derivedDataPath build \
-          ARCHS=x86_64 \
-        | xcbeautify
-
-    - name: Archive Artifacts
-      run: |
-        cd build/Build/Products/Release
-        zip -r Whoah-Math.zip Whoah-Math
-        mv Whoah-Math.zip $GITHUB_WORKSPACE/
-
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: Whoah Math - macOS
-        path: Whoah-Math.zip
-
   build:
     runs-on: ${{ matrix.os }}
 
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest]
+        os: [macos-latest, windows-latest]
         build_type: [Release]
         c_compiler: [cl]
 
     steps:
     - uses: actions/checkout@v4
 
+    - name: Install Homebrew for x86_64
+      if: runner.os == 'macos-latest'
+      run: |
+        sudo rm -rf /opt/homebrew
+        arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    - name: Install xcbeautify
+      if: runner.os == 'macos-latest'
+      run: |
+        arch -x86_64 /usr/local/bin/brew install xcbeautify
+
+    - name: Install GMP for x86_64
+      if: runner.os == 'macos-latest'
+      run: |
+        arch -x86_64 /usr/local/bin/brew install gmp
+
     - name: Set reusable strings
+      if: runner.os != 'macos-latest'
       id: strings
       shell: bash
       run: |
@@ -70,11 +47,22 @@ jobs:
           echo "executable-path=${{ github.workspace }}\\build\\Release\\Whoah-Math.exe" >> "$GITHUB_OUTPUT"
         fi
 
+    - name: Install MSYS2
+      if: runner.os == 'Windows'
+      uses: msys2/setup-msys2@v2
+      with:
+        update: true
+        install: mingw-w64-x86_64-toolchain
+
     - name: Install GMP on Windows
-      if: matrix.os == 'windows-latest'
-      run: choco install gmp
+      if: runner.os == 'Windows'
+      run: |
+        pacman -Syu --noconfirm
+        pacman -Su --noconfirm
+        pacman -S --noconfirm mingw-w64-x86_64-gmp
 
     - name: Configure CMake
+      if: runner.os != 'macos-latest'
       run: |
         cmake -B ${{ steps.strings.outputs.build-output-dir }} \
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
@@ -83,10 +71,33 @@ jobs:
         -S ${{ github.workspace }} \
         -DCMAKE_PREFIX_PATH=/usr/local
 
-    - name: Build
+    - name: Build with Xcode
+      if: runner.os == 'macos-latest'
+      run: |
+        xcodebuild -scheme Whoah -configuration Release -derivedDataPath build \
+          ARCHS=x86_64 \
+        | xcbeautify
+
+    - name: Build-CMake
+      if: runner.os != 'macos-latest'
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-    - name: Upload Artifact
+    - name: Archive Artifacts
+      if: runner.os == 'macos-latest'
+      run: |
+        cd build/Build/Products/Release
+        zip -r Whoah-Math.zip Whoah-Math
+        mv Whoah-Math.zip $GITHUB_WORKSPACE/
+
+    - name: Upload Artifacts macOS
+      if: runner.os == 'macos-latest'
+      uses: actions/upload-artifact@v4
+      with:
+        name: Whoah Math - macOS
+        path: Whoah-Math.zip
+    
+    - name: Upload Artifact Windows
+      if: runner.os != 'macos-latest'
       uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.strings.outputs.artifact-name }}
