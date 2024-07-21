@@ -37,6 +37,7 @@ jobs:
         arch -x86_64 /usr/local/bin/brew install gmp
 
     - name: Set reusable strings
+      if: runner.os == 'Windows'
       id: strings
       shell: bash
       run: |
@@ -53,11 +54,11 @@ jobs:
         update: true
         install: mingw-w64-x86_64-toolchain
 
-    - name: Install GMP on Windows
+    - name: Update MSYS2 and Install GMP
       if: runner.os == 'Windows'
       run: |
-        pacman -Syu --noconfirm
-        pacman -S --noconfirm mingw-w64-x86_64-gmp
+        C:\\msys64\\usr\\bin\\bash -lc "pacman -Syu --noconfirm"
+        C:\\msys64\\usr\\bin\\bash -lc "pacman -S --noconfirm mingw-w64-x86_64-gmp"
 
     - name: Configure CMake
       if: runner.os == 'Windows'
