@@ -17,7 +17,6 @@ file(GLOB SOURCES "Whoah/*.cpp")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules" ${CMAKE_MODULE_PATH})
 # Encontra a biblioteca GMP e força o uso da versão estática
 find_package(GMP REQUIRED)
-set(GMP_LIBRARY "${GMP_LIBRARIES}")
 
 # Cria o executável a partir dos arquivos fonte
 add_executable(${PROJECT_NAME} ${SOURCES})
