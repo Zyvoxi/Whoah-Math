@@ -27,5 +27,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${GMP_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} PRIVATE GMP::GMP)
 
 # Adiciona opções para compilação estática
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++ /MT")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
