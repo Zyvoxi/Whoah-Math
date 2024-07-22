@@ -25,9 +25,9 @@ link_directories(${GMP_LIBRARY_DIRS})
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Vincula a biblioteca GMP ao executável
-target_link_libraries(${PROJECT_NAME} GMP::GMP)
+target_link_libraries(${PROJECT_NAME} ${GMP_LIBRARY_DIRS})
 
 # Adiciona opções para compilação estática
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++ -static-libgmp")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
