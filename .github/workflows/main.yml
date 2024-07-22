@@ -15,7 +15,8 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest]
         build_type: [Release]
-        cpp_compiler: [cl]
+        c_compiler: [gcc]
+        cpp_compiler: [g++]
 
     steps:
     - uses: actions/checkout@v4
@@ -44,7 +45,7 @@ jobs:
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
         if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
           echo "artifact-name=Whoah Math - Windows" >> "$GITHUB_OUTPUT"
-          echo "executable-path=${{ github.workspace }}\\build\\Release\\Whoah-Math.exe" >> "$GITHUB_OUTPUT"
+          echo "executable-path=${{ github.workspace }}\\build\\Whoah-Math.exe" >> "$GITHUB_OUTPUT"
         fi
 
     - name: Install MSYS2
@@ -54,10 +55,9 @@ jobs:
         update: true
         install: mingw-w64-x86_64-toolchain
 
-    - name: Update MSYS2 and Install GMP
+    - name: Install GMP
       if: runner.os == 'Windows'
       run: |
-        C:\\msys64\\usr\\bin\\bash -lc "pacman -Syu --noconfirm"
         C:\\msys64\\usr\\bin\\bash -lc "pacman -S --noconfirm mingw-w64-x86_64-gmp"
 
     - name: List GMP include directory
@@ -71,7 +71,7 @@ jobs:
     - name: Configure CMake
       if: runner.os == 'Windows'
       run: |
-        cmake -B ${{ steps.strings.outputs.build-output-dir }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{ github.workspace }}
+        cmake -B ${{ steps.strings.outputs.build-output-dir }} -G "MinGW Makefiles" -DCMAKE_MAKE_PROGRAM=mingw32-make -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{ github.workspace }}
         
     - name: Build with Xcode
       if: runner.os == 'macOS'
