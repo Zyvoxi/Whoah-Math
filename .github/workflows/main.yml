@@ -59,6 +59,8 @@ jobs:
       if: runner.os == 'Windows'
       run: |
         C:\\msys64\\usr\\bin\\bash -lc "pacman -S --noconfirm mingw-w64-x86_64-gmp"
+        cd  C:\\msys64\\mingw64\\lib
+        del libgmp*.dll.a
 
     - name: List GMP include directory
       if: runner.os == 'Windows'
