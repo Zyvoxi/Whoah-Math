@@ -73,18 +73,18 @@ jobs:
     - name: Configure CMake
       if: runner.os == 'Windows'
       run: |
-        cmake -B ${{ steps.strings.outputs.build-output-dir }} -G "MinGW Makefiles" -DCMAKE_MAKE_PROGRAM=mingw32-make -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{ github.workspace }}
+        cmake -B ${{ steps.strings.outputs.build-output-dir }} -G "MinGW Makefiles" -DCMAKE_MAKE_PROGRAM=mingw32-make -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS="-static-libgcc -static-libstdc++" -DCMAKE_EXE_LINKER_FLAGS="-static" -S ${{ github.workspace }}
         
+    - name: Build-CMake
+      if: runner.os == 'Windows'
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+
     - name: Build with Xcode
       if: runner.os == 'macOS'
       run: |
         xcodebuild -scheme Whoah -configuration Release -derivedDataPath build \
           ARCHS=x86_64 \
         | xcbeautify
-
-    - name: Build-CMake
-      if: runner.os == 'Windows'
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
     - name: Archive Artifacts
       if: runner.os == 'macOS'
