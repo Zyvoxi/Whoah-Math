@@ -24,7 +24,7 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${GMP_INCLUDE_DIRS})
 
 # Vincula a biblioteca GMP estaticamente
-target_link_libraries(${PROJECT_NAME} PRIVATE GMP::gmp)
+target_link_libraries(${PROJECT_NAME} PRIVATE GMP::GMP)
 
 # Adiciona opções para compilação estática
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
