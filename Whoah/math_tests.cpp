@@ -237,6 +237,88 @@ void runFindMaxMinTests(int& failureCount) {
     }
 }
 
+void runCalcPermutacaoTests(int& failureCount) {
+    mpz_t resultado;
+    mpz_init(resultado);
+    mpz_t expected;
+
+    // Teste para permutação com valores pequenos
+    calcPermutacao(resultado, 10, 2);
+    mpz_init_set_ui(expected, 90); // Esperado: 10! / (10-2)! = 90
+    checkTest(mpz_cmp(resultado, expected) == 0, "calcPermutacao(10, 2) == 90", failureCount);
+    mpz_clear(expected);
+
+    // Teste para permutação com valores grandes
+    calcPermutacao(resultado, 5, 3);
+    mpz_init_set_ui(expected, 60); // Esperado: 5! / (5-3)! = 60
+    checkTest(mpz_cmp(resultado, expected) == 0, "calcPermutacao(5, 3) == 60", failureCount);
+    mpz_clear(expected);
+
+    // Teste para permutação onde k > n
+    try {
+        calcPermutacao(resultado, 3, 5);
+        checkTest(false, "calcPermutacao(3, 5) deveria lançar exceção", failureCount);
+    } catch (const invalid_argument& e) {
+        checkTest(true, "Exceção esperada lançada", failureCount);
+    }
+
+    // Teste para permutação de 0 elementos
+    calcPermutacao(resultado, 0, 0);
+    mpz_init_set_ui(expected, 1); // Esperado: 0! / (0-0)! = 1
+    checkTest(mpz_cmp(resultado, expected) == 0, "calcPermutacao(0, 0) == 1", failureCount);
+    mpz_clear(expected);
+
+    mpz_clear(resultado);
+}
+
+void runCalcCombinacaoTests(int& failureCount) {
+    checkTest(calcCombinacao(10, 5) == 252, "calcCombinacao(10, 5) == 252", failureCount);
+    checkTest(calcCombinacao(5, 2) == 10, "calcCombinacao(5, 2) == 10", failureCount);
+    checkTest(calcCombinacao(6, 0) == 1, "calcCombinacao(6, 0) == 1", failureCount);
+    checkTest(calcCombinacao(6, 6) == 1, "calcCombinacao(6, 6) == 1", failureCount);
+
+    try {
+        calcCombinacao(5, 6);
+        checkTest(false, "calcCombinacao(5, 6) deveria lançar exceção", failureCount);
+    } catch (const invalid_argument&) {
+        checkTest(true, "Exceção esperada lançada", failureCount);
+    }
+
+    try {
+        calcCombinacao(5, -1);
+        checkTest(false, "calcCombinacao(5, -1) deveria lançar exceção", failureCount);
+    } catch (const invalid_argument&) {
+        checkTest(true, "Exceção esperada lançada", failureCount);
+    }
+}
+
+void runCalcMGeometricaTests(int& failureCount) {
+    // Teste para média geométrica de uma lista de números positivos
+    vector<double> nums1 = {1, 2, 3, 4, 5};
+    checkTest(abs(calcMGeometrica(nums1) - 2.60517) < 0.0001, "calcMGeometrica({1, 2, 3, 4, 5})", failureCount);
+
+    // Teste para média geométrica com números diferentes
+    vector<double> nums2 = {10, 20, 30};
+    checkTest(abs(calcMGeometrica(nums2) - 18.17) < 0.01, "calcMGeometrica({10, 20, 30})", failureCount);
+
+    // Teste para média geométrica com todos os números iguais
+    vector<double> nums3 = {7, 7, 7};
+    checkTest(abs(calcMGeometrica(nums3) - 7) < 0.0001, "calcMGeometrica({7, 7, 7})", failureCount);
+
+    // Teste para média geométrica de um único número
+    vector<double> nums4 = {42};
+    checkTest(abs(calcMGeometrica(nums4) - 42) < 0.0001, "calcMGeometrica({42})", failureCount);
+
+    // Teste para exceção em vetor vazio
+    try {
+        vector<double> empty;
+        calcMGeometrica(empty);
+        checkTest(false, "calcMGeometrica(empty) deveria lançar exceção", failureCount);
+    } catch (const invalid_argument&) {
+        checkTest(true, "Exceção esperada lançada", failureCount);
+    }
+}
+
 void runMathTests() {
     cout << "Executando testes unitários...\n";
     int failureCount = 0;
@@ -253,6 +335,9 @@ void runMathTests() {
     runCalcDerivadaTests(failureCount);
     runCalcIntegralDefinidaTests(failureCount);
     runFindMaxMinTests(failureCount);
+    runCalcPermutacaoTests(failureCount);
+    runCalcCombinacaoTests(failureCount);
+    runCalcMGeometricaTests(failureCount);
 
     if (failureCount == 0) {
         cout << "Todos os testes foram executados com sucesso!\n";

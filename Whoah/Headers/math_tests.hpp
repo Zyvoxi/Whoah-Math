@@ -83,4 +83,19 @@ void runCalcIntegralDefinidaTests(int& failureCount);
  */
 void runFindMaxMinTests(int& failureCount);
 
+/**
+ * @brief Executa testes unitários para a função calcPermutacao.
+ */
+void runCalcPermutacaoTests(int& failureCount);
+
+/**
+ * @brief Executa testes unitários para a função calcCombinacao.
+ */
+void runCalcCombinacaoTests(int& failureCount);
+
+/**
+ * @brief Executa testes unitário para a função calcMGeometrica.
+ */
+void runCalcMGeometricaTests(int& failureCount);
+
 #endif /* math_tests_hpp */

@@ -63,4 +63,19 @@ void funcIntegralDefinida();
  */
 void funcMaxMin();
 
+/**
+ * @brief Função principal para calcular o número de permutações de um conjunto de elementos.
+ */
+void funcPermutacao();
+
+/**
+ * @brief Função principal para calcular o número de combinações de um conjunto de elementos.
+ */
+void funcCombinacao();
+
+/**
+ * @brief Função principal para calcular a média geométrica de uma lista de números.
+ */
+void funcMGeometrica();
+
 #endif /* math_functions_hpp */

@@ -228,12 +228,12 @@ void funcRaizN() {
 
 // MARK: Derivada
 void funcDerivada() {
-    cout << "Insira os coeficientes do polinômio separados por espaços (do maior grau para o menor grau): ";
+    cout << "calcular a derivada de um polinômio.\n" << endl;
 
+    cout << "Insira os coeficientes do polinômio separados por espaços (do maior grau para o menor grau): ";
     string input;
     getline(cin, input);
     istringstream stream(input);
-
     vector<double> numbers;
     string token;
     while (stream >> token) {
@@ -268,12 +268,12 @@ void funcDerivada() {
 
 // MARK: Integral Definida
 void funcIntegralDefinida() {
-    cout << "Insira os coeficientes do polinômio separados por espaços (do maior grau para o menor grau): ";
+    cout << "Calculando a integral definida de um polinômio.\n" << endl;
 
+    cout << "Insira os coeficientes do polinômio separados por espaços (do maior grau para o menor grau): ";
     string input;
     getline(cin, input);
     istringstream stream(input);
-
     vector<double> numbers;
     string token;
     while (stream >> token) {
@@ -310,12 +310,12 @@ void funcIntegralDefinida() {
 
 // MARK: Max Min
 void funcMaxMin() {
-    cout << "Insira os números separados por espaços: ";
+    cout << "Encontrando o valor máximo e mínimo de uma lista de números.\n" << endl;
 
+    cout << "Insira os números separados por espaços: ";
     string input;
     getline(cin, input);
     istringstream stream(input);
-
     vector<double> numbers;
     string token;
     while (stream >> token) {
@@ -338,6 +338,120 @@ void funcMaxMin() {
             auto maxMin = findMaxMin(numbers);
             clearScreen();
             printMaxMin(numbers, maxMin);
+        } else {
+            throw invalid_argument("Nenhum número válido foi fornecido.");
+        }
+    } catch (const invalid_argument& e) {
+        handleError(e.what());
+    }
+
+    returnOptions();
+}
+
+// MARK: Permutação
+void funcPermutacao() {
+    cout << "Calculando o número de permutações de um conjunto de elementos.\n" << endl;
+
+    double n, k;
+    while (true) {
+        try {
+            n = getValidatedInput("Insira o número total de elementos (n): ");
+            if (n != floor(n) || n < 0) throw invalid_argument("n deve ser um número inteiro positivo.");
+            while (true) {
+                try {
+                    k = getValidatedInput("Insira o número de elementos selecionados (k): ");
+                    if (k > n || k < 0 || k != floor(k)) throw invalid_argument("k deve ser um número inteiro positivo e deve estar no intervalo [0, n].");
+                    break;
+                } catch (const invalid_argument& e) {
+                    handleError(e.what());
+                }
+            }
+            break;
+        } catch (const invalid_argument& e) {
+            handleError(e.what());
+        }
+    }
+
+    mpz_t resultado;
+    mpz_init(resultado);
+
+    try {
+        calcPermutacao(resultado, n, k);
+        clearScreen();
+        printFormulaPermutacao(n, k, resultado);
+    } catch (const invalid_argument& e) {
+        handleError(e.what());
+    }
+
+    mpz_clear(resultado); // Libere a memória alocada para resultado
+    returnOptions();
+}
+
+// MARK: Combinação
+void funcCombinacao() {
+    cout << "Calculando o número de combinações de um conjunto de elementos.\n" << endl;
+
+    double n, k;
+    while (true) {
+        try {
+            n = getValidatedInput("Insira o número total de elementos (n): ");
+            if (n != floor(n) || n < 0) throw invalid_argument("n deve ser um número inteiro positivo.");
+            while (true) {
+                try {
+                    k = getValidatedInput("Insira o número de elementos selecionados (k): ");
+                    if (k > n || k < 0 || k != floor(k)) throw invalid_argument("k deve ser um número inteiro positivo e deve estar no intervalo [0, n].");
+                    break;
+                } catch (const invalid_argument& e) {
+                    handleError(e.what());
+                }
+            }
+            break;
+        } catch (const invalid_argument& e) {
+            handleError(e.what());
+        }
+    }
+
+    try {
+        long long resultado = calcCombinacao(n, k);
+        printFormulaCombinacao(n, k, resultado);
+    } catch (const invalid_argument& e) {
+        handleError(e.what());
+    }
+
+    returnOptions();
+}
+
+// MARK: Média Geométrica
+void funcMGeometrica() {
+    cout << "calculando a média geométrica de uma lista de números.\n" << endl;
+
+    cout << "Insira os números separados por espaços: ";
+    string input;
+    getline(cin, input);
+    istringstream stream(input);
+    vector<double> numbers;
+    string token;
+    while (stream >> token) {
+        if (isBrazilianNumber(token)) {
+            string c = convertBrazilianToAmerican(token);
+            double n;
+            if (isNumber(c)) {
+                istringstream(c) >> n;
+                numbers.push_back(n);
+            } else {
+                handleError("Número inválido ignorado: " + token);
+            }
+        } else {
+            handleError("Número inválido ignorado: " + token);
+        }
+    }
+
+    try {
+        if (!numbers.empty()) {
+            double resultado = calcMGeometrica(numbers);
+            clearScreen();
+            cout << "A média geométrica é: " << endl;
+            printFormulaMGeometrica(numbers, resultado);
         } else {
             throw invalid_argument("Nenhum número válido foi fornecido.");
         }

@@ -251,3 +251,102 @@ void printMaxMin(const vector<double>& numbers, const pair<double, double>& maxM
     cout << "Valor mínimo: " << formatNumber(maxMin.first) << endl;
     cout << "Valor máximo: " << formatNumber(maxMin.second) << endl;
 }
+
+// MARK: Utilitarios - Permutação
+void calcPermutacao(mpz_t resultado, int n, int k) {
+    if (n < 0 || k < 0 || k > n) {
+        throw invalid_argument("Os valores de n e k devem ser um numero inteiro positivo, e k deve ser menor ou igual a n.");
+    }
+
+    mpz_t temp;
+    mpz_init(temp);
+
+    mpz_set_ui(resultado, 1); // resultado = 1
+
+    for (int i = 0; i < k; ++i) {
+        mpz_set_ui(temp, n - i); // temp = n - i
+        mpz_mul(resultado, resultado, temp); // resultado *= (n - i)
+    }
+
+    mpz_clear(temp);
+}
+
+void printFormulaPermutacao(int n, int k, const mpz_t resultado) {
+    cout << "Número total de elementos (n): " << n << endl;
+    cout << "Número de elementos selecionados (k): " << k << endl;
+    cout << "Número de permutações (P(n, k)): " << formatLargerNumber(resultado) << endl;
+}
+
+// MARK: Utilitários - Combinação
+long long calcCombinacao(int n, int k) {
+    if (k > n || k < 0) {
+        throw invalid_argument("k deve estar no intervalo [0, n].");
+    }
+
+    mpz_t fatorialN, fatorialK, fatorialN_k;
+    mpz_init(fatorialN);
+    mpz_init(fatorialK);
+    mpz_init(fatorialN_k);
+
+    try {
+        calcFatorial(n, fatorialN);
+        calcFatorial(k, fatorialK);
+        calcFatorial(n - k, fatorialN_k);
+
+        mpz_t numerador, denominador;
+        mpz_init(numerador);
+        mpz_init(denominador);
+
+        mpz_mul(numerador, fatorialK, fatorialN_k);
+        mpz_div(numerador, fatorialN, numerador);
+        
+        long long resultado = mpz_get_ui(numerador);
+        
+        mpz_clear(fatorialN);
+        mpz_clear(fatorialK);
+        mpz_clear(fatorialN_k);
+        mpz_clear(numerador);
+        mpz_clear(denominador);
+
+        return resultado;
+    } catch (const invalid_argument& e) {
+        handleError(e.what());
+        mpz_clear(fatorialN);
+        mpz_clear(fatorialK);
+        mpz_clear(fatorialN_k);
+        return 0; // Valor de retorno em caso de erro
+    }
+}
+
+void printFormulaCombinacao(int n, int k, long long resultado) {
+    cout << "Número de combinações C(" << n << ", " << formatNumber(k) << ") = "
+         << n << "!" << " / (" << k << "!" << " * (" << formatNumber(n) << " - " << formatNumber(k) << ")!)"
+         << endl << "Resultado: " << formatNumber(resultado) << endl;
+}
+
+// MARK: Utilitários - Média Geométrica
+double calcMGeometrica(const vector<double>& numeros) {
+    if (numeros.empty()) {
+        throw invalid_argument("O vetor está vazio");
+    }
+
+    double produto = 1.0;
+    for (size_t i = 0; i < numeros.size(); ++i) {
+        produto *= numeros[i];
+    }
+
+    return pow(produto, 1.0 / numeros.size());
+}
+
+void printFormulaMGeometrica(const vector<double>& numeros, double res) {
+    double produto = 1.0;
+    cout << formatNumToSup(numeros.size()) << "√";
+    for (size_t i = 0; i < numeros.size(); ++i) {
+        produto *= numeros[i];
+        cout << numeros[i];
+        if (i < numeros.size() - 1) {
+            cout << " * ";
+        }
+    }
+    cout << endl << formatNumToSup(numeros.size()) << "√" << formatNumber(produto) << " = " << formatNumber(res) << endl;
+}

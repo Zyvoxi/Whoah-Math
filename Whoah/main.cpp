@@ -34,7 +34,12 @@ void options() {
          << endl << "8 - Calcular a Raiz N-ésima de um número"
          << endl << "9 - Calcular a derivada de um polinômio"
          << endl << "10 - Calcular a integral definida de um polinômio"
+#if DEBUG
          << endl << "11 - Encontrar o valor máximo e mínimo de uma lista de números"
+         << endl << "12 - Calcular o número de permutações possíveis de um conjunto de elementos"
+         << endl << "13 - Calcular o número de combinações possíveis de um conjunto de elementos"
+         << endl << "14 - Calcular a Média Geométrica de uma lista de números"
+#endif
          << endl << "\n0 - Sair" << endl;
 
     handleOptionsChoice();
@@ -56,7 +61,7 @@ void handleOptionsChoice() {
     }
 
     switch(opt) {
-#ifdef DEBUG
+#if DEBUG
         case 3141:
             clearScreen();
             runMathTests();
@@ -106,10 +111,24 @@ void handleOptionsChoice() {
             clearScreen();
             funcIntegralDefinida();
             break;
+#if DEBUG
         case 11:
             clearScreen();
             funcMaxMin();
             break;
+        case 12:
+            clearScreen();
+            funcPermutacao();
+            break;
+        case 13:
+            clearScreen();
+            funcCombinacao();
+            break;
+        case 14:
+            clearScreen();
+            funcMGeometrica();
+            break;
+#endif
         default:
             cout << "Opção inválida.\n";
             handleOptionsChoice();

@@ -90,7 +90,7 @@ void clearScreen() {
 
 // MARK: Retornador das Opções
 void returnOptions() {
-    cout << "\nPressione Enter para Voltar ao Menu." << endl;
+    cout << "\n⏎ Pressione Enter para Voltar ao Menu." << endl;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     clearScreen();
     options();

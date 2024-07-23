@@ -227,8 +227,66 @@ std::pair<double, double> findMaxMin(const std::vector<double>& numbers);
 void printMaxMin(const std::vector<double>& numbers, const std::pair<double, double>& maxMin);  
 
 /**
- * @brief Executa os testes unitários para as funções matemáticas.
+ * @brief Calcula o número de permutações possíveis de um conjunto de elementos.
+ *
+ * @param n Número total de elementos.
+ * @param k Número de elementos selecionados.
+ * @throw std::invalid_argument Se n ou k forem negativos, ou se k for maior que n.
  */
-void runMathTests();
+void calcPermutacao(mpz_t resultado, int n, int k);
+
+/**
+ * @brief Imprime a fórmula e o cálculo do número de permutações possíveis.
+ *
+ * @param n Número total de elementos.
+ * @param k Número de elementos selecionados.
+ * @param resultado Número de permutações.
+ */
+void printFormulaPermutacao(int n, int k, const mpz_t resultado);
+
+/**
+ * @brief Calcula o número de combinações possíveis de um conjunto de elementos.
+ *
+ * Esta função calcula o número de combinações (ou combinações) C(n, k), onde n é o número total de itens e k é o número de itens a serem escolhidos.
+ * Utiliza a fórmula: C(n, k) = n! / (k! * (n - k)!).
+ *
+ * @param n Número total de elementos.
+ * @param k Número de elementos selecionados.
+ * @return long long Número de combinações.
+ * @throw std::invalid_argument Se k for maior que n ou se k for negativo.
+ */
+long long calcCombinacao(int n, int k);
+
+/**
+ * @brief Imprime a fórmula e o cálculo do número de combinações possíveis.
+ *
+ * Esta função exibe a fórmula matemática usada para calcular o número de combinações
+ * e o resultado final.
+ *
+ * @param n Número total de elementos.
+ * @param k Número de elementos selecionados.
+ * @param resultado Número de combinações.
+ */
+void printFormulaCombinacao(int n, int k, long long resultado);
+
+/**
+ * @brief Calcula a média geométrica de uma lista de números.
+ *
+ * @param numeros Vetor de números.
+ * @return double Média geométrica dos números.
+ * @throws invalid_argument Se o vetor estiver vazio.
+ */
+double calcMGeometrica(const std::vector<double>& numeros);
+
+/**
+ * @brief Imprime a fórmula e o cálculo da média geométrica.
+ *
+ * Esta função exibe a fórmula matemática usada para cálcular a média geométrica
+ * e o resultado final.
+ *
+ * @param numeros Vetor de números.
+ * @param res Resultado da média geométrica.
+ */
+void printFormulaMGeometrica(const std::vector<double>& numeros, double res);
 
 #endif /* math_utils_hpp */
