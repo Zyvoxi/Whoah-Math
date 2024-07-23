@@ -31,10 +31,17 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-homebrew-
 
+    - name: Remove Homebrew if present (macOS)
+      if: runner.os == 'macOS'
+      run: |
+        if [ -d "/opt/homebrew" ]; then
+          echo "Removing existing Homebrew installation..."
+          sudo rm -rf /opt/homebrew
+        fi
+
     - name: Install Homebrew for x86_64(macOS)
       if: runner.os == 'macOS'
       run: |
-	sudo rm -rf /opt/homebrew
         if ! command -v brew &> /dev/null; then
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         fi
