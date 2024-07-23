@@ -21,59 +21,21 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Cache Homebrew (x86_64)
-      if: runner.os == 'macOS'
-      uses: actions/cache@v4
-      with:
-        path: /usr/local
-        key: ${{ runner.os }}-homebrew-${{ hashFiles('**/Brewfile') }}
-        restore-keys: |
-          ${{ runner.os }}-homebrew-
-
-    - name: Remove Homebrew if present (macOS)
-      if: runner.os == 'macOS'
-      run: |
-        if [ -d "/opt/homebrew" ]; then
-          echo "Removing existing Homebrew installation..."
-          sudo rm -rf /opt/homebrew
-        fi
-
     - name: Install Homebrew for x86_64(macOS)
       if: runner.os == 'macOS'
       run: |
-        if ! command -v brew &> /dev/null; then
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        fi
+        sudo rm -rf /opt/homebrew
+        arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-    - name: Cache GMP
+    - name: Install xcbeautify(macOS)
       if: runner.os == 'macOS'
-      uses: actions/cache@v4
-      with:
-        path: /usr/local/Cellar/gmp
-        key: ${{ runner.os }}-gmp-${{ hashFiles('**/Brewfile') }}
-        restore-keys: |
-          ${{ runner.os }}-gmp-
+      run: |
+        arch -x86_64 /usr/local/bin/brew install xcbeautify
 
     - name: Install GMP for x86_64(macOS)
       if: runner.os == 'macOS'
       run: |
         arch -x86_64 /usr/local/bin/brew install gmp
-
-    - name: Cache xcbeautify
-      if: runner.os == 'macOS'
-      uses: actions/cache@v4
-      with:
-        path: /usr/local/bin/xcbeautify
-        key: ${{ runner.os }}-xcbeautify-${{ hashFiles('**/Brewfile') }}
-        restore-keys: |
-          ${{ runner.os }}-xcbeautify-
-
-    - name: Install xcbeautify(macOS)
-      if: runner.os == 'macOS'
-      run: |
-        if ! command -v xcbeautify &> /dev/null; then
-          arch -x86_64 /usr/local/bin/brew install xcbeautify || true
-        fi
 
     - name: Set reusable strings(Windows)
       if: runner.os == 'Windows'
@@ -88,7 +50,12 @@ jobs:
 
     - name: Configure CMake(Windows)
       if: runner.os == 'Windows'
-      run: cmake -B ${{ steps.strings.outputs.build-output-dir }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}  -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}  -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}  -S ${{ github.workspace }}
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+	-DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} 
+	-DCMAKE_C_COMPILER=${{ matrix.c_compiler }} 
+	-DCMAKE_BUILD_TYPE=${{ matrix.build_type }} 
+	-S ${{ github.workspace }}
         
     - name: Build with Xcode(macOS)
       if: runner.os == 'macOS'
