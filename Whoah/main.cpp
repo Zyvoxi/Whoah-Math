@@ -56,7 +56,7 @@ void handleOptionsChoice() {
     }
 
     switch(opt) {
-#if DEBUG
+#ifdef DEBUG
         case 3141:
             clearScreen();
             runMathTests();

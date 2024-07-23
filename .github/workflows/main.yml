@@ -15,29 +15,61 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest]
         build_type: [Release]
-        c_compiler: [gcc]
-        cpp_compiler: [g++]
+        c_compiler: [cl]
+        cpp_compiler: [cl]
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install Homebrew for x86_64
+    - name: Cache Homebrew (x86_64)
+      if: runner.os == 'macOS' && arch == 'x86_64'
+      run: sudo rm -rf /opt/homebrew
+      uses: actions/cache@v4
+      with:
+        path: /usr/local
+        key: ${{ runner.os }}-homebrew-${{ hashFiles('**/Brewfile') }}
+        restore-keys: |
+          ${{ runner.os }}-homebrew-
+
+    - name: Install Homebrew for x86_64(macOS)
       if: runner.os == 'macOS'
       run: |
-        sudo rm -rf /opt/homebrew
-        arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	sudo rm -rf /opt/homebrew
+        if ! command -v brew &> /dev/null; then
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        fi
 
-    - name: Install xcbeautify
+    - name: Cache GMP
       if: runner.os == 'macOS'
-      run: |
-        arch -x86_64 /usr/local/bin/brew install xcbeautify
+      uses: actions/cache@v4
+      with:
+        path: /usr/local/Cellar/gmp
+        key: ${{ runner.os }}-gmp-${{ hashFiles('**/Brewfile') }}
+        restore-keys: |
+          ${{ runner.os }}-gmp-
 
-    - name: Install GMP for x86_64
+    - name: Install GMP for x86_64(macOS)
       if: runner.os == 'macOS'
       run: |
         arch -x86_64 /usr/local/bin/brew install gmp
 
-    - name: Set reusable strings
+    - name: Cache xcbeautify
+      if: runner.os == 'macOS'
+      uses: actions/cache@v4
+      with:
+        path: /usr/local/bin/xcbeautify
+        key: ${{ runner.os }}-xcbeautify-${{ hashFiles('**/Brewfile') }}
+        restore-keys: |
+          ${{ runner.os }}-xcbeautify-
+
+    - name: Install xcbeautify(macOS)
+      if: runner.os == 'macOS'
+      run: |
+        if ! command -v xcbeautify &> /dev/null; then
+          arch -x86_64 /usr/local/bin/brew install xcbeautify || true
+        fi
+
+    - name: Set reusable strings(Windows)
       if: runner.os == 'Windows'
       id: strings
       shell: bash
@@ -45,62 +77,44 @@ jobs:
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
         if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
           echo "artifact-name=Whoah Math - Windows" >> "$GITHUB_OUTPUT"
-          echo "executable-path=${{ github.workspace }}\\build\\Whoah-Math.exe" >> "$GITHUB_OUTPUT"
+          echo "executable-path=${{ github.workspace }}\\build\\Release\\Whoah-Math.exe" >> "$GITHUB_OUTPUT"
         fi
 
-    - name: Install MSYS2
+    - name: Configure CMake(Windows)
       if: runner.os == 'Windows'
-      uses: msys2/setup-msys2@v2
-      with:
-        update: true
-        install: mingw-w64-x86_64-toolchain
-
-    - name: Install GMP
-      if: runner.os == 'Windows'
-      run: |
-        C:\\msys64\\usr\\bin\\bash -lc "pacman -S --noconfirm mingw-w64-x86_64-gmp"
-        cd  C:\\msys64\\mingw64\\lib
-        del libgmp*.dll.a
-
-    - name: List GMP include directory
-      if: runner.os == 'Windows'
-      run: dir C:\msys64\mingw64\include
-
-    - name: List GMP lib directory
-      if: runner.os == 'Windows'
-      run: dir C:\msys64\mingw64\lib
-
-    - name: Configure CMake
-      if: runner.os == 'Windows'
-      run: |
-        cmake -B ${{ steps.strings.outputs.build-output-dir }} -G "MinGW Makefiles" -DCMAKE_MAKE_PROGRAM=mingw32-make -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{ github.workspace }}
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+	-DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} 
+	-DCMAKE_C_COMPILER=${{ matrix.c_compiler }} 
+	-DCMAKE_BUILD_TYPE=${{ matrix.build_type }} 
+	-S ${{ github.workspace }}
         
-    - name: Build with Xcode
+    - name: Build with Xcode(macOS)
       if: runner.os == 'macOS'
       run: |
         xcodebuild -scheme Whoah -configuration Release -derivedDataPath build \
           ARCHS=x86_64 \
         | xcbeautify
 
-    - name: Build-CMake
+    - name: Build with CMake(Windows)
       if: runner.os == 'Windows'
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-    - name: Archive Artifacts
+    - name: Archive Artifacts(macOS)
       if: runner.os == 'macOS'
       run: |
         cd build/Build/Products/Release
         zip -r Whoah-Math.zip Whoah-Math
         mv Whoah-Math.zip $GITHUB_WORKSPACE/
 
-    - name: Upload Artifacts macOS
+    - name: Upload Artifacts(macOS)
       if: runner.os == 'macOS'
       uses: actions/upload-artifact@v4
       with:
         name: Whoah Math - macOS
         path: Whoah-Math.zip
     
-    - name: Upload Artifact Windows
+    - name: Upload Artifact(Windows)
       if: runner.os == 'Windows'
       uses: actions/upload-artifact@v4
       with:

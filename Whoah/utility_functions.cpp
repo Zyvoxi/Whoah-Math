@@ -149,10 +149,9 @@ string formatNumber(double num) {
 
 string formatLargerNumber(const mpz_t num) {
     // Converte o número grande para string
-    char *numStr = mpz_get_str(nullptr, 10, num);
+    string numStr = mpz_get_str(nullptr, 10, num);
     string result(numStr);
-    free(numStr); // Libera a memória alocada pela mpz_get_str
-    
+
     // Remove espaços e outros caracteres indesejados
     result.erase(0, result.find_first_not_of(' '));
     result.erase(result.find_last_not_of(' ') + 1);
