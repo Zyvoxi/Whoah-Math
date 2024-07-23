@@ -22,7 +22,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Cache Homebrew (x86_64)
-      if: runner.os == 'macOS' && arch == 'x86_64'
+      if: runner.os == 'macOS'
       uses: actions/cache@v4
       with:
         path: /usr/local
