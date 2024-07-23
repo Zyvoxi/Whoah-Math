@@ -288,7 +288,10 @@
 				DEVELOPMENT_TEAM = GS82KPR723;
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = "";
 				ENABLE_HARDENED_RUNTIME = YES;
+				HEADER_SEARCH_PATHS = /usr/local/cellar/gmp/6.3.0/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/cellar/gmp/6.3.0/lib;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				OTHER_LDFLAGS = "-lgmp";
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "com.Zyvoxi.Whoah-Math";
 				PRODUCT_NAME = "$(TARGET_NAME)-Debug";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -304,8 +307,11 @@
 				DEVELOPMENT_TEAM = GS82KPR723;
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = "";
 				ENABLE_HARDENED_RUNTIME = YES;
+				HEADER_SEARCH_PATHS = /usr/local/cellar/gmp/6.3.0/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/cellar/gmp/6.3.0/lib;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-lgmp";
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "com.Zyvoxi.Whoah-Math";
 				PRODUCT_NAME = "$(TARGET_NAME)-Math";
 				PROVISIONING_PROFILE_SPECIFIER = "";

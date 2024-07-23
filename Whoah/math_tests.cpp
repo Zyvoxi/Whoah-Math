@@ -51,21 +51,49 @@ void runCalcRX2Tests(int& failureCount) {
 }
 
 void runCalcFatorialTests(int& failureCount) {
-    checkTest(calcFatorial(0) == 1, "calcFatorial(0) == 1", failureCount);
-    checkTest(calcFatorial(5) == 120, "calcFatorial(5) == 120", failureCount);
+    // Teste para fatorial de 0
+    {
+        mpz_t result;
+        mpz_init(result);
+        calcFatorial(0, result);
+        checkTest(mpz_cmp_ui(result, 1) == 0, "calcFatorial(0) == 1", failureCount);
+        mpz_clear(result);
+    }
 
+    // Teste para fatorial de 5
+    {
+        mpz_t result;
+        mpz_init(result);
+        calcFatorial(5, result);
+        mpz_t expected;
+        mpz_init_set_ui(expected, 120); // 5! = 120
+        checkTest(mpz_cmp(result, expected) == 0, "calcFatorial(5) == 120", failureCount);
+        mpz_clear(result);
+        mpz_clear(expected);
+    }
+
+    // Teste para exceção em fatorial de número negativo
     try {
-        calcFatorial(-1);
+        mpz_t result;
+        mpz_init(result);
+        calcFatorial(-1, result);
         checkTest(false, "calcFatorial(-1) deveria lançar exceção", failureCount);
+        mpz_clear(result);
     } catch (const invalid_argument&) {
         checkTest(true, "Exceção esperada lançada", failureCount);
     }
 
-    try {
-        calcFatorial(66);
-        checkTest(false, "calcFatorial(66) deveria lançar exceção", failureCount);
-    } catch (const overflow_error&) {
-        checkTest(true, "Exceção esperada lançada", failureCount);
+    // Teste para fatorial de número muito grande (exceção removida, pois a GMP lida com números grandes)
+    {
+        mpz_t result;
+        mpz_init(result);
+        try {
+            calcFatorial(66, result);
+            checkTest(true, "calcFatorial(66) não deveria lançar exceção", failureCount);
+        } catch (const overflow_error&) {
+            checkTest(false, "calcFatorial(66) não deveria lançar exceção", failureCount);
+        }
+        mpz_clear(result);
     }
 }
 
@@ -179,6 +207,36 @@ void runCalcIntegralDefinidaTests(int& failureCount) {
     checkTest(abs(integral - 10) < 0.0001, "calcIntegralDefinida({5}, 1, 3) deve ser aproximadamente 10", failureCount);
 }
 
+void runFindMaxMinTests(int& failureCount) {
+    vector<double> nums = {1, 2, 3, 4, 5};
+    auto maxMin = findMaxMin(nums);
+    checkTest(maxMin.first == 1, "findMaxMin({1, 2, 3, 4, 5}) valor mínimo deve ser 1", failureCount);
+    checkTest(maxMin.second == 5, "findMaxMin({1, 2, 3, 4, 5}) valor máximo deve ser 5", failureCount);
+
+    nums = {-10, 0, 10};
+    maxMin = findMaxMin(nums);
+    checkTest(maxMin.first == -10, "findMaxMin({-10, 0, 10}) valor mínimo deve ser -10", failureCount);
+    checkTest(maxMin.second == 10, "findMaxMin({-10, 0, 10}) valor máximo deve ser 10", failureCount);
+
+    nums = {7, 7, 7};
+    maxMin = findMaxMin(nums);
+    checkTest(maxMin.first == 7, "findMaxMin({7, 7, 7}) valor mínimo deve ser 7", failureCount);
+    checkTest(maxMin.second == 7, "findMaxMin({7, 7, 7}) valor máximo deve ser 7", failureCount);
+
+    nums = {42};
+    maxMin = findMaxMin(nums);
+    checkTest(maxMin.first == 42, "findMaxMin({42}) valor mínimo deve ser 42", failureCount);
+    checkTest(maxMin.second == 42, "findMaxMin({42}) valor máximo deve ser 42", failureCount);
+
+    try {
+        vector<double> empty;
+        findMaxMin(empty);
+        checkTest(false, "findMaxMin(empty) deveria lançar exceção", failureCount);
+    } catch (const invalid_argument&) {
+        checkTest(true, "Exceção esperada lançada", failureCount);
+    }
+}
+
 void runMathTests() {
     cout << "Executando testes unitários...\n";
     int failureCount = 0;
@@ -194,6 +252,7 @@ void runMathTests() {
     runCalcRaizNTests(failureCount);
     runCalcDerivadaTests(failureCount);
     runCalcIntegralDefinidaTests(failureCount);
+    runFindMaxMinTests(failureCount);
 
     if (failureCount == 0) {
         cout << "Todos os testes foram executados com sucesso!\n";

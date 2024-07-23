@@ -7,8 +7,18 @@ project(Whoah-Math)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# Define o diretório onde o GMP está localizado
+if (MSVC)
+    set(GMP_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/gmp/include")
+    set(GMP_LIBRARY "${CMAKE_SOURCE_DIR}/gmp/lib/libgmp-10.lib")
+endif()
+
 # Adiciona os diretórios de cabeçalho
 include_directories(Whoah/Headers)
+include_directories(${GMP_INCLUDE_DIR})
+
+# Adicione o diretório da biblioteca
+link_directories(${CMAKE_SOURCE_DIR}/gmp/lib)
 
 # Adiciona os arquivos fonte
 file(GLOB SOURCES "Whoah/*.cpp")
@@ -16,21 +26,10 @@ file(GLOB SOURCES "Whoah/*.cpp")
 # Cria o executável a partir dos arquivos fonte
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-# Adiciona opções para compilação estática
+# Vincule a biblioteca GMP ao executável
+target_link_libraries(${PROJECT_NAME} PRIVATE ${GMP_LIBRARY})
+
+# Configurar o CRT para vinculação estática
 if (MSVC)
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
+    target_compile_options(${PROJECT_NAME} PRIVATE /MT)
 endif()
-
-# Inclui o CPack para a criação de pacotes de distribuição
-include(CPack)
-
-set(CPACK_PACKAGE_NAME "Whoah-Math")
-set(CPACK_PACKAGE_VERSION "1.0.0")
-set(CPACK_GENERATOR "ZIP")
-
-# Inclui o executável e as DLLs necessárias no pacote
-install(TARGETS ${PROJECT_NAME} DESTINATION .)

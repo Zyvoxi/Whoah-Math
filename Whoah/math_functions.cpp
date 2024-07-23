@@ -9,6 +9,7 @@
 #include "math_utils.hpp"
 #include "utility_functions.hpp"
 #include <iostream>
+#include <gmp.h>
 #include <sstream>
 #include <iomanip>
 #include <cmath>
@@ -80,22 +81,22 @@ void funcFatorial() {
     double n;
     while (true) {
         try {
-            n = getValidatedInput("Digite um número inteiro não-negativo (≤ 65): ");
+            n = getValidatedInput("Digite um número inteiro não-negativo: ");
             if (n != floor(n) || n < 0) throw invalid_argument("Por favor digite um número inteiro não-negativo.");
-            if (n > 65) throw overflow_error("Por favor digite um número menor ou igual a 65.");
             break;
         } catch (const invalid_argument& e) {
-            handleError(e.what());
-        } catch (const overflow_error& e) {
             handleError(e.what());
         }
     }
 
     try {
-        int intN = static_cast<int>(n);
-        unsigned long long result = calcFatorial(intN);
+        unsigned int intN = static_cast<unsigned int>(n);
+        mpz_t result;
+        mpz_init(result);
+        calcFatorial(intN, result);
         clearScreen();
         printFormulaFatorial(intN, result);
+        mpz_clear(result);
     } catch (const invalid_argument& e) {
         handleError(e.what());
     } catch (const overflow_error& e) {
@@ -297,6 +298,46 @@ void funcIntegralDefinida() {
             double resultado = calcIntegralDefinida(numbers, a, b);
             clearScreen();
             printFormulaIntegralDefinida(numbers, a, b, resultado);
+        } else {
+            throw invalid_argument("Nenhum número válido foi fornecido.");
+        }
+    } catch (const invalid_argument& e) {
+        handleError(e.what());
+    }
+
+    returnOptions();
+}
+
+// MARK: Max Min
+void funcMaxMin() {
+    cout << "Insira os números separados por espaços: ";
+
+    string input;
+    getline(cin, input);
+    istringstream stream(input);
+
+    vector<double> numbers;
+    string token;
+    while (stream >> token) {
+        if (isBrazilianNumber(token)) {
+            string c = convertBrazilianToAmerican(token);
+            double n;
+            if (isNumber(c)) {
+                istringstream(c) >> n;
+                numbers.push_back(n);
+            } else {
+                handleError("Número inválido ignorado: " + token);
+            }
+        } else {
+            handleError("Número inválido ignorado: " + token);
+        }
+    }
+
+    try {
+        if (!numbers.empty()) {
+            auto maxMin = findMaxMin(numbers);
+            clearScreen();
+            printMaxMin(numbers, maxMin);
         } else {
             throw invalid_argument("Nenhum número válido foi fornecido.");
         }

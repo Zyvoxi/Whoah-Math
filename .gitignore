@@ -22,14 +22,12 @@ Artifacts/
 *.pch
 *.so
 *.dylib
-*.dll
 *.exe
 *.out
 *.class
 *.idb
 *.pdb
 *.ilk
-*.lib
 *.exp
 
 # CMake

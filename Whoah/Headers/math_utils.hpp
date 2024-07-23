@@ -9,6 +9,7 @@
 #define math_utils_hpp
 
 #include <vector>
+#include <gmp.h>
 #include <stdexcept>
 
 /**
@@ -71,22 +72,25 @@ void printDelta(double a, double b, double c, double delta);
 void printFormulaRX2(double b, double delta, double a);
 
 /**
- * @brief Calcula o fatorial de um número.
+ * @brief Calcula o fatorial de um número usando a biblioteca GMP.
+ *
+ * Esta função calcula o fatorial de um número inteiro não-negativo e armazena o resultado em um `mpz_t`.
  *
  * @param n Número inteiro não-negativo.
- * @return unsigned long long Fatorial de n.
+ * @param result Variável do tipo `mpz_t` onde o resultado do fatorial será armazenado.
  * @throw std::invalid_argument Se n for negativo.
- * @throw std::overflow_error Se n for maior que 65.
  */
-unsigned long long calcFatorial(int n);
+void calcFatorial(int n, mpz_t result);
 
 /**
- * @brief Imprime a fórmula e o cálculo do fatorial de um número.
+ * @brief Imprime a fórmula e o resultado do cálculo do fatorial de um número.
+ *
+ * Esta função imprime a fórmula detalhada do cálculo do fatorial e o resultado utilizando a biblioteca GMP.
  *
  * @param n Número cujo fatorial será calculado.
- * @param result Resultado do fatorial.
+ * @param result Resultado do fatorial armazenado em uma variável do tipo `mpz_t`.
  */
-void printFormulaFatorial(int n, unsigned long long result);
+void printFormulaFatorial(int n, const mpz_t result);
 
 /**
  * @brief Calcula a potência de um número.
@@ -204,6 +208,23 @@ double calcIntegralDefinida(const std::vector<double>& coeficientes, double a, d
  * @param resultado Valor da integral definida.
  */
 void printFormulaIntegralDefinida(const std::vector<double>& coeficientes, double a, double b, double resultado);
+
+/**
+ * @brief Encontra o valor máximo e mínimo em uma lista de números.
+ *
+ * @param numbers Vetor de números.
+ * @return std::pair<double, double> Par contendo o valor mínimo e máximo.
+ * @throw std::invalid_argument Se o vetor estiver vazio.
+ */
+std::pair<double, double> findMaxMin(const std::vector<double>& numbers);
+
+/**
+ * @brief Imprime os valores máximo e mínimo de uma lista de números.
+ *
+ * @param numbers Vetor de números.
+ * @param maxMin Par contendo o valor mínimo e máximo.
+ */
+void printMaxMin(const std::vector<double>& numbers, const std::pair<double, double>& maxMin);  
 
 /**
  * @brief Executa os testes unitários para as funções matemáticas.
