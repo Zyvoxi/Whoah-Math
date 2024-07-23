@@ -55,28 +55,6 @@ O projeto é composto pelos seguintes arquivos:
 
     Após a compilação, o executável estará disponível em `build/Build/Products/Release`.
 
-### Compilação no Ubuntu
-
-1. **Instale as dependências necessárias**:
-
-    ```sh
-    sudo apt update
-    sudo apt install build-essential cmake
-    ```
-
-2. **Compile o projeto com CMake e Make**:
-
-    Navegue até o diretório do projeto e execute:
-
-    ```sh
-    mkdir build
-    cd build
-    cmake -DCMAKE_BUILD_TYPE=Release ..
-    cmake --build .
-    ```
-
-3. **O executável estará disponível em `build/Whoah-Math`.**
-
 ### Compilação no Windows
 
 1. **Instale o Visual Studio** (incluindo ferramentas de C++).
@@ -97,10 +75,6 @@ O projeto é composto pelos seguintes arquivos:
 ## Uso
 
 Quando o programa for executado, você verá um menu de opções. Escolha uma das opções digitando o número correspondente e pressione Enter. O programa solicitará os parâmetros necessários para o cálculo e exibirá o resultado.
-
-## Debug
-
-Se você deseja executar o programa em modo de depuração, certifique-se de definir a macro `DEBUG` no código-fonte. Isso permitirá o acesso a funcionalidades adicionais, como a execução de testes matemáticos.
 
 ## Contribuição
 
