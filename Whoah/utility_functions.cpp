@@ -21,23 +21,6 @@ bool isBrazilianNumber(const string& str) {
     return regex_match(str, pattern);
 }
 
-bool isNumber(const string& str) {
-    if (str.empty()) return false;
-
-    size_t start = (str[0] == '-') ? 1 : 0;
-    bool decimalPointFound = false;
-
-    for (size_t i = start; i < str.length(); ++i) {
-        if (str[i] == '.') {
-            if (decimalPointFound) return false;
-            decimalPointFound = true;
-        } else if (!isdigit(str[i])) {
-            return false;
-        }
-    }
-    return true;
-}
-
 string convertBrazilianToAmerican(const string& input) {
     string formatted = input;
 
@@ -71,6 +54,31 @@ double getValidatedInput(const string& prompt) {
         }
     }
     return value;
+}
+
+vector<double> processNumbersFromInput() {
+    cout << "Insira os números separados por espaços: ";
+    string input;
+    getline(cin, input);
+    istringstream stream(input);
+    vector<double> numbers;
+    string token;
+    while (stream >> token) {
+        if (isBrazilianNumber(token)) {
+            string c = convertBrazilianToAmerican(token);
+            double n;
+            if (isNumber(c)) {
+                istringstream(c) >> n;
+                numbers.push_back(n);
+            } else {
+                handleError("Número inválido ignorado: " + token);
+            }
+        } else {
+            handleError("Número inválido ignorado: " + token);
+        }
+    }
+
+    return numbers;
 }
 
 // MARK: Limpador
@@ -115,38 +123,6 @@ string formatWithThousandsSeparator(double num) {
     return ss.str();
 }
 
-string formatNumber(double num) {
-    stringstream ss;
-
-    if (num == floor(num)) {
-        return formatWithThousandsSeparator(num);
-    } else {
-        ss << fixed << setprecision(3) << num;
-        string result = ss.str();
-
-        size_t pos = result.find('.');
-        if (pos != string::npos) {
-            result.replace(pos, 1, ",");
-        }
-
-        result.erase(result.find_last_not_of('0') + 1, string::npos);
-        if (result.back() == ',') {
-            result.pop_back();
-        }
-
-        if (num >= 1000 || num <= -1000) {
-            double integerPart;
-            modf(num, &integerPart);
-            string integerPartFormatted = formatWithThousandsSeparator(integerPart);
-            result.replace(0, pos, integerPartFormatted);
-        }
-
-        return result;
-    }
-
-    return ss.str();
-}
-
 string formatLargerNumber(const mpz_t num) {
     // Converte o número grande para string
     string numStr = mpz_get_str(nullptr, 10, num);
@@ -173,46 +149,6 @@ string formatLargerNumber(const mpz_t num) {
     }
     
     return formattedNum;
-}
-
-string formatNumToSub(double num) {
-    string subs = "";
-    string subsMap[] = {"₀", "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉"};
-
-    ostringstream oss;
-    oss << num;  // Usa o ostringstream para conversão
-    string numStr = oss.str();
-
-    for (char c : numStr) {
-        if (c == '.') {
-            subs += ",";  // Substitui o ponto decimal por vírgula
-        } else {
-            int d = c - '0';
-            subs += subsMap[d];
-        }
-    }
-
-    return subs;
-}
-
-string formatNumToSup(double num) {
-    string sub = "";
-    string subMap[] = {"⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"};
-
-    ostringstream oss;
-    oss << num;  // Usa o ostringstream para conversão
-    string numStr = oss.str();
-
-    for (char c : numStr) {
-        if (c == '.') {
-            sub += ",";  // Substitui o ponto decimal por vírgula
-        } else {
-            int d = c - '0';
-            sub += subMap[d];
-        }
-    }
-
-    return sub;
 }
 
 // MARK: Error

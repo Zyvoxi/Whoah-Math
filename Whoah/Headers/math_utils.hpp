@@ -9,6 +9,7 @@
 #define math_utils_hpp
 
 #include <vector>
+#include <iostream>
 #include <gmp.h>
 #include <stdexcept>
 
@@ -288,5 +289,51 @@ double calcMGeometrica(const std::vector<double>& numeros);
  * @param res Resultado da média geométrica.
  */
 void printFormulaMGeometrica(const std::vector<double>& numeros, double res);
+
+/**
+ * @brief Calcula a média harmônica de uma lista de números.
+ *
+ * @param numeros Vetor de números.
+ * @return double Média harmônica dos números.
+ * @throws invalid_argument Se o vetor estiver vazio.
+ */
+double calcMHarmonica(const std::vector<double>& numeros);
+
+/**
+ * @brief Imprime a fórmula e o cálculo da média harmônica.
+ *
+ * Esta função exibe a fórmula matemática usada para cálcular a média harmônica
+ * e o resultado final.
+ *
+ * @param numeros Vetor de números.
+ * @param res Resultado da média geométrica.
+ */
+void printFormulaMHarmonica(const std::vector<double>& numeros, double res);
+
+/**
+ * @brief Calcula a mediana de um vetor de números.
+ *
+ * A mediana é o valor que separa a metade superior da metade inferior de um conjunto de dados ordenado.
+ * Se o número de observações for ímpar, a mediana é o valor no meio do vetor ordenado.
+ * Se o número de observações for par, a mediana é a média dos dois valores centrais.
+ *
+ * @param numeros Vetor de números (double) para o qual a mediana será calculada.
+ * @return A mediana dos números no vetor.
+ *
+ * @note O vetor será ordenado internamente para calcular a mediana.
+ * Se o vetor estiver vazio, o comportamento é indefinido.
+ */
+double calcMediana(const std::vector<double>& numeros);double calcMediana(const std::vector<double>& numeros);
+
+/**
+ * @brief Imprime a fórmula e o cálculo da mediana.
+ *
+ * Esta função exibe a fórmula matemática usada para cálcular a mediana
+ * e o resultado final.
+ *
+ * @param numeros Vetor de números.
+ * @param res Resultado da média geométrica.
+ */
+void printFormulaMediana(const std::vector<double>& numeros, double res);
 
 #endif /* math_utils_hpp */

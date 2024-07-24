@@ -183,9 +183,7 @@ void printFormulaDerivada(const vector<double>& coeficientes, const vector<doubl
             cout << " + ";
         }
     }
-    cout << endl;
-
-    cout << "Derivada: ";
+    cout << endl << "Derivada: ";
     for (size_t i = 0; i < derivada.size(); ++i) {
         cout << formatNumber(derivada[i]) << "x" << formatNumToSup((derivada.size() - 1 - i));
         if (i < derivada.size() - 1) {
@@ -246,10 +244,8 @@ void printMaxMin(const vector<double>& numbers, const pair<double, double>& maxM
     for (const double& num : numbers) {
         cout << formatNumber(num) << " ";
     }
-    cout << endl;
-
-    cout << "Valor mínimo: " << formatNumber(maxMin.first) << endl;
-    cout << "Valor máximo: " << formatNumber(maxMin.second) << endl;
+    cout << endl << "Valor mínimo: " << formatNumber(maxMin.first)
+         << endl << "Valor máximo: " << formatNumber(maxMin.second) << endl;
 }
 
 // MARK: Utilitarios - Permutação
@@ -272,9 +268,9 @@ void calcPermutacao(mpz_t resultado, int n, int k) {
 }
 
 void printFormulaPermutacao(int n, int k, const mpz_t resultado) {
-    cout << "Número total de elementos (n): " << n << endl;
-    cout << "Número de elementos selecionados (k): " << k << endl;
-    cout << "Número de permutações (P(n, k)): " << formatLargerNumber(resultado) << endl;
+    cout << "Número total de elementos (n): " << formatNumber(n)
+         << endl << "Número de elementos selecionados (k): " << formatNumber(k)
+         << endl << "Número de permutações (P(n, k)): " << formatLargerNumber(resultado) << endl;
 }
 
 // MARK: Utilitários - Combinação
@@ -343,10 +339,86 @@ void printFormulaMGeometrica(const vector<double>& numeros, double res) {
     cout << formatNumToSup(numeros.size()) << "√";
     for (size_t i = 0; i < numeros.size(); ++i) {
         produto *= numeros[i];
-        cout << numeros[i];
+        cout << formatNumber(numeros[i]);
         if (i < numeros.size() - 1) {
             cout << " * ";
         }
     }
     cout << endl << formatNumToSup(numeros.size()) << "√" << formatNumber(produto) << " = " << formatNumber(res) << endl;
+}
+
+// MARK: Utilitários - Média Harmônica
+double calcMHarmonica(const vector<double>& numeros) {
+    if (numeros.empty()) {
+        throw invalid_argument("O vetor está vazio");
+    }
+
+    double produto = 0;
+    for (size_t i = 0; i < numeros.size(); ++i) {
+        produto += 1/numeros[i];
+    }
+
+    return numeros.size()/produto;
+}
+
+void printFormulaMHarmonica(const vector<double>& numeros, double res) {
+    cout << "H = ";
+    double produto = 0;
+    for (size_t i = 0; i < numeros.size(); ++i) {
+        cout << "1/" << formatNumber(numeros[i]);
+        if (i < numeros.size() - 1) {
+            cout << " + ";
+        }
+    }
+    cout << endl << "H = ";
+    for (size_t i = 0; i < numeros.size(); ++i) {
+        produto = 1/numeros[i];
+        cout << formatNumber(produto);
+        if (i < numeros.size() - 1) {
+            cout << " + ";
+        }
+    }
+    cout << endl << "H = " << formatNumber(res) << endl;
+}
+
+// MARK: Utilitários - Mediana
+double calcMediana(const vector<double>& numeros) {
+    if (numeros.empty()) {
+        throw invalid_argument("O vetor está vazio");
+    }
+
+    vector<double> sorted_numeros = numeros;
+    sort(sorted_numeros.begin(), sorted_numeros.end());
+
+    size_t n = sorted_numeros.size();
+    size_t mid = n / 2;
+
+    if (isOdd(n)) {
+        return sorted_numeros[mid];
+    } else {
+        return (sorted_numeros[mid - 1] + sorted_numeros[mid]) / 2.0;
+    }
+}
+
+void printFormulaMediana(const vector<double>& numeros, double res) {
+    vector<double> sorted_numeros = numeros;
+    sort(sorted_numeros.begin(), sorted_numeros.end());
+
+    cout << "Números ordenados: ";
+    for (size_t i = 0; i < sorted_numeros.size(); ++i) {
+        cout << formatNumber(sorted_numeros[i]) << " ";
+    }
+    cout << "= " << formatNumber(numeros.size()) << " observações (";
+
+    if (isOdd(numeros.size())) {
+        cout << "ímpar)" << endl;
+        cout << "Mediana = (" << formatNumber(numeros.size()) << " + 1) / 2 = "
+             << formatNumber((numeros.size() + 1) / 2.0) << "ᵃ observação = " << formatNumber(res) << endl;
+    } else {
+        cout << "par)"
+             << endl << "Mediana = (" << formatNumber(numeros.size() / 2) << "ᵃ observação + "
+             << formatNumber((numeros.size() / 2 + 1)) << "ᵃ observação) / 2 = ("
+             << formatNumber(sorted_numeros[numeros.size() / 2 - 1]) << " + "
+             << formatNumber(sorted_numeros[numeros.size() / 2]) << ") / 2 = " << formatNumber(res) << endl;
+    }
 }

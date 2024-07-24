@@ -98,4 +98,14 @@ void runCalcCombinacaoTests(int& failureCount);
  */
 void runCalcMGeometricaTests(int& failureCount);
 
+/**
+ * @brief Executa testes unitário para a função calcMHarmonica.
+ */
+void runCalcMHarmonicaTests(int& failureCount);
+
+/**
+ * @brief Executa testes unitário para a função calcMediana.
+ */
+void runCalcMedianaTests(int& failureCount);
+
 #endif /* math_tests_hpp */

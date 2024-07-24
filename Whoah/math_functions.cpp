@@ -149,29 +149,9 @@ void funcLogaritmo() {
 
 // MARK: Média
 void funcMedia() {
-    cout << "Calculando a média de uma lista de números.\n"
-         << endl << "Digite os números separados por espaço (pressione Enter para finalizar): ";
+    cout << "Calculando a média de uma lista de números.\n" << endl;
 
-    string input;
-    getline(cin, input);
-    istringstream stream(input);
-
-    vector<double> numbers;
-    string token;
-    while (stream >> token) {
-        if (isBrazilianNumber(token)) {
-            string c = convertBrazilianToAmerican(token);
-            double n;
-            if (isNumber(c)) {
-                istringstream(c) >> n;
-                numbers.push_back(n);
-            } else {
-                handleError("Número inválido ignorado: " + token);
-            }
-        } else {
-            handleError("Número inválido ignorado: " + token);
-        }
-    }
+    vector<double> numbers = processNumbersFromInput();
 
     try {
         if (!numbers.empty()) {
@@ -230,26 +210,8 @@ void funcRaizN() {
 void funcDerivada() {
     cout << "calcular a derivada de um polinômio.\n" << endl;
 
-    cout << "Insira os coeficientes do polinômio separados por espaços (do maior grau para o menor grau): ";
-    string input;
-    getline(cin, input);
-    istringstream stream(input);
-    vector<double> numbers;
-    string token;
-    while (stream >> token) {
-        if (isBrazilianNumber(token)) {
-            string c = convertBrazilianToAmerican(token);
-            double n;
-            if (isNumber(c)) {
-                istringstream(c) >> n;
-                numbers.push_back(n);
-            } else {
-                handleError("Número inválido ignorado: " + token);
-            }
-        } else {
-            handleError("Número inválido ignorado: " + token);
-        }
-    }
+    cout << "Insira os coeficientes do polinômio separados por espaços (do maior grau para o menor grau)." << endl;
+    vector<double> numbers = processNumbersFromInput();
 
     try {
         if (!numbers.empty()) {
@@ -270,26 +232,8 @@ void funcDerivada() {
 void funcIntegralDefinida() {
     cout << "Calculando a integral definida de um polinômio.\n" << endl;
 
-    cout << "Insira os coeficientes do polinômio separados por espaços (do maior grau para o menor grau): ";
-    string input;
-    getline(cin, input);
-    istringstream stream(input);
-    vector<double> numbers;
-    string token;
-    while (stream >> token) {
-        if (isBrazilianNumber(token)) {
-            string c = convertBrazilianToAmerican(token);
-            double n;
-            if (isNumber(c)) {
-                istringstream(c) >> n;
-                numbers.push_back(n);
-            } else {
-                handleError("Número inválido ignorado: " + token);
-            }
-        } else {
-            handleError("Número inválido ignorado: " + token);
-        }
-    }
+    cout << "Insira os coeficientes do polinômio separados por espaços (do maior grau para o menor grau)." << endl;
+    vector<double> numbers = processNumbersFromInput();
 
     try {
         if (!numbers.empty()) {
@@ -312,26 +256,7 @@ void funcIntegralDefinida() {
 void funcMaxMin() {
     cout << "Encontrando o valor máximo e mínimo de uma lista de números.\n" << endl;
 
-    cout << "Insira os números separados por espaços: ";
-    string input;
-    getline(cin, input);
-    istringstream stream(input);
-    vector<double> numbers;
-    string token;
-    while (stream >> token) {
-        if (isBrazilianNumber(token)) {
-            string c = convertBrazilianToAmerican(token);
-            double n;
-            if (isNumber(c)) {
-                istringstream(c) >> n;
-                numbers.push_back(n);
-            } else {
-                handleError("Número inválido ignorado: " + token);
-            }
-        } else {
-            handleError("Número inválido ignorado: " + token);
-        }
-    }
+    vector<double> numbers = processNumbersFromInput();
 
     try {
         if (!numbers.empty()) {
@@ -423,28 +348,9 @@ void funcCombinacao() {
 
 // MARK: Média Geométrica
 void funcMGeometrica() {
-    cout << "calculando a média geométrica de uma lista de números.\n" << endl;
+    cout << "Calculando a média geométrica de uma lista de números.\n" << endl;
 
-    cout << "Insira os números separados por espaços: ";
-    string input;
-    getline(cin, input);
-    istringstream stream(input);
-    vector<double> numbers;
-    string token;
-    while (stream >> token) {
-        if (isBrazilianNumber(token)) {
-            string c = convertBrazilianToAmerican(token);
-            double n;
-            if (isNumber(c)) {
-                istringstream(c) >> n;
-                numbers.push_back(n);
-            } else {
-                handleError("Número inválido ignorado: " + token);
-            }
-        } else {
-            handleError("Número inválido ignorado: " + token);
-        }
-    }
+    vector<double> numbers = processNumbersFromInput();
 
     try {
         if (!numbers.empty()) {
@@ -454,6 +360,49 @@ void funcMGeometrica() {
             printFormulaMGeometrica(numbers, resultado);
         } else {
             throw invalid_argument("Nenhum número válido foi fornecido.");
+        }
+    } catch (const invalid_argument& e) {
+        handleError(e.what());
+    }
+
+    returnOptions();
+}
+
+// MARK: Média Harmônica
+void funcMHarmonica() {
+    cout << "Calculando a média harmônica de uma lista de números.\n" << endl;
+
+    vector<double> numbers = processNumbersFromInput();
+
+    try {
+        if (!numbers.empty()) {
+            double resultado = calcMHarmonica(numbers);
+            clearScreen();
+            cout << "A média harmônica é: " << endl;
+            printFormulaMHarmonica(numbers, resultado);
+        } else {
+            throw invalid_argument("Nenhum número válido foi fornecido.");
+        }
+    } catch (const invalid_argument& e) {
+        handleError(e.what());
+    }
+
+    returnOptions();
+}
+
+// MARK: Mediana
+void funcMediana() {
+    cout << "Calculando a mediana de uma lista de números.\n" << endl;
+
+    vector<double> numbers = processNumbersFromInput();
+
+    try {
+        if (!numbers.empty()) {
+            double resultado = calcMediana(numbers);
+            clearScreen();
+            printFormulaMediana(numbers, resultado);
+        } else {
+            throw invalid_argument("Numnhum número válido foi fornecido.");
         }
     } catch (const invalid_argument& e) {
         handleError(e.what());

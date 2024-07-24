@@ -319,6 +319,81 @@ void runCalcMGeometricaTests(int& failureCount) {
     }
 }
 
+void runCalcMHarmonicaTests(int& failureCount) {
+    // Teste para uma lista de números positivos
+    vector<double> nums1 = {1, 2, 3, 4, 5};
+    checkTest(abs(calcMHarmonica(nums1) - 2.18978) < 0.0001,
+              "calcMediaHarmonica({1, 2, 3, 4, 5})",
+              failureCount);
+
+    // Teste para uma lista com valores muito variados
+    vector<double> nums2 = {10, 20, 30};
+    checkTest(abs(calcMHarmonica(nums2) - 16.6667) < 0.0001,
+              "calcMediaHarmonica({10, 20, 30})",
+              failureCount);
+
+    // Teste para uma lista com todos os números iguais
+    vector<double> nums3 = {7, 7, 7};
+    checkTest(abs(calcMHarmonica(nums3) - 7) < 0.0001,
+              "calcMediaHarmonica({7, 7, 7})",
+              failureCount);
+
+    // Teste para uma lista com um único número
+    vector<double> nums4 = {42};
+    checkTest(abs(calcMHarmonica(nums4) - 42) < 0.0001,
+              "calcMediaHarmonica({42})",
+              failureCount);
+
+    // Teste para uma lista contendo zeros (deve lançar exceção)
+    try {
+        vector<double> nums5 = {0, 1, 2, 3};
+        calcMHarmonica(nums5);
+        checkTest(false, "calcMediaHarmonica({0, 1, 2, 3}) deveria lançar exceção", failureCount);
+    } catch (const invalid_argument&) {
+        checkTest(true, "Exceção esperada lançada", failureCount);
+    }
+
+    // Teste para uma lista vazia (deve lançar exceção)
+    try {
+        vector<double> empty;
+        calcMHarmonica(empty);
+        checkTest(false, "calcMediaHarmonica(empty) deveria lançar exceção", failureCount);
+    } catch (const invalid_argument&) {
+        checkTest(true, "Exceção esperada lançada", failureCount);
+    }
+}
+
+void runCalcMedianaTests(int& failureCount) {
+    // Teste para uma lista de números ímpares
+    vector<double> nums1 = {1, 3, 5, 7, 9};
+    checkTest(calcMediana(nums1) == 5, "calcMediana({1, 3, 5, 7, 9}) == 5", failureCount);
+
+    // Teste para uma lista de números pares
+    vector<double> nums2 = {1, 3, 5, 7, 9, 11};
+    checkTest(calcMediana(nums2) == 6, "calcMediana({1, 3, 5, 7, 9, 11}) == 6", failureCount);
+
+    // Teste para uma lista de números negativos
+    vector<double> nums3 = {-5, -3, -1, 1, 3};
+    checkTest(calcMediana(nums3) == -1, "calcMediana({-5, -3, -1, 1, 3}) == -1", failureCount);
+
+    // Teste para uma lista de números com valores iguais
+    vector<double> nums4 = {2, 2, 2, 2};
+    checkTest(calcMediana(nums4) == 2, "calcMediana({2, 2, 2, 2}) == 2", failureCount);
+
+    // Teste para uma lista com um único número
+    vector<double> nums5 = {7};
+    checkTest(calcMediana(nums5) == 7, "calcMediana({7}) == 7", failureCount);
+
+    // Teste para uma lista vazia (deve lançar exceção)
+    try {
+        vector<double> empty;
+        calcMediana(empty);
+        checkTest(false, "calcMediana(empty) deveria lançar exceção", failureCount);
+    } catch (const invalid_argument&) {
+        checkTest(true, "Exceção esperada lançada", failureCount);
+    }
+}
+
 void runMathTests() {
     cout << "Executando testes unitários...\n";
     int failureCount = 0;
@@ -338,6 +413,8 @@ void runMathTests() {
     runCalcPermutacaoTests(failureCount);
     runCalcCombinacaoTests(failureCount);
     runCalcMGeometricaTests(failureCount);
+    runCalcMHarmonicaTests(failureCount);
+    runCalcMedianaTests(failureCount);
 
     if (failureCount == 0) {
         cout << "Todos os testes foram executados com sucesso!\n";

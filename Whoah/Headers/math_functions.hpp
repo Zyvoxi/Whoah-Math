@@ -78,4 +78,14 @@ void funcCombinacao();
  */
 void funcMGeometrica();
 
+/**
+ * @brief Função principal para calcular a média harmônica de uma lista de números.
+ */
+void funcMHarmonica();
+
+/**
+ * @brief Função principal para calcular a mediana de uma lista de números.
+ */
+void funcMediana();
+
 #endif /* math_functions_hpp */

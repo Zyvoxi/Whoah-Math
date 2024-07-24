@@ -10,6 +10,12 @@
 
 #include <gmp.h>
 #include <string>
+#include <sstream>
+#include <iomanip>
+#include <cmath>
+#include <algorithm>
+#include <regex>
+    using namespace std;
 
 /**
  * @brief Verifica se uma string é um número no formato brasileiro.
@@ -18,7 +24,7 @@
  * @return true Se a string for um número no formato brasileiro.
  * @return false Caso contrário.
  */
-bool isBrazilianNumber(const std::string& str);
+bool isBrazilianNumber(const string& str);
 
 /**
  * @brief Verifica se uma string é um número.
@@ -27,15 +33,47 @@ bool isBrazilianNumber(const std::string& str);
  * @return true Se a string for um número.
  * @return false Caso contrário.
  */
-bool isNumber(const std::string& str);
+template <typename T>
+bool isNumber(const T& str) {
+    if (str.empty()) return false;
+
+    size_t start = (str[0] == '-') ? 1 : 0;
+    bool decimalPointFound = false;
+
+    for (size_t i = start; i < str.length(); ++i) {
+        if (str[i] == '.') {
+            if (decimalPointFound) return false;
+            decimalPointFound = true;
+        } else if (!isdigit(str[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * @brief Verifica se um número é ímpar.
+ *
+ * Esta função template verifica se um número é ímpar.
+ * Funciona para qualquer tipo que suporte a operação de módulo (%).
+ *
+ * @tparam T O tipo do número.
+ * @param number O número a ser verificado.
+ * @return true Se o número é ímpar.
+ * @return false Se o número é par.
+ */
+template <typename T>
+bool isOdd(T number) {
+    return number % 2 != 0;
+}
 
 /**
  * @brief Converte um número do formato brasileiro para o formato americano.
  *
  * @param input Número no formato brasileiro.
- * @return std::string Número no formato americano.
+ * @return string Número no formato americano.
  */
-std::string convertBrazilianToAmerican(const std::string& input);
+string convertBrazilianToAmerican(const string& input);
 
 /**
  * @brief Solicita e valida a entrada do usuário como um número.
@@ -43,7 +81,9 @@ std::string convertBrazilianToAmerican(const std::string& input);
  * @param prompt Mensagem de solicitação para o usuário.
  * @return double Número validado.
  */
-double getValidatedInput(const std::string& prompt);
+double getValidatedInput(const string& prompt);
+
+vector<double> processNumbersFromInput();
 
 /**
  * @brief Limpa a tela do console.
@@ -59,25 +99,56 @@ void returnOptions();
  * @brief Formata um número com separadores de milhar.
  *
  * @param num Número a ser formatado.
- * @return std::string Número formatado.
+ * @return string Número formatado.
  */
-std::string formatWithThousandsSeparator(double num);
+string formatWithThousandsSeparator(double num);
 
 /**
  * @brief Formata um número de acordo com o formato brasileiro.
  *
  * @param num Número a ser formatado.
- * @return std::string Número formatado.
+ * @return string Número formatado.
  */
-std::string formatNumber(double num);
+template <typename T>
+string formatNumber(T num) {
+    stringstream ss;
+
+    if (num == floor(num)) {
+        return formatWithThousandsSeparator(num);
+    } else {
+        ss << fixed << setprecision(3) << num;
+        string result = ss.str();
+
+        size_t pos = result.find('.');
+        if (pos != string::npos) {
+            result.replace(pos, 1, ",");
+        }
+
+        result.erase(result.find_last_not_of('0') + 1, string::npos);
+        if (result.back() == ',') {
+            result.pop_back();
+        }
+
+        if (num >= 1000 || num <= -1000) {
+            double integerPart;
+            modf(num, &integerPart);
+            string integerPartFormatted = formatWithThousandsSeparator(integerPart);
+            result.replace(0, pos, integerPartFormatted);
+        }
+
+        return result;
+    }
+
+    return ss.str();
+}
 
 /**
  * @brief Formata um número de acordo com o formato brasileiro.
  *
  * @param num Número a ser formatado.
- * @return std::string Número formatado.
+ * @return string Número formatado.
  */
-std::string formatLargerNumber(const mpz_t num);
+string formatLargerNumber(const mpz_t num);
 
 /**
  * @brief Formata um número em subscrito.
@@ -86,9 +157,28 @@ std::string formatLargerNumber(const mpz_t num);
  * Por exemplo, o número 123.45 será convertido para "₁₂₃,₄₅".
  *
  * @param num O número a ser formatado.
- * @return std::string O número formatado em subscritos.
+ * @return string O número formatado em subscritos.
  */
-std::string formatNumToSub(double num);
+template <typename T>
+string formatNumToSub(T num) {
+    string subs = "";
+    string subsMap[] = {"₀", "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉"};
+
+    ostringstream oss;
+    oss << num;  // Usa o ostringstream para conversão
+    string numStr = oss.str();
+
+    for (char c : numStr) {
+        if (c == '.') {
+            subs += ",";  // Substitui o ponto decimal por vírgula
+        } else {
+            int d = c - '0';
+            subs += subsMap[d];
+        }
+    }
+
+    return subs;
+}
 
 /**
  * @brief Formata um número em superescrito.
@@ -97,15 +187,34 @@ std::string formatNumToSub(double num);
  * Por exemplo, o número 123.45 será convertido para "¹²³,⁴⁵".
  *
  * @param num O número a ser formatado.
- * @return std::string O número formatado em superescritos.
+ * @return string O número formatado em superescritos.
  */
-std::string formatNumToSup(double num);
+template <typename T>
+string formatNumToSup(T num) {
+    string sub = "";
+    string subMap[] = {"⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"};
+
+    ostringstream oss;
+    oss << num;  // Usa o ostringstream para conversão
+    string numStr = oss.str();
+
+    for (char c : numStr) {
+        if (c == '.') {
+            sub += ",";  // Substitui o ponto decimal por vírgula
+        } else {
+            int d = c - '0';
+            sub += subMap[d];
+        }
+    }
+
+    return sub;
+}
 
 /**
  * @brief Trata erros e exibe mensagens detalhadas.
  *
  * @param error Mensagem de erro.
  */
-void handleError(const std::string& error);
+void handleError(const string& error);
 
 #endif /* utility_functions_hpp */

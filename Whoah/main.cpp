@@ -39,6 +39,8 @@ void options() {
          << endl << "12 - Calcular o número de permutações possíveis de um conjunto de elementos"
          << endl << "13 - Calcular o número de combinações possíveis de um conjunto de elementos"
          << endl << "14 - Calcular a Média Geométrica de uma lista de números"
+         << endl << "15 - Calcular a Média Harmônica de uma lista de números."
+         << endl << "16 - Calcular a mediana de uma lista de números."
 #endif
          << endl << "\n0 - Sair" << endl;
 
@@ -127,6 +129,14 @@ void handleOptionsChoice() {
         case 14:
             clearScreen();
             funcMGeometrica();
+            break;
+        case 15:
+            clearScreen();
+            funcMHarmonica();
+            break;
+        case 16:
+            clearScreen();
+            funcMediana();
             break;
 #endif
         default:
