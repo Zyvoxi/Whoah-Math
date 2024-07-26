@@ -108,4 +108,9 @@ void runCalcMHarmonicaTests(int& failureCount);
  */
 void runCalcMedianaTests(int& failureCount);
 
+/**
+ * @brief Executa testes unitário para a função calcDPAmostral.
+ */
+void runCalcDPAmostralTests(int& failureCount);
+
 #endif /* math_tests_hpp */

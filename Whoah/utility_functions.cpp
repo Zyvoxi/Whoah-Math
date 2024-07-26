@@ -131,23 +131,23 @@ string formatLargerNumber(const mpz_t num) {
     // Remove espaços e outros caracteres indesejados
     result.erase(0, result.find_first_not_of(' '));
     result.erase(result.find_last_not_of(' ') + 1);
-    
+
     // Adiciona separadores de milhares
     string formattedNum;
     unsigned long long length = result.length();
     int start = length % 3;
-    
+
     // Adiciona a primeira parte, se existir
     if (start > 0) {
         formattedNum.append(result.substr(0, start));
     }
-    
+
     // Adiciona os grupos de três dígitos separados por pontos
     for (int i = start; i < length; i += 3) {
         if (i > 0) formattedNum.append(".");
         formattedNum.append(result.substr(i, 3));
     }
-    
+
     return formattedNum;
 }
 

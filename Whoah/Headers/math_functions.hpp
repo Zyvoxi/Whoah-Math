@@ -88,4 +88,9 @@ void funcMHarmonica();
  */
 void funcMediana();
 
+/**
+ * @brief Função principal para calcular o desvio padrão amostral de uma lista de números.
+ */
+void funcDPAmostral();
+
 #endif /* math_functions_hpp */

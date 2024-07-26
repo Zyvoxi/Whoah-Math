@@ -410,3 +410,24 @@ void funcMediana() {
 
     returnOptions();
 }
+
+// MARK: Desvio Padrão Amostral
+void funcDPAmostral() {
+    cout << "Calculando o desvio padrão amostral de uma lista de numeros.\n" << endl;
+    
+    vector<double> numbers = processNumbersFromInput();
+
+    try {
+        if (!numbers.empty()) {
+            double resultado = calcDPAmostral(numbers);
+            clearScreen();
+            printFormulaDPAmostral(numbers, resultado);
+        } else {
+            throw invalid_argument("Nenhum número válido foi fornecido.");
+        }
+    } catch (const invalid_argument& e) {
+        handleError(e.what());
+    }
+
+    returnOptions();
+}

@@ -394,6 +394,36 @@ void runCalcMedianaTests(int& failureCount) {
     }
 }
 
+void runCalcDPAmostralTests(int& failureCount) {
+    vector<double> nums1 = {1, 2, 3, 4, 5};
+    checkTest(abs(calcDPAmostral(nums1) - 1.58114) < 0.0001, "calcDPAmostral({1, 2, 3, 4, 5})", failureCount);
+
+    vector<double> nums2 = {10, 20, 30, 40, 50};
+    checkTest(abs(calcDPAmostral(nums2) - 15.8114) < 0.0001, "calcDPAmostral({10, 20, 30, 40, 50})", failureCount);
+
+    vector<double> nums3 = {7, 7, 7, 7, 7};
+    checkTest(abs(calcDPAmostral(nums3) - 0) < 0.0001, "calcDPAmostral({7, 7, 7, 7, 7})", failureCount);
+
+    vector<double> nums4 = {4, 8, 6, 5, 3, 2, 8, 6, 4, 2};
+    checkTest(abs(calcDPAmostral(nums4) - 2.14) < 0.01, "calcDPAmostral({4, 8, 6, 5, 3, 2, 8, 6, 4, 2})", failureCount);
+
+    try {
+        vector<double> empty;
+        calcDPAmostral(empty);
+        checkTest(false, "calcDPAmostral(empty) deveria lançar exceção", failureCount);
+    } catch (const invalid_argument&) {
+        checkTest(true, "Exceção esperada lançada", failureCount);
+    }
+
+    try {
+        vector<double> nums5 = {1};
+        calcDPAmostral(nums5);
+        checkTest(false, "calcDPAmostral({1}) deveria lançar exceção", failureCount);
+    } catch (const invalid_argument&) {
+        checkTest(true, "Exceção esperada lançada", failureCount);
+    }
+}
+
 void runMathTests() {
     cout << "Executando testes unitários...\n";
     int failureCount = 0;
@@ -415,6 +445,7 @@ void runMathTests() {
     runCalcMGeometricaTests(failureCount);
     runCalcMHarmonicaTests(failureCount);
     runCalcMedianaTests(failureCount);
+    runCalcDPAmostralTests(failureCount);
 
     if (failureCount == 0) {
         cout << "Todos os testes foram executados com sucesso!\n";

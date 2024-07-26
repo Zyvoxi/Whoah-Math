@@ -306,7 +306,7 @@ double calcMHarmonica(const std::vector<double>& numeros);
  * e o resultado final.
  *
  * @param numeros Vetor de números.
- * @param res Resultado da média geométrica.
+ * @param res Resultado da média harmônica.
  */
 void printFormulaMHarmonica(const std::vector<double>& numeros, double res);
 
@@ -332,8 +332,44 @@ double calcMediana(const std::vector<double>& numeros);double calcMediana(const 
  * e o resultado final.
  *
  * @param numeros Vetor de números.
- * @param res Resultado da média geométrica.
+ * @param res Resultado da mediana.
  */
 void printFormulaMediana(const std::vector<double>& numeros, double res);
+
+/**
+ * @brief Calcula o desvio padrão amostral de um conjunto de números.
+ *
+ * Esta função calcula o desvio padrão amostral (s) de um conjunto de números
+ * fornecido como um vetor de valores do tipo double. O desvio padrão amostral
+ * é uma medida de dispersão que indica o quanto os valores em um conjunto
+ * variam em relação à média do conjunto.
+ *
+ * A fórmula do desvio padrão amostral é dada por:
+ *
+ * s = sqrt( (1 / (n - 1)) * sum( (xi - media)^2 ) )
+ *
+ * onde:
+ * - n é o número de elementos no conjunto.
+ * - xi é cada valor individual no conjunto.
+ * - media é a média dos valores do conjunto.
+ *
+ * @param numeros Um vetor de números do tipo double representando o conjunto
+ * de dados.
+ * @return O desvio padrão amostral dos números fornecidos.
+ *
+ * @throws std::invalid_argument Se o vetor estiver vazio.
+ */
+double calcDPAmostral(const std::vector<double>& numeros);
+
+/**
+ * @brief Imprime a fórmula e o cálculo do desvio padrão amostral.
+ *
+ * Esta função exibe a fórmula matemática usada para cálcular o desvio padrão amostral
+ * e o resultado final.
+ *
+ * @param numeros Vetor de números.
+ * @param res Resultado do desvio padrão amostral.
+ */
+void printFormulaDPAmostral(const std::vector<double>& numeros, double res);
 
 #endif /* math_utils_hpp */

@@ -138,6 +138,10 @@ void handleOptionsChoice() {
             clearScreen();
             funcMediana();
             break;
+        case 17:
+            clearScreen();
+            funcDPAmostral();
+            break;
 #endif
         default:
             cout << "Opção inválida.\n";
