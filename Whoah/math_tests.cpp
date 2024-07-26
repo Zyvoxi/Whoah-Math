@@ -328,7 +328,7 @@ void runCalcMHarmonicaTests(int& failureCount) {
 
     // Teste para uma lista com valores muito variados
     vector<double> nums2 = {10, 20, 30};
-    checkTest(abs(calcMHarmonica(nums2) - 16.6667) < 0.0001,
+    checkTest(abs(calcMHarmonica(nums2) - 16.36367) < 0.0001,
               "calcMediaHarmonica({10, 20, 30})",
               failureCount);
 
@@ -405,7 +405,7 @@ void runCalcDPAmostralTests(int& failureCount) {
     checkTest(abs(calcDPAmostral(nums3) - 0) < 0.0001, "calcDPAmostral({7, 7, 7, 7, 7})", failureCount);
 
     vector<double> nums4 = {4, 8, 6, 5, 3, 2, 8, 6, 4, 2};
-    checkTest(abs(calcDPAmostral(nums4) - 2.14) < 0.01, "calcDPAmostral({4, 8, 6, 5, 3, 2, 8, 6, 4, 2})", failureCount);
+    checkTest(abs(calcDPAmostral(nums4) - 2.204) < 0.01, "calcDPAmostral({4, 8, 6, 5, 3, 2, 8, 6, 4, 2})", failureCount);
 
     try {
         vector<double> empty;

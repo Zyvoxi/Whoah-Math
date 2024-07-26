@@ -41,6 +41,7 @@ void options() {
          << endl << "14 - Calcular a Média Geométrica de uma lista de números"
          << endl << "15 - Calcular a Média Harmônica de uma lista de números."
          << endl << "16 - Calcular a mediana de uma lista de números."
+         << endl << "17 - Calcular o Desvio Padrão Amostral de uma lista de números."
 #endif
          << endl << "\n0 - Sair" << endl;
 

@@ -351,6 +351,8 @@ void printFormulaMGeometrica(const vector<double>& numeros, double res) {
 double calcMHarmonica(const vector<double>& numeros) {
     if (numeros.empty()) {
         throw invalid_argument("O vetor está vazio");
+    } else if (find(numeros.begin(), numeros.end(), 0) != numeros.end()) {
+        throw invalid_argument("O vetor contém um número zero");
     }
 
     double produto = 0;
@@ -427,6 +429,8 @@ void printFormulaMediana(const vector<double>& numeros, double res) {
 double calcDPAmostral(const vector<double>& numeros) {
     if (numeros.empty()) {
         throw invalid_argument("O vetor está vazio");
+    } else if (numeros.size() == 1) {
+        throw invalid_argument("O vetor precisa conter mais de 1 número");
     }
 
     double res1 = 0, res2 = 0;
