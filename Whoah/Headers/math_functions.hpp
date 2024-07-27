@@ -93,4 +93,9 @@ void funcMediana();
  */
 void funcDPAmostral();
 
+/**
+ * @brief Função principal para calcular a variância amostral de uma lista de números.
+ */
+void funcVariancia();
+
 #endif /* math_functions_hpp */

@@ -42,6 +42,7 @@ void options() {
          << endl << "15 - Calcular a Média Harmônica de uma lista de números."
          << endl << "16 - Calcular a mediana de uma lista de números."
          << endl << "17 - Calcular o Desvio Padrão Amostral de uma lista de números."
+         << endl << "18 - Calcular a Variância Amostral de um conjunto de números."
 #endif
          << endl << "\n0 - Sair" << endl;
 
@@ -142,6 +143,10 @@ void handleOptionsChoice() {
         case 17:
             clearScreen();
             funcDPAmostral();
+            break;
+        case 18:
+            clearScreen();
+            funcVariancia();
             break;
 #endif
         default:

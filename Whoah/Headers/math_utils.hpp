@@ -372,4 +372,25 @@ double calcDPAmostral(const std::vector<double>& numeros);
  */
 void printFormulaDPAmostral(const std::vector<double>& numeros, double res);
 
+/**
+ * @brief Calcula a variância amostral de um conjunto de números.
+ *
+ * Esta função calcula a variância amostral de um conjunto de números.
+ *
+ * @param numeros Um vetor de números (double) para o qual a variância será calculada.
+ * @return A variância amostral dos números fornecidos.
+ */
+double calcVariancia(const std::vector<double>& numeros);
+
+/**
+ * @brief Imprime a fórmula da variância amostral com os valores utilizados.
+ *
+ * Esta função imprime a fórmula da variância amostral e mostra os valores
+ * utilizados no cálculo.
+ *
+ * @param numeros Um vetor de números (double) utilizados no cálculo da variância.
+ * @param res O resultado da variância calculada.
+ */
+void printFormulaVariancia(const std::vector<double>& numeros, double res);
+
 #endif /* math_utils_hpp */

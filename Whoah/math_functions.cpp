@@ -431,3 +431,24 @@ void funcDPAmostral() {
 
     returnOptions();
 }
+
+// MARK: Variância
+void funcVariancia() {
+    cout << "Calculando a variância amostral de um conjunto de numeros.\n" << endl;
+    
+    vector<double> numbers = processNumbersFromInput();
+
+    try {
+        if (!numbers.empty()) {
+            double resultado = calcVariancia(numbers);
+            clearScreen();
+            printFormulaVariancia(numbers, resultado);
+        } else {
+            throw invalid_argument("Nenhum número válido foi fornecido.");
+        }
+    } catch (const invalid_argument& e) {
+        handleError(e.what());
+    }
+
+    returnOptions();
+}

@@ -493,3 +493,71 @@ void printFormulaDPAmostral(const vector<double>& numeros, double res) {
          << endl << "s = " << formatNumber(res)
          << endl;
 }
+
+// MARK: Utilitários - Variância
+double calcVariancia(const vector<double>& numeros) {
+    if (numeros.empty()) {
+        throw invalid_argument("O vetor está vazio");
+    } else if (numeros.size() == 1) {
+        throw invalid_argument("O vetor precisa conter mais de 1 número");
+    }
+
+    double res1 = 0, res2 = 0;
+    for (size_t i = 0; i < numeros.size(); ++i) {
+        res1 += numeros[i];
+    }
+    res1 /= numeros.size();
+    for (size_t i = 0; i < numeros.size(); ++i) {
+        res2 += pow(numeros[i] - res1, 2);
+    }
+    res2 *= 1.0 / (numeros.size() - 1.0);
+
+    return res2;
+}
+
+void printFormulaVariancia(const vector<double>& numeros, double res) {
+    cout << "s² = Variância     x̅ = Média\n" << endl;
+
+    cout << "x̅ = (";
+    double res1 = 0, res2 = 0;
+    for (size_t i = 0; i < numeros.size(); ++i) {
+        res1 += numeros[i];
+        cout << formatNumber(numeros[i]);
+        if (i < numeros.size() - 1) {
+            cout << " + ";
+        } else {
+            cout << ") / ";
+        }
+    }
+
+    cout << formatNumber(numeros.size())
+         << endl << "x̅ = " << formatNumber(res1) << " / " << formatNumber(numeros.size()) << endl;
+
+    res1 /= numeros.size();
+
+    cout << "x̅ = " << formatNumber(res1)
+         << endl << "s² = ( ";
+    for (size_t i = 0; i < numeros.size(); ++i) {
+        res2 += pow(numeros[i] - res1, 2);
+        cout << "(" << formatNumber(numeros[i]) << " - " << formatNumber(res1) << ")²";
+        if (i < numeros.size() - 1) {
+            cout << " + ";
+        } else {
+            cout << " ) / (" << formatNumber(numeros.size()) << " - 1)";
+        }
+    }
+
+    cout << endl << "s² = (";
+    for (size_t i = 0; i < numeros.size(); ++i) {
+        cout << formatNumber(pow(numeros[i] - res1, 2));
+        if (i < numeros.size() - 1) {
+            cout << " + ";
+        } else {
+            cout << ") / (" << formatNumber(numeros.size()) << " - 1)";
+        }
+    }
+
+    cout << endl <<  "s² = " << formatNumber(res2) << " / " << formatNumber(numeros.size() - 1)
+         << endl << "s² = " << formatNumber(res)
+         << endl;
+}

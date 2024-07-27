@@ -113,4 +113,9 @@ void runCalcMedianaTests(int& failureCount);
  */
 void runCalcDPAmostralTests(int& failureCount);
 
+/**
+ * @brief Executa testes unitário para a função calcVariancia.
+ */
+void runCalcVarianciaTests(int& failureCount);
+
 #endif /* math_tests_hpp */
