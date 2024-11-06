@@ -34,7 +34,6 @@ void options() {
          << endl << "8 - Calcular a Raiz N-ésima de um número"
          << endl << "9 - Calcular a derivada de um polinômio"
          << endl << "10 - Calcular a integral definida de um polinômio"
-#if DEBUG
          << endl << "11 - Encontrar o valor máximo e mínimo de uma lista de números"
          << endl << "12 - Calcular o número de permutações possíveis de um conjunto de elementos"
          << endl << "13 - Calcular o número de combinações possíveis de um conjunto de elementos"
@@ -43,7 +42,6 @@ void options() {
          << endl << "16 - Calcular a mediana de uma lista de números."
          << endl << "17 - Calcular o Desvio Padrão Amostral de uma lista de números."
          << endl << "18 - Calcular a Variância Amostral de um conjunto de números."
-#endif
          << endl << "\n0 - Sair" << endl;
 
     handleOptionsChoice();
