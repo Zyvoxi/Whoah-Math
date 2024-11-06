@@ -113,7 +113,6 @@ void handleOptionsChoice() {
             clearScreen();
             funcIntegralDefinida();
             break;
-#if DEBUG
         case 11:
             clearScreen();
             funcMaxMin();
@@ -146,7 +145,6 @@ void handleOptionsChoice() {
             clearScreen();
             funcVariancia();
             break;
-#endif
         default:
             cout << "Opção inválida.\n";
             handleOptionsChoice();
