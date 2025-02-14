@@ -96,6 +96,9 @@ void funcFatorial() {
         calcFatorial(intN, result);
         clearScreen();
         printFormulaFatorial(intN, result);
+        /* char* resultStr = mpz_get_str(NULL, 10, result);
+        cout << resultStr << endl;
+        free(resultStr);*/
         mpz_clear(result);
     } catch (const invalid_argument& e) {
         handleError(e.what());
@@ -414,7 +417,7 @@ void funcMediana() {
 // MARK: Desvio Padrão Amostral
 void funcDPAmostral() {
     cout << "Calculando o desvio padrão amostral de uma lista de numeros.\n" << endl;
-    
+
     vector<double> numbers = processNumbersFromInput();
 
     try {
@@ -435,7 +438,7 @@ void funcDPAmostral() {
 // MARK: Variância
 void funcVariancia() {
     cout << "Calculando a variância amostral de um conjunto de numeros.\n" << endl;
-    
+
     vector<double> numbers = processNumbersFromInput();
 
     try {

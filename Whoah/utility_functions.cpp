@@ -17,68 +17,86 @@
 
 // MARK: Validador dos Inputs
 bool isBrazilianNumber(const string& str) {
-    regex pattern(R"(^-?(\d{1,3}(\.\d{3})*|\d+)(,\d{1,3})?$)");
-    return regex_match(str, pattern);
+  regex pattern(R"(^-?(\d{1,3}(\.\d{3})*|\d+)(,\d{1,3})?$)");
+  return regex_match(str, pattern);
+}
+
+bool isAmericanNumber(const string& str) {
+  regex pattern(R"(^-?\d+(\.\d+)?$)");
+  return regex_match(str, pattern);
 }
 
 string convertBrazilianToAmerican(const string& input) {
-    string formatted = input;
+  string formatted = input;
 
-    formatted.erase(remove(formatted.begin(), formatted.end(), '.'), formatted.end());
+  formatted.erase(remove(formatted.begin(), formatted.end(), '.'), formatted.end());
 
-    size_t commaPos = formatted.find(',');
-    if (commaPos != string::npos) {
-        formatted.replace(commaPos, 1, ".");
-    }
+  size_t commaPos = formatted.find(',');
+  if (commaPos != string::npos) {
+    formatted.replace(commaPos, 1, ".");
+  }
 
-    return formatted;
+  return formatted;
 }
 
 double getValidatedInput(const string& prompt) {
-    double value;
-    while (true) {
-        cout << prompt;
-        string input;
-        getline(cin, input);
-        try {
-            if (isBrazilianNumber(input)) {
-                string c = convertBrazilianToAmerican(input);
-                if (isNumber(c)) {
-                    istringstream(c) >> value;
-                    break;
-                }
-            }
-            throw invalid_argument("Por favor, digite um número válido.");
-        } catch (const invalid_argument& e) {
-            handleError(e.what());
+  double value;
+  while (true) {
+    cout << prompt;
+    string input;
+    getline(cin, input);
+    try {
+      if (isBrazilianNumber(input)) {
+        string c = convertBrazilianToAmerican(input);
+        if (isNumber(c)) {
+          istringstream(c) >> value;
+          break;
         }
+      } else if (isAmericanNumber(input)) {
+        if (isNumber(input)) {
+          istringstream(input) >> value;
+          break;
+        }
+      }
+      throw invalid_argument("Por favor, digite um número válido.");
+    } catch (const invalid_argument& e) {
+      handleError(e.what());
     }
-    return value;
+  }
+  return value;
 }
 
 vector<double> processNumbersFromInput() {
-    cout << "Insira os números separados por espaços: ";
-    string input;
-    getline(cin, input);
-    istringstream stream(input);
-    vector<double> numbers;
-    string token;
-    while (stream >> token) {
-        if (isBrazilianNumber(token)) {
-            string c = convertBrazilianToAmerican(token);
-            double n;
-            if (isNumber(c)) {
-                istringstream(c) >> n;
-                numbers.push_back(n);
-            } else {
-                handleError("Número inválido ignorado: " + token);
-            }
-        } else {
-            handleError("Número inválido ignorado: " + token);
-        }
+  cout << "Insira os números separados por espaços: ";
+  string input;
+  getline(cin, input);
+  istringstream stream(input);
+  vector<double> numbers;
+  string token;
+  while (stream >> token) {
+    if (isBrazilianNumber(token)) {
+      string c = convertBrazilianToAmerican(token);
+      double n;
+      if (isNumber(c)) {
+        istringstream(c) >> n;
+        numbers.push_back(n);
+      } else {
+        handleError("Número inválido ignorado: " + token);
+      }
+    } else if (isAmericanNumber(token)) {
+      double n;
+      if (isNumber(token)) {
+        istringstream(token) >> n;
+        numbers.push_back(n);
+      } else {
+        handleError("Número inválido ignorado: " + token);
+      }
+    } else {
+      handleError("Número inválido ignorado: " + token);
     }
+  }
 
-    return numbers;
+  return numbers;
 }
 
 // MARK: Limpador
@@ -124,31 +142,31 @@ string formatWithThousandsSeparator(double num) {
 }
 
 string formatLargerNumber(const mpz_t num) {
-    // Converte o número grande para string
-    string numStr = mpz_get_str(nullptr, 10, num);
-    string result(numStr);
+  // Converte o número grande para string
+  unique_ptr<char, void(*)(void*)> numStr(mpz_get_str(nullptr, 10, num), free);
+  string result(numStr.get());
 
-    // Remove espaços e outros caracteres indesejados
-    result.erase(0, result.find_first_not_of(' '));
-    result.erase(result.find_last_not_of(' ') + 1);
+  // Remove espaços e outros caracteres indesejados
+  result.erase(0, result.find_first_not_of(' '));
+  result.erase(result.find_last_not_of(' ') + 1);
 
-    // Adiciona separadores de milhares
-    string formattedNum;
-    unsigned long long length = result.length();
-    int start = length % 3;
+  // Adiciona separadores de milhares
+  string formattedNum;
+  unsigned long long length = result.length();
+  int start = length % 3;
 
-    // Adiciona a primeira parte, se existir
-    if (start > 0) {
-        formattedNum.append(result.substr(0, start));
-    }
+  // Adiciona a primeira parte, se existir
+  if (start > 0) {
+    formattedNum.append(result.substr(0, start));
+  }
 
-    // Adiciona os grupos de três dígitos separados por pontos
-    for (int i = start; i < length; i += 3) {
-        if (i > 0) formattedNum.append(".");
-        formattedNum.append(result.substr(i, 3));
-    }
+  // Adiciona os grupos de três dígitos separados por pontos
+  for (int i = start; i < length; i += 3) {
+    if (i > 0) formattedNum.append(".");
+    formattedNum.append(result.substr(i, 3));
+  }
 
-    return formattedNum;
+  return formattedNum;
 }
 
 // MARK: Error

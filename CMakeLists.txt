@@ -10,7 +10,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Define o diretório onde o GMP está localizado
 if (MSVC)
     set(GMP_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/gmp/include")
-    set(GMP_LIBRARY "${CMAKE_SOURCE_DIR}/gmp/lib/libgmp-10.lib")
+    find_library(GMP_LIBRARY NAMES libgmp-10 PATHS "${CMAKE_SOURCE_DIR}/gmp/lib" NO_DEFAULT_PATH)
+    if (NOT GMP_LIBRARY)
+        message(FATAL_ERROR "GMP library not found")
+    endif()
 endif()
 
 # Adiciona os diretórios de cabeçalho

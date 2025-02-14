@@ -67,24 +67,14 @@ void printFormulaRX2(double b, double delta, double a) {
 
 // MARK: Utilitarios - Fatorial
 void calcFatorial(int n, mpz_t result) {
-    if (n < 0) throw invalid_argument("Fatorial de número negativo não é definido.");
+  if (n < 0) throw invalid_argument("Fatorial de número negativo não é definido.");
 
-    mpz_set_ui(result, 1); // Inicializa result com 1
-
-    for (int i = 2; i <= n; ++i) {
-        mpz_mul_ui(result, result, i);
-    }
+  mpz_fac_ui(result, n); // Utiliza a função mpz_fac_ui da GMP para calcular o fatorial de forma eficiente
 }
 
 void printFormulaFatorial(int n, const mpz_t result) {
-    cout << n << "! = ";
-    for (int i = 1; i <= n; ++i) {
-        cout << i;
-        if (i < n) {
-            cout << " * ";
-        }
-    }
-    cout << " = " << formatLargerNumber(result) << endl;
+  cout << n << "! = ";
+  cout << formatLargerNumber(result) << endl;
 }
 
 // MARK: Utilitarios - Potencia
@@ -94,7 +84,7 @@ double power(double base, double exponent) {
 
 void printFormulaPotencia(double base, double exponent, double result) {
     cout << formatNumber(base) << formatNumToSup(exponent) << " = ";
-    
+
     if (exponent == 0) {
         cout << "1 (Qualquer número elevado a 0 é 1)" << endl;
     } else if (exponent == 1) {
@@ -295,9 +285,9 @@ long long calcCombinacao(int n, int k) {
 
         mpz_mul(numerador, fatorialK, fatorialN_k);
         mpz_div(numerador, fatorialN, numerador);
-        
+
         long long resultado = mpz_get_ui(numerador);
-        
+
         mpz_clear(fatorialN);
         mpz_clear(fatorialK);
         mpz_clear(fatorialN_k);
